@@ -1,0 +1,17 @@
+{
+  "miniprogramRoot": "./dist",
+  "projectname": "paimon",
+  "description": "日历/日程小程序",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "enhance": false,
+    "compileHotReLoad": false,
+    "postcss": false,
+    "minified": false,
+    "ignoreDevUnusedFiles": false,
+    "ignoreUploadUnusedFiles": false
+  },
+  "compileType": "miniprogram"
+}

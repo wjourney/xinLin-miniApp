@@ -1,0 +1,22 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .calendar {
+    background-color: #eeedff;
+    padding-top: 10px;
+  }
+
+  .header {
+    font-size: large; /*修改了标题文字和按钮的大小*/
+    color: #605eac; /*修改了标题文字和按钮的颜色*/
+  }
+
+  .board {
+    background-color: #dddcff;
+    color: white;
+  }
+}
