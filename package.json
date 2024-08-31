@@ -55,13 +55,10 @@
     "@tarojs/runtime": "3.6.23",
     "@tarojs/shared": "3.6.23",
     "@tarojs/taro": "3.6.23",
-    "custom-calendar-taro": "^2.0.1",
     "moment": "^2.30.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.22.1",
-    "taro-calendar-customizable": "^2.1.2",
-    "taro-react-calendar": "^1.0.9",
     "taro-ui": "^3.3.0"
   },
   "devDependencies": {

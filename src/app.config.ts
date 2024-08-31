@@ -35,10 +35,4 @@ export default defineAppConfig({
       },
     ],
   },
-  plugins: {
-    calendar: {
-      version: "1.1.3",
-      provider: "wx92c68dae5a8bb046",
-    },
-  },
 });
