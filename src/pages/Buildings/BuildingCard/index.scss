@@ -1,0 +1,40 @@
+.building_card_wrap {
+  height: 88px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  width: 100%;
+  justify-content: space-between;
+
+  .img_wrap {
+    border-radius: 8px;
+    height: 100%;
+    width: 90px;
+    height: 68px;
+  }
+
+  .info_wrap {
+    margin-left: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 400;
+
+    .location {
+    }
+
+    .area {
+    }
+
+    .price {
+    }
+  }
+
+  .collection {
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+  }
+}

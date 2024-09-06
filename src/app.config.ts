@@ -1,5 +1,18 @@
 export default defineAppConfig({
-  pages: ["pages/index/index",  "pages/Buildings/index", "pages/Projects/index", "pages/News/index", "pages/User/index",], //第一项默认为首页
+  pages: [
+    "pages/index/index",
+    "pages/Buildings/index",
+    "pages/Buildings/BuildingDetail/index",
+    "pages/Buildings/ReserveBuilding/index",
+    "pages/Projects/index",
+    "pages/Projects/ProjectDetail/index",
+    "pages/News/index",
+    "pages/User/index",
+    "pages/User/AboutUs/index",
+    "pages/User/Collection/index",
+    "pages/User/Reserve/index",
+    "pages/User/UserDetails/index",
+  ], //第一项默认为首页
   window: {
     backgroundTextStyle: "light",
     navigationBarBackgroundColor: "#fff",
@@ -7,6 +20,7 @@ export default defineAppConfig({
     navigationBarTextStyle: "black",
   },
   tabBar: {
+    custom: true,
     color: "#79747E",
     selectedColor: "#9A82DB",
     backgroundColor: "#F7F7F7",
@@ -15,23 +29,23 @@ export default defineAppConfig({
     list: [
       {
         pagePath: "pages/index/index",
-        text: "首页",
+        text: "",
       },
       {
         pagePath: "pages/Buildings/index",
-        text: "房源",
+        text: "",
       },
       {
         pagePath: "pages/Projects/index",
-        text: "项目",
+        text: "",
       },
       {
         pagePath: "pages/News/index",
-        text: "资讯",
+        text: "",
       },
       {
         pagePath: "pages/User/index",
-        text: "我的",
+        text: "",
       },
     ],
   },

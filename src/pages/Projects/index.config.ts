@@ -1,6 +1,6 @@
 export default definePageConfig({
-  navigationBarTitleText: "日历",
+  navigationBarTitleText: "项目",
   navigationBarTextStyle: "black",
-  navigationBarBackgroundColor: "#CBB8FF",
+  // navigationBarBackgroundColor: "#CBB8FF",
   enableShareTimeline: true,
 });

@@ -1,3 +1,19 @@
 @import "~taro-ui/dist/style/components/icon.scss";
 @import "~taro-ui/dist/style/components/tab-bar.scss";
 @import "~taro-ui/dist/style/components/badge.scss";
+
+.at-tab-bar {
+  // padding-bottom: 24px;
+  padding-top: 8px;
+
+  .at-tab-bar__item {
+    padding: 0px 12px;
+
+    .at-tab-bar__icon {
+      font-size: 24px;
+    }
+  }
+  .at-tab-bar__title {
+    padding: 0px;
+  }
+}

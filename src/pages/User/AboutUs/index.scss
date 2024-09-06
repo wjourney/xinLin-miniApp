@@ -1,0 +1,16 @@
+.about_us_wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-left: 24px;
+  padding-right: 24px;
+
+  .content {
+    margin-top: 48px;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0pt;
+    line-height: 22pt;
+    color: rgba(51, 51, 51, 1);
+  }
+}

@@ -1,0 +1,38 @@
+.user_wrapper {
+  background-color: #9ad8ed;
+  height: 100vh;
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+
+  .avatar_warp {
+    height: 100px;
+  }
+
+  .menu_warp {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: white;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    padding-top: 32px;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    .menu_item {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+
+      .title_wrap {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        gap: 16px;
+      }
+    }
+  }
+}

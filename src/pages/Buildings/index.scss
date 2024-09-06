@@ -1,0 +1,148 @@
+@import "~taro-ui/dist/style/components/tag.scss";
+
+.buildings_wrapper {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  // overflow-y: hidden;
+
+  .dropdown_wrap {
+    // height: 260px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn_wrap {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 46px;
+    display: flex;
+
+    .rest {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      background: rgba(170, 159, 175, 0.12);
+      font-size: 16px;
+      font-weight: 400;
+      justify-content: center;
+      align-items: center;
+    }
+    .confirm {
+      height: 100%;
+      display: flex;
+      flex: 1;
+      background: #42a4ff;
+      color: rgba(255, 255, 255, 1);
+      font-size: 16px;
+      font-weight: 400;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .project_wrap {
+    display: flex;
+    height: calc(100% - 46px);
+    // padding-left: 16px;
+    // padding-right: 16px;
+
+    .city_item_wrap {
+      width: 80px;
+      border-right: solid black 1px;
+      display: flex;
+      flex-direction: column;
+      // padding-left: 8px;
+
+      .item {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        background-color: #f2eded;
+        padding-left: 8px;
+      }
+    }
+
+    .area_item_wrap {
+      width: 80px;
+      border-right: solid black 1px;
+      display: flex;
+      flex-direction: column;
+      // padding-left: 8px;
+
+      .item {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        background-color: #f2eded;
+        padding-left: 8px;
+      }
+    }
+
+    .project_item_wrap {
+      flex: 1;
+      padding-left: 8px;
+
+      .item {
+        display: flex;
+        height: 32px;
+        align-items: center;
+      }
+    }
+  }
+
+  // }
+
+  .business_wrap {
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow-y: auto;
+    height: calc(100% - 46px);
+
+    .item {
+      height: 38px;
+      font-size: 14px;
+      display: flex;
+      flex-shrink: 0;
+      border-bottom: #e6e6e6;
+      align-items: center;
+      border-bottom: solid 0.5px #e6e6e6;
+    }
+  }
+
+  .price_wrap {
+    height: 64px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .area_wrap {
+    height: 64px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 16px;
+  }
+  .card_wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .at-tag {
+    border-radius: 4px;
+    height: 30px;
+    font-size: 12px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: unset;
+    background-color: #e3e3e3;
+  }
+}

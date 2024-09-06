@@ -1,0 +1,79 @@
+@import "~taro-ui/dist/style/components/tabs.scss";
+
+.reserve_collection__wrapper {
+  display: flex;
+  margin-top: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 32px;
+
+  .card_wrap {
+    height: 102px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    .img_wrap {
+      border-radius: 8px;
+      height: 100%;
+      width: 90px;
+      height: 68px;
+    }
+
+    .info_wrap {
+      margin-left: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 400;
+
+      .location {
+      }
+
+      .area {
+      }
+
+      .price {
+      }
+    }
+
+    .collection {
+      width: 24px;
+      height: 24px;
+      margin-left: auto;
+    }
+  }
+
+  .at-tabs {
+    margin-top: 12px;
+    .at-tabs__header {
+      display: flex;
+      height: 40px;
+      align-items: center;
+
+      .at-tabs__item {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        font-size: 16px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        align-items: center;
+      }
+    }
+
+    .at-tabs__body {
+      margin-top: 0px;
+      height: calc(100% - 40px);
+      background-color: white !important;
+      .at-tabs-pane--active {
+        height: 100%;
+      }
+    }
+  }
+}
