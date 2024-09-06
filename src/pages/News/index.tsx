@@ -5,6 +5,7 @@ import { Swiper, SwiperItem } from "@tarojs/components";
 import "./index.scss";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import { useState } from "react";
+import TopNav from "@/components/TopNav";
 
 const mockImages = [
   {
@@ -42,57 +43,60 @@ const Card = ({}) => (
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <View className="news_wrapper">
-      <Swiper
-        className="swiper_wrap"
-        indicatorColor="#999"
-        indicatorActiveColor="#333"
-        circular
-        indicatorDots
-        // autoplay
-      >
-        {mockImages?.map((item) => (
-          <SwiperItem>
-            <View className="swiper_content">
-              <Image src={item?.url} />
+    <View className="page_view">
+      <TopNav title={"资讯"} />
+      <View className="news_wrapper">
+        <Swiper
+          className="swiper_wrap"
+          indicatorColor="#999"
+          indicatorActiveColor="#333"
+          circular
+          indicatorDots
+          // autoplay
+        >
+          {mockImages?.map((item) => (
+            <SwiperItem>
+              <View className="swiper_content">
+                <Image src={item?.url} />
+              </View>
+              {/* <View className="demo-text-1">1</View> */}
+            </SwiperItem>
+          ))}
+        </Swiper>
+        <AtTabs
+          animated={false}
+          current={currentIndex}
+          tabList={[
+            { title: "关于欣宁" },
+            { title: "城市更新" },
+            { title: "越界生活" },
+          ]}
+          onClick={(value) => setCurrentIndex(value)}
+        >
+          <AtTabsPane current={currentIndex} index={0}>
+            <View className="list_wrap">
+              <Card />
+              <Card />
+              <Card />
             </View>
-            {/* <View className="demo-text-1">1</View> */}
-          </SwiperItem>
-        ))}
-      </Swiper>
-      <AtTabs
-        animated={false}
-        current={currentIndex}
-        tabList={[
-          { title: "关于欣宁" },
-          { title: "城市更新" },
-          { title: "越界生活" },
-        ]}
-        onClick={(value) => setCurrentIndex(value)}
-      >
-        <AtTabsPane current={currentIndex} index={0}>
-          <View className="list_wrap">
-            <Card />
-            <Card />
-            <Card />
-          </View>
-        </AtTabsPane>
-        <AtTabsPane current={currentIndex} index={1}>
-          <View className="list_wrap">
-            <Card />
-            <Card />
-            <Card />
-          </View>
-        </AtTabsPane>
-        <AtTabsPane current={currentIndex} index={2}>
-          <View className="list_wrap">
-            <Card />
-            <Card />
-            <Card />
-          </View>
-        </AtTabsPane>
-      </AtTabs>
-      <BottomTabBar currentIndex={3} />
+          </AtTabsPane>
+          <AtTabsPane current={currentIndex} index={1}>
+            <View className="list_wrap">
+              <Card />
+              <Card />
+              <Card />
+            </View>
+          </AtTabsPane>
+          <AtTabsPane current={currentIndex} index={2}>
+            <View className="list_wrap">
+              <Card />
+              <Card />
+              <Card />
+            </View>
+          </AtTabsPane>
+        </AtTabs>
+        <BottomTabBar currentIndex={3} />
+      </View>
     </View>
   );
 }

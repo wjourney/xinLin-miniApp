@@ -16,7 +16,7 @@ export default function Index() {
   return (
     <View className="page_view">
       <TopNav title={"我的消息"} hasBack={true} />
-      <View className="user_wrapper">用户详情</View>
+      <View className="user_wrapper">消息</View>
     </View>
   );
 }

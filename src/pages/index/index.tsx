@@ -10,6 +10,7 @@ import { Picker } from "@tarojs/components";
 import { AtList, AtInput, AtListItem } from "taro-ui";
 import { useState } from "react";
 import { Swiper, SwiperItem } from "@tarojs/components";
+import TopNav from "@/components/TopNav";
 
 const mockImages = [
   {
@@ -95,10 +96,11 @@ export default function Index() {
   );
 
   return (
-    <View className="home_wrapper">
-      <View className="searchWrap">
-        <View className="choose_place">
-          <View className="page_section">
+    <View className="page_view">
+      <TopNav title={"首页"} />
+      <View className="home_wrapper">
+        <View className="searchWrap">
+          <View className="choose_place">
             <Picker
               mode="selector"
               range={mockPlaces.selector}
@@ -107,111 +109,110 @@ export default function Index() {
               }
             >
               <View className="select_location_wrap">
-                <Image src={LocationSvg} />
                 {selectPlace}
                 <Image src={DownSvg} />
               </View>
             </Picker>
           </View>
-        </View>
-        <View className="search">
-          <Input
-            type="text"
-            placeholder="搜索项目"
-            value={searchValue}
-            onInput={(target) => setSearchValue(target?.detail?.value)}
-          />
-          <Image className="searchSvg" src={SearchSvg} />
-        </View>
-      </View>
-      <Swiper
-        className="swiper_wrap"
-        indicatorColor="#999"
-        indicatorActiveColor="#333"
-        circular
-        indicatorDots
-        autoplay
-      >
-        {mockImages?.map((item) => (
-          <SwiperItem>
-            <View className="swiper_content">
-              <Image src={item?.url} />
-            </View>
-          </SwiperItem>
-        ))}
-      </Swiper>
-      <View className="buildings_wrap">
-        <View className="title_wrap">
-          <View className="big_title_wrap">
-            <Text className="main_title">推荐房源</Text>
-            <Text className="prompt">精选优质房源，尽享优质服务</Text>
+          <View className="search">
+            <Input
+              type="text"
+              placeholder="搜索项目"
+              value={searchValue}
+              onInput={(target) => setSearchValue(target?.detail?.value)}
+            />
+            <Image className="searchSvg" src={SearchSvg} />
           </View>
-          <View className="lookMore">
-            <Text
+        </View>
+        <Swiper
+          className="swiper_wrap"
+          indicatorColor="#999"
+          indicatorActiveColor="#333"
+          circular
+          indicatorDots
+          autoplay
+        >
+          {mockImages?.map((item) => (
+            <SwiperItem>
+              <View className="swiper_content">
+                <Image src={item?.url} />
+              </View>
+            </SwiperItem>
+          ))}
+        </Swiper>
+        <View className="buildings_wrap">
+          <View className="title_wrap">
+            <View className="big_title_wrap">
+              <Text className="main_title">推荐房源</Text>
+              <Text className="prompt">精选优质房源，尽享优质服务</Text>
+            </View>
+            <View className="lookMore">
+              <Text
+                onClick={() =>
+                  Taro.switchTab({
+                    url: "/pages/Buildings/index",
+                  })
+                }
+              >
+                查看更多
+              </Text>
+              <Image src={MoreSvg} />
+            </View>
+          </View>
+          <View className="list_wrap">
+            {mockBuildings.map((item, index) => (
+              <BuildingCard index={index} />
+            ))}
+            <View
+              className="look_more_building"
               onClick={() =>
                 Taro.switchTab({
                   url: "/pages/Buildings/index",
                 })
               }
             >
+              <View className="text"> 查看更多</View>
+              <Image src={MoreSvg} />
+            </View>
+          </View>
+        </View>
+        <View className="projects_wrap">
+          <View className="title_wrap">
+            <View className="big_title_wrap">
+              <Text className="main_title">项目展示</Text>
+              <Text className="prompt">优质服务、持续好评、热情款待</Text>
+            </View>
+            <View
+              className="lookMore"
+              onClick={() =>
+                Taro.switchTab({
+                  url: "/pages/Projects/index",
+                })
+              }
+            >
+              <Text>查看更多</Text>
+              <Image src={MoreSvg} />
+            </View>
+          </View>
+          <View className="list_wrap">
+            <ProjectCard />
+            <ProjectCard />
+            <ProjectCard />
+            <ProjectCard />
+            <View
+              className="look_more_project"
+              onClick={() =>
+                Taro.switchTab({
+                  url: "/pages/Projects/index",
+                })
+              }
+            >
               查看更多
-            </Text>
-            <Image src={MoreSvg} />
+            </View>
+            {/* <BuildingCard /> */}
+            {/* <BuildingCard /> */}
+            {/* <BuildingCard /> */}
           </View>
-        </View>
-        <View className="list_wrap">
-          {mockBuildings.map((item, index) => (
-            <BuildingCard index={index} />
-          ))}
-          <View
-            className="look_more_building"
-            onClick={() =>
-              Taro.switchTab({
-                url: "/pages/Buildings/index",
-              })
-            }
-          >
-            <View className="text"> 查看更多</View>
-            <Image src={MoreSvg} />
-          </View>
-        </View>
-      </View>
-      <View className="projects_wrap">
-        <View className="title_wrap">
-          <View className="big_title_wrap">
-            <Text className="main_title">项目展示</Text>
-            <Text className="prompt">优质服务、持续好评、热情款待</Text>
-          </View>
-          <View
-            className="lookMore"
-            onClick={() =>
-              Taro.switchTab({
-                url: "/pages/Projects/index",
-              })
-            }
-          >
-            <Text>查看更多</Text>
-            <Image src={MoreSvg} />
-          </View>
-        </View>
-        <View className="list_wrap">
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <View
-            className="look_more_project"
-            onClick={() =>
-              Taro.switchTab({
-                url: "/pages/Projects/index",
-              })
-            }
-          >
-            查看更多
-          </View>
-          {/* <BuildingCard /> */}
-          {/* <BuildingCard /> */}
-          {/* <BuildingCard /> */}
         </View>
       </View>
       <BottomTabBar currentIndex={0} />

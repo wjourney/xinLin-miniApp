@@ -5,6 +5,7 @@ import "./index.scss";
 import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
 import { AtTabs, AtTabsPane } from "taro-ui";
+import TopNav from "@/components/TopNav";
 
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,35 +33,38 @@ export default function Index() {
   );
 
   return (
-    <View className="reserve_collection__wrapper">
-      <AtTabs
-        animated={false}
-        current={currentIndex}
-        tabList={[
-          { title: "全部" },
-          { title: "待确认" },
-          { title: "待看房" },
-          { title: "已看房" },
-          { title: "已确认" },
-        ]}
-        onClick={(value) => setCurrentIndex(value)}
-      >
-        <AtTabsPane current={currentIndex} index={0}>
-          weew
-        </AtTabsPane>
-        <AtTabsPane current={currentIndex} index={1}>
-          rtrt
-        </AtTabsPane>
-        <AtTabsPane current={currentIndex} index={2}>
-          yty
-        </AtTabsPane>
-        <AtTabsPane current={currentIndex} index={3}>
-          标签页三的内容
-        </AtTabsPane>
-        <AtTabsPane current={currentIndex} index={4}>
-          标签页三的内容
-        </AtTabsPane>
-      </AtTabs>
+    <View className="page_view">
+      <TopNav title={"我的预约"} hasBack={true} />
+      <View className="reserve_collection__wrapper">
+        <AtTabs
+          animated={false}
+          current={currentIndex}
+          tabList={[
+            { title: "全部" },
+            { title: "待确认" },
+            { title: "待看房" },
+            { title: "已看房" },
+            { title: "已确认" },
+          ]}
+          onClick={(value) => setCurrentIndex(value)}
+        >
+          <AtTabsPane current={currentIndex} index={0}>
+            weew
+          </AtTabsPane>
+          <AtTabsPane current={currentIndex} index={1}>
+            rtrt
+          </AtTabsPane>
+          <AtTabsPane current={currentIndex} index={2}>
+            yty
+          </AtTabsPane>
+          <AtTabsPane current={currentIndex} index={3}>
+            标签页三的内容
+          </AtTabsPane>
+          <AtTabsPane current={currentIndex} index={4}>
+            标签页三的内容
+          </AtTabsPane>
+        </AtTabs>
+      </View>
     </View>
   );
 }

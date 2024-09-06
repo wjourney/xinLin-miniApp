@@ -1,8 +1,9 @@
 import { View, Text } from "@tarojs/components";
 import classnames from "classnames";
-import React, { useImperativeHandle, useState } from "react";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 import "taro-ui/dist/style/components/icon.scss";
 import styles from "./index.module.scss";
+import Taro from "@tarojs/taro";
 
 // forwardRef 组件增添属性 来自 antd-mobile
 export function attachPropertiesToComponent<C, P extends Record<string, any>>(
@@ -43,6 +44,31 @@ interface DropDownProps {
  */
 const DropDown = React.forwardRef((props: DropDownProps, ref: any) => {
   const [activeKey, setActiveKey] = useState("");
+
+  const [navHeight, setNavHeight] = useState(0);
+
+  const getNavHeight = () => {
+    // 获取系统信息
+    const systemInfo = Taro.getSystemInfoSync();
+    // 获取胶囊信息
+    const menuButtonInfo = Taro.getMenuButtonBoundingClientRect();
+
+    // 状态栏高度 获取不到的情况给通用的44  图中的1
+    const statusBarHeight = systemInfo.statusBarHeight ?? 44;
+
+    // 状态栏到胶囊的间距 图中的2
+    const menuButtonStatusBarGap = menuButtonInfo.top - statusBarHeight;
+
+    // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度   1+ 2 + 2 + 3
+    const navBarHeight =
+      menuButtonStatusBarGap * 2 + menuButtonInfo.height + statusBarHeight;
+
+    return navBarHeight;
+  };
+
+  useEffect(() => {
+    setNavHeight(getNavHeight());
+  }, []);
 
   useImperativeHandle(ref, () => ({
     close: () => {
@@ -93,6 +119,7 @@ const DropDown = React.forwardRef((props: DropDownProps, ref: any) => {
             ref.current.close();
           }}
           catchMove
+          style={{ top: navHeight + 38 + 16 }}
         ></View>
       )}
     </View>

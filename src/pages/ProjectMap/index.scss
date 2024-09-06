@@ -1,5 +1,4 @@
 .page_view {
-  // position: relative;
   height: 100vh;
   width: 100vw;
   overflow-y: hidden;
@@ -21,43 +20,53 @@
   background-size: 100% 400px; /* 仅让渐变背景覆盖前 40px 高度 */
   background-position: top; /* 渐变背景固定在顶部 */
 
-  .user_wrapper {
-    height: 100vh;
+  .project_wrapper {
     display: flex;
-    width: 100vw;
-    flex-direction: column;
     flex: 1;
     height: 100%;
     overflow-y: auto;
-    .avatar_warp {
-      height: 100px;
-    }
+    // margin-top: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 32px;
 
-    .menu_warp {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      background-color: white;
-      border-top-left-radius: 40px;
-      border-top-right-radius: 40px;
-      padding-top: 32px;
-      padding-left: 24px;
-      padding-right: 24px;
-
-      .menu_item {
-        height: 60px;
+    .select_wrap {
+      .choose_place {
+        height: 100%;
+        // width: 64px;
         display: flex;
+        gap: 4px;
+        margin-right: 12px;
         align-items: center;
-        justify-content: space-between;
-        width: 100%;
 
-        .title_wrap {
+        .select_location_wrap {
           display: flex;
           align-items: center;
-          height: 100%;
-          gap: 16px;
+          gap: 4px;
+
+          image {
+            width: 24px;
+            height: 24px;
+          }
         }
       }
+
+      // .page-section {
+      display: flex;
+      align-items: center;
+
+      .item-extra__info {
+        width: 40px;
+        font-size: 14px;
+      }
+
+      // .at-list__item {
+      //   padding: 0px;
+      // }
+      // }
     }
   }
 }

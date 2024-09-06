@@ -1,236 +1,264 @@
 @import "~taro-ui/dist/style/components/avatar.scss";
 @import "~taro-ui/dist/style/components/textarea.scss";
 
-.build_detail_wrap {
+.page_view {
+  // position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow-y: hidden;
   display: flex;
-  // padding-left: 16px;
-  // padding-right: 16px;
   flex-direction: column;
-  padding-bottom: calc(56px + constant(safe-area-inset-bottom));
-  padding-bottom: calc(56px + env(safe-area-inset-bottom));
 
-  .img_wrap {
-    width: calc(100% - 32px);
-    margin-left: 16px;
-    margin-right: 16px;
-    height: 200px;
-    border-radius: 8px;
+  /* 使用两个背景层 */
+  background: linear-gradient(
+        180deg,
+        rgba(235, 239, 249, 1) 0%,
+        rgba(215, 224, 250, 1) 0%,
+        rgba(255, 255, 255, 1) 100%,
+        rgba(251, 252, 254, 1) 100%,
+        rgba(247, 249, 253, 1) 100%
+      )
+      no-repeat,
+    white;
 
-    image {
-      max-height: 100%;
-      width: 100%;
-      object-fit: cover;
+  background-size: 100% 300px; /* 仅让渐变背景覆盖前 40px 高度 */
+  background-position: top; /* 渐变背景固定在顶部 */
+
+  .build_detail_wrap {
+    padding-top: 16px;
+    display: flex;
+    // padding-left: 16px;
+    // padding-right: 16px;
+    flex-direction: column;
+    padding-bottom: calc(56px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+
+    .img_wrap {
+      width: calc(100% - 32px);
+      margin-left: 16px;
+      margin-right: 16px;
+      height: 200px;
       border-radius: 8px;
-    }
-  }
 
-  .building_name {
-    padding-left: 16px;
-    padding-right: 16px;
-    margin-top: 16px;
-    font-size: 16px;
-    font-weight: 400;
-    color: #000000;
-  }
-
-  .building_location {
-    padding-left: 16px;
-    padding-right: 16px;
-    margin-top: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    text {
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 20px;
-      color: rgba(77, 77, 77, 1);
-    }
-
-    image {
-      height: 24px;
-      width: 24px;
-    }
-  }
-
-  .tag_wrap {
-    padding-left: 16px;
-    padding-right: 16px;
-    display: flex;
-    gap: 8px;
-    margin-top: 16px;
-
-    .at-tag {
-      padding: 4px 16px;
-      border-radius: 999px;
-      height: 20px;
-      font-size: 12px;
-      display: flex;
-      color: #4d4d4d;
-      justify-content: center;
-      align-items: center;
-      line-height: unset;
-      background-color: #cfcfcf;
-    }
-  }
-
-  .building_info {
-    padding-left: 16px;
-    padding-right: 16px;
-    margin-top: 16px;
-    // height: 80px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-
-    .info_item {
-      display: flex;
-      // justify-content: center;
-      flex-direction: column;
-      // align-items: center;
-      // border-width: 1px;
-      // border: solid #4d4d4d;
-
-      .value {
-        font-size: 16px;
-        color: rgba(0, 0, 0, 0.8);
+      image {
+        max-height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
       }
+    }
 
-      .label {
+    .building_name {
+      padding-left: 16px;
+      padding-right: 16px;
+      margin-top: 16px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #000000;
+    }
+
+    .building_location {
+      padding-left: 16px;
+      padding-right: 16px;
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      text {
         font-size: 12px;
+        font-weight: 400;
+        line-height: 20px;
         color: rgba(77, 77, 77, 1);
       }
-    }
-  }
 
-  .diver_wrap {
-    height: 24px;
-    background-color: rgba(170, 159, 175, 0.1);
-  }
-
-  .investment_consultant {
-    padding-left: 16px;
-    padding-right: 16px;
-    display: flex;
-    flex-direction: column;
-    padding-top: 16px;
-
-    .title {
-      font-size: 18px;
-    }
-
-    .avatar_wrap {
-      display: flex;
-      align-items: center;
-      height: 64px;
-
-      .avatar {
-        margin-top: 8px;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
+      image {
+        height: 24px;
+        width: 24px;
       }
+    }
 
-      .name_and_phone_wrap {
-        margin-left: 16px;
+    .tag_wrap {
+      padding-left: 16px;
+      padding-right: 16px;
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+
+      .at-tag {
+        padding: 4px 16px;
+        border-radius: 999px;
+        height: 20px;
+        font-size: 12px;
         display: flex;
-        flex-direction: column;
-        gap: 4px;
+        color: #4d4d4d;
+        justify-content: center;
+        align-items: center;
+        line-height: unset;
+        background-color: #cfcfcf;
+      }
+    }
 
-        text {
-          font-size: 14px;
+    .building_info {
+      padding-left: 16px;
+      padding-right: 16px;
+      margin-top: 16px;
+      // height: 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+
+      .info_item {
+        display: flex;
+        // justify-content: center;
+        flex-direction: column;
+        // align-items: center;
+        // border-width: 1px;
+        // border: solid #4d4d4d;
+
+        .value {
+          font-size: 16px;
+          color: rgba(0, 0, 0, 0.8);
+        }
+
+        .label {
+          font-size: 12px;
+          color: rgba(77, 77, 77, 1);
         }
       }
     }
 
-    .phone_num {
-      display: flex;
-      height: 28px;
-      align-items: center;
-      margin-top: 6px;
-      font-size: 14px;
-      color: rgba(77, 77, 77, 1);
-    }
-  }
-
-  .belong_project {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-    height: 42px;
-    display: flex;
-    justify-content: space-between;
-
-    .title {
-      font-size: 18px;
-      display: flex;
-      align-items: center;
+    .diver_wrap {
+      height: 24px;
+      background-color: rgba(170, 159, 175, 0.1);
     }
 
-    .project_wrap {
+    .investment_consultant {
+      padding-left: 16px;
+      padding-right: 16px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      padding-top: 16px;
 
-      text {
+      .title {
+        font-size: 18px;
+      }
+
+      .avatar_wrap {
+        display: flex;
+        align-items: center;
+        height: 64px;
+
+        .avatar {
+          margin-top: 8px;
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+        }
+
+        .name_and_phone_wrap {
+          margin-left: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+
+          text {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .phone_num {
+        display: flex;
+        height: 28px;
+        align-items: center;
+        margin-top: 6px;
         font-size: 14px;
-      }
-
-      image {
-        width: 24px;
-        height: 24px;
+        color: rgba(77, 77, 77, 1);
       }
     }
-  }
 
-  .else_info {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-    height: 96px;
+    .belong_project {
+      padding-top: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      height: 42px;
+      display: flex;
+      justify-content: space-between;
 
-    .title {
-      height: 26px;
-      font-size: 18px;
+      .title {
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+      }
+
+      .project_wrap {
+        display: flex;
+        align-items: center;
+
+        text {
+          font-size: 14px;
+        }
+
+        image {
+          width: 24px;
+          height: 24px;
+        }
+      }
     }
 
-    .text_wrap {
-      margin-top: 8px;
-      border-radius: 8px;
-      height: calc(100% - 26px);
-      width: 100%;
-      font-size: 14px;
-      border: solid 1px #e6e6e6;
+    .else_info {
+      padding-top: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      height: 96px;
+
+      .title {
+        height: 26px;
+        font-size: 18px;
+      }
+
+      .text_wrap {
+        margin-top: 8px;
+        border-radius: 8px;
+        height: 64px;
+        width: 100%;
+        font-size: 14px;
+        border: solid 1px #e6e6e6;
+      }
     }
-  }
 
-  .btn_wrap {
-    // padding-left: 16px;
-    // padding-right: 16px;
-    height: 48px;
-    position: fixed;
-    color: white;
-    bottom: 0px;
-    padding-bottom: 20px;
-    padding-top: 8px;
-    width: calc(100% - 32px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    right: 16px;
-    left: 16px;
-    background-color: white;
-
-    .btn {
-      background: #2772f3;
-      height: calc(100% - 20px);
-      width: 100%;
+    .btn_wrap {
+      // padding-left: 16px;
+      // padding-right: 16px;
+      height: 48px;
+      position: fixed;
+      color: white;
+      bottom: 0px;
+      padding-bottom: 20px;
+      padding-top: 8px;
+      width: calc(100% - 32px);
+      display: flex;
       justify-content: center;
       align-items: center;
-      display: flex;
-      border-radius: 8px;
-      height: 100%;
+      font-size: 16px;
+      right: 16px;
+      left: 16px;
+      background-color: white;
+
+      .btn {
+        background: #2772f3;
+        height: calc(100% - 20px);
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        border-radius: 8px;
+        height: 100%;
+      }
     }
   }
 }

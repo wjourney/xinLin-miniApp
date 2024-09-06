@@ -9,6 +9,7 @@ import AboutUs from "@/assets/svg/aboutUs.svg";
 import Logout from "@/assets/svg/logout.svg";
 import LeftArrow from "@/assets/svg/leftArrow.svg";
 import Taro from "@tarojs/taro";
+import TopNav from "@/components/TopNav";
 
 const items = [
   {
@@ -51,36 +52,30 @@ const items = [
       });
     },
   },
-  {
-    label: "退出登陆",
-    value: "logout",
-    icon: Logout,
-    handleCLick: () => {
-      // Taro.navigateTo({
-      //   url: "/pages/UserDetails/index",
-      // });
-    },
-  },
 ];
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <View className="user_wrapper">
-      <View className="avatar_warp">eee</View>
-      <View className="menu_warp">
-        {items.map((item) => (
-          <View className="menu_item" onClick={item.handleCLick}>
-            <View className="title_wrap">
-              <Image style={{ width: 18, height: 18 }} src={item.icon} />
-              <Text className="title">{item.label}</Text>
+    <View className="page_view">
+      <TopNav title={"首页"} />
+      <View className="user_wrapper">
+        <View className="avatar_warp">eee</View>
+        <View className="menu_warp">
+          {items.map((item) => (
+            <View className="menu_item" onClick={item.handleCLick}>
+              <View className="title_wrap">
+                <Image style={{ width: 18, height: 18 }} src={item.icon} />
+                <Text className="title">{item.label}</Text>
+              </View>
+              <Image style={{ width: 18, height: 18 }} src={LeftArrow} />
             </View>
-            <Image style={{ width: 18, height: 18 }} src={LeftArrow} />
-          </View>
-        ))}
+          ))}
+        </View>
       </View>
       <BottomTabBar currentIndex={4} />
+
     </View>
   );
 }

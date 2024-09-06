@@ -1,18 +1,24 @@
-import { View, Text, Image } from "@tarojs/components";
+import { View, Image, Input } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
-import "./index.scss";
 import { useEffect } from "react";
+import "./index.scss";
 import Taro from "@tarojs/taro";
-import TopNav from "@/components/TopNav";
 
 export default function Index() {
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的收藏" });
   }, []);
 
-  const Card = ({}) => (
-    <View className="card_wrap">
+  return (
+    <View
+      className="project_card_wrap"
+      onClick={() => {
+        Taro.navigateTo({
+          url: "/pages/Projects/ProjectDetail/index",
+        });
+      }}
+    >
       <Image
         className="img_wrap"
         src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
@@ -26,22 +32,6 @@ export default function Index() {
         className="collection"
         src={require("@/assets/svg/heart_love.svg")}
       />
-    </View>
-  );
-
-  return (
-    <View className="page_view">
-      <TopNav title={"我的消息"} hasBack={true} />
-      <View className="user_collection_wrapper">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-      </View>
     </View>
   );
 }

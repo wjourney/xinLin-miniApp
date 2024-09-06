@@ -1,51 +1,120 @@
-.project_wrapper {
+.page_view {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: hidden;
   display: flex;
-  margin-top: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
   flex-direction: column;
-  gap: 16px;
-  padding-bottom: 32px;
 
-  .card_wrap {
-    height: 88px;
+  /* 使用两个背景层 */
+  background: linear-gradient(
+        180deg,
+        rgba(235, 239, 249, 1) 0%,
+        rgba(215, 224, 250, 1) 0%,
+        rgba(255, 255, 255, 1) 100%,
+        rgba(251, 252, 254, 1) 100%,
+        rgba(247, 249, 253, 1) 100%
+      )
+      no-repeat,
+    white;
+
+  background-size: 100% 400px; /* 仅让渐变背景覆盖前 40px 高度 */
+  background-position: top; /* 渐变背景固定在顶部 */
+
+  .project_wrapper {
     display: flex;
-    align-items: center;
-    border-radius: 8px;
-    padding-left: 8px;
-    padding-right: 8px;
-    // box-shadow: 0 0 2px 0px #808080;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    // margin-top: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 32px;
 
-    .img_wrap {
-      border-radius: 8px;
-      height: 100%;
-      width: 90px;
-      height: 68px;
+    .searchWrap {
+      display: flex;
+      height: 36px !important;
+      margin-top: 16px;
+      justify-content: space-between;
+      align-items: center;
+
+      .choose_place {
+        height: 100%;
+        display: flex;
+        gap: 4px;
+        margin-right: 12px;
+        align-items: center;
+
+        .select_location_wrap {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          image {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+
+      .page-section {
+        display: flex;
+        align-items: center;
+
+        .item-extra__info {
+          width: 40px;
+          font-size: 14px;
+        }
+      }
+
+      .search {
+        flex: 1;
+        height: 100%;
+        width: 200px;
+        position: relative;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+
+        input {
+          height: 100%;
+          width: 100%;
+          padding-left: 12px;
+          border-radius: 99px;
+          background: rgba(255, 255, 255, 0);
+          border: 1pt solid rgba(128, 128, 128, 0.15);
+          box-shadow: 0px 2px 4px rgba(223, 233, 245, 1);
+          font-size: 14px;
+        }
+
+        .searchSvg {
+          position: absolute;
+          right: 8px;
+          width: 24px;
+          height: 24px;
+          top: 0;
+          right: 4px;
+          bottom: 0;
+          margin: auto;
+        }
+      }
+      .mode_Wrap {
+        width: 64px;
+      }
+      .mode_wrap_img {
+        margin-left: 12px;
+        width: 20px;
+        height: 20px;
+      }
     }
 
-    .info_wrap {
-      margin-left: 8px;
+    .list_wrap {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 400;
-
-      .location {
-      }
-
-      .area {
-      }
-
-      .price {
-      }
-    }
-
-    .collection {
-      width: 24px;
-      height: 24px;
-      margin-left: auto;
+      gap: 12px;
     }
   }
 }

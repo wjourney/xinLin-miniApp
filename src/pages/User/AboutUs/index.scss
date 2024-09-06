@@ -1,16 +1,43 @@
-.about_us_wrapper {
+.page_view {
+  // position: relative;
   height: 100vh;
+  width: 100vw;
+  overflow-y: hidden;
   display: flex;
   flex-direction: column;
-  padding-left: 24px;
-  padding-right: 24px;
 
-  .content {
-    margin-top: 48px;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0pt;
-    line-height: 22pt;
-    color: rgba(51, 51, 51, 1);
+  /* 使用两个背景层 */
+  background: linear-gradient(
+        180deg,
+        rgba(235, 239, 249, 1) 0%,
+        rgba(215, 224, 250, 1) 0%,
+        rgba(255, 255, 255, 1) 100%,
+        rgba(251, 252, 254, 1) 100%,
+        rgba(247, 249, 253, 1) 100%
+      )
+      no-repeat,
+    white;
+
+  background-size: 100% 300px; /* 仅让渐变背景覆盖前 40px 高度 */
+  background-position: top; /* 渐变背景固定在顶部 */
+
+  .about_us_wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    padding-right: 16px;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+
+    .content {
+      margin-top: 48px;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0pt;
+      line-height: 22pt;
+      color: rgba(51, 51, 51, 1);
+    }
   }
 }

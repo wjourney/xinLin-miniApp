@@ -1,0 +1,23 @@
+.top_nav_wrap {
+  position: sticky;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text {
+    font-size: 16px;
+  }
+
+  image {
+    position: absolute;
+    left: 0;
+    width: 12px;
+    height: 24px;
+    padding-left: 16px;
+  }
+}
