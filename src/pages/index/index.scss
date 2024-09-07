@@ -58,16 +58,15 @@
 
       .choose_place {
         height: 100%;
-        // width: 64px;
         display: flex;
-        gap: 4px;
         margin-right: 12px;
         align-items: center;
 
         .select_location_wrap {
           display: flex;
           align-items: center;
-          gap: 4px;
+          font-size: 16px;
+          color: #484848;
 
           image {
             width: 24px;
@@ -76,7 +75,6 @@
         }
       }
 
-      // .page-section {
       display: flex;
       align-items: center;
 
@@ -84,11 +82,6 @@
         width: 40px;
         font-size: 14px;
       }
-
-      // .at-list__item {
-      //   padding: 0px;
-      // }
-      // }
 
       .search {
         flex: 1;
@@ -104,12 +97,13 @@
         input {
           height: 100%;
           width: 100%;
-          padding-left: 12px;
+          padding-left: 16px;
+          padding-right: 16px;
           border-radius: 99px;
           background: rgba(255, 255, 255, 0);
           border: 1pt solid rgba(128, 128, 128, 0.15);
           box-shadow: 0px 2px 4px rgba(223, 233, 245, 1);
-          font-size: 12px;
+          font-size: 14px;
         }
 
         .searchSvg {
@@ -118,7 +112,7 @@
           width: 24px;
           height: 24px;
           top: 0;
-          right: 4px;
+          right: 16px;
           bottom: 0;
           margin: auto;
         }

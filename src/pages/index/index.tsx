@@ -154,7 +154,7 @@ export default function Index() {
                   })
                 }
               >
-                查看更多
+                更多
               </Text>
               <Image src={MoreSvg} />
             </View>
@@ -190,7 +190,7 @@ export default function Index() {
                 })
               }
             >
-              <Text>查看更多</Text>
+              <Text>更多</Text>
               <Image src={MoreSvg} />
             </View>
           </View>

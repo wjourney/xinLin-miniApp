@@ -41,7 +41,7 @@ export default function Index() {
                 }
               >
                 <View className="select_location_wrap">
-                  <Image src={BlueLocationSvg} />
+                  {/* <Image src={BlueLocationSvg} /> */}
                   {selectPlace}
                   <Image src={DownSvg} />
                 </View>

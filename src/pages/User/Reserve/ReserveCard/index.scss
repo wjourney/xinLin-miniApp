@@ -1,0 +1,84 @@
+.card_wrap {
+  // height: 177px;
+  display: flex;
+  // align-items: center;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
+
+  .title_wrap {
+    border-radius: 8px;
+    // height: 100%;
+    // width: 90px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    // border-bottom: solid rgb(111, 108, 108) 1px;
+
+    image {
+      width: 28px;
+      height: 28px;
+    }
+
+    .title {
+      font-size: 16px;
+      margin-left: 10px;
+    }
+
+    .tag {
+      width: 50px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      font-size: 12px;
+      background: rgba(255, 0, 0, 0.46);
+      margin-left: auto;
+    }
+  }
+
+  .divider {
+    height: 1px;
+    width: 100%;
+    background-color: rgba(230, 230, 230, 1);
+  }
+
+  .info_wrap {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 400;
+
+    .item {
+      height: 32px;
+      align-items: center;
+      display: flex;
+      gap: 4px;
+      // justify-content: center;
+      // flex-direction: column;
+
+      image {
+        width: 24px;
+        height: 24px;
+      }
+
+      text {
+        font-size: 14px;
+        color: rgba(102, 102, 102, 1);
+        font-size: 12px;
+      }
+    }
+  }
+
+  // .collection {
+  //   width: 24px;
+  //   height: 24px;
+  //   margin-left: auto;
+  // }
+}

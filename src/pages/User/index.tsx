@@ -10,6 +10,7 @@ import Logout from "@/assets/svg/logout.svg";
 import LeftArrow from "@/assets/svg/leftArrow.svg";
 import Taro from "@tarojs/taro";
 import TopNav from "@/components/TopNav";
+import MoreSvg from "@/assets/svg/more.svg";
 
 const items = [
   {
@@ -59,9 +60,25 @@ export default function Index() {
 
   return (
     <View className="page_view">
-      <TopNav title={"首页"} />
+      <TopNav title={"我的"} />
       <View className="user_wrapper">
-        <View className="avatar_warp">eee</View>
+        <View
+          className="avatar_warp"
+          onClick={() =>
+            Taro.navigateTo({
+              url: "/pages/User/UserDetails/index",
+            })
+          }
+        >
+          <Image
+            className="avatar"
+            src={
+              "https://bkmksh.oss-accelerate.aliyuncs.com/f2b0e436-69e0-11ef-b2bd-0ad83e4969ec_00001_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085359729&Signature=0jUiIDYyudsjgMJtjk52NFcQh1g%3D"
+            }
+          />
+          <Text className="username">微信用户</Text>
+          <Image className="more" src={MoreSvg} />
+        </View>
         <View className="menu_warp">
           {items.map((item) => (
             <View className="menu_item" onClick={item.handleCLick}>
@@ -69,13 +86,12 @@ export default function Index() {
                 <Image style={{ width: 18, height: 18 }} src={item.icon} />
                 <Text className="title">{item.label}</Text>
               </View>
-              <Image style={{ width: 18, height: 18 }} src={LeftArrow} />
+              <Image style={{ width: 28, height: 28 }} src={LeftArrow} />
             </View>
           ))}
         </View>
       </View>
       <BottomTabBar currentIndex={4} />
-
     </View>
   );
 }

@@ -29,8 +29,34 @@
     flex: 1;
     height: 100%;
     overflow-y: auto;
+
     .avatar_warp {
       height: 100px;
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-top: 16px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        margin-right: 16px;
+      }
+
+      .username {
+        font-size: 16px;
+        margin-right: 32px;
+      }
+
+      .more {
+        width: 32px;
+        margin-right: 4px;
+        height: 32px;
+        // margin-left: auto;
+      }
     }
 
     .menu_warp {
