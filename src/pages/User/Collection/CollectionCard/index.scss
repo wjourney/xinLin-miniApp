@@ -1,19 +1,19 @@
-.building_card_wrap {
-  height: 96px;
+.collection_card_wrap {
+  height: 88px;
   display: flex;
   align-items: center;
   border-radius: 8px;
-  justify-content: space-between;
-  box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
-  background: rgba(255, 255, 255, 1);
   padding-left: 8px;
   padding-right: 8px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 
   .img_wrap {
     border-radius: 8px;
     height: 100%;
     width: 90px;
-    height: 74px;
+    height: 68px;
   }
 
   .info_wrap {
@@ -25,8 +25,14 @@
     font-size: 14px;
     font-weight: 400;
 
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.8);
+    .location {
+    }
+
+    .area {
+    }
+
+    .price {
+    }
   }
 
   .collection {

@@ -12,6 +12,7 @@ export default defineAppConfig({
     "pages/User/Collection/index",
     "pages/User/Reserve/index",
     "pages/User/UserDetails/index",
+    "pages/User/Message/index",
     "pages/ProjectMap/index",
   ], //第一项默认为首页
   window: {

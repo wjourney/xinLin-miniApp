@@ -19,7 +19,7 @@ const items = [
     icon: MyMessage,
     handleCLick: () => {
       Taro.navigateTo({
-        url: "/pages/User/UserDetails/index",
+        url: "/pages/User/Message/index",
       });
     },
   },

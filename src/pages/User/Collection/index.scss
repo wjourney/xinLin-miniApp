@@ -23,7 +23,7 @@
 
   .user_collection_wrapper {
     display: flex;
-    margin-top: 12px;
+    margin-top: 16px;
     padding-left: 16px;
     padding-right: 16px;
     flex-direction: column;
@@ -41,6 +41,8 @@
       padding-left: 8px;
       padding-right: 8px;
       // box-shadow: 0 0 2px 0px #808080;
+      box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
+      background: rgba(255, 255, 255, 1);
 
       .img_wrap {
         border-radius: 8px;

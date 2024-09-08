@@ -115,7 +115,11 @@ export default function Index() {
             </View>
           </Dropdown.Item>
         </Dropdown>
-        <View className="card_wrap">
+        <View className="list_wrap">
+          <BuildingCard />
+          <BuildingCard />
+          <BuildingCard />
+          <BuildingCard />
           <BuildingCard />
           <BuildingCard />
         </View>

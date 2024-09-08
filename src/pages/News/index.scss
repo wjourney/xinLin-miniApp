@@ -63,7 +63,7 @@
 
     .list_wrap {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       flex-direction: column;
       margin-top: 12px;
 
@@ -76,6 +76,7 @@
         // padding-right: 8px;
         flex-shrink: 0;
         width: 100%;
+        box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
         // box-shadow: 0 0 2px 0px #808080;
 
         .img_wrap {
