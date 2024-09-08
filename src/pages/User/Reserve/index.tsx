@@ -13,6 +13,12 @@ export const reserveType = {
   2: "已看房",
   3: "已作废",
 };
+// {mockData?.length === 0 ? (
+//   <View className="no_message_wrap">
+//     <Image src={require("@/assets/images//no-message.png")} />
+//     <View className="text">暂无收藏</View>
+//   </View>
+const mockData = [];
 
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,14 +44,21 @@ export default function Index() {
           onClick={(value) => setCurrentIndex(value)}
         >
           <AtTabsPane current={currentIndex} index={0}>
-            <View className="list_wrap">
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-            </View>
+            {mockData?.length === 0 ? (
+              <View className="no_reserve_wrap">
+                <Image src={require("@/assets/images/no-reserve.png")} />
+                <View className="text">暂无预约</View>
+              </View>
+            ) : (
+              <View className="list_wrap">
+                <ReserveCard reserveType={1} />
+                <ReserveCard reserveType={1} />
+                <ReserveCard reserveType={1} />
+                <ReserveCard reserveType={1} />
+                <ReserveCard reserveType={1} />
+                <ReserveCard reserveType={1} />
+              </View>
+            )}
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={1}>
             <View className="list_wrap">

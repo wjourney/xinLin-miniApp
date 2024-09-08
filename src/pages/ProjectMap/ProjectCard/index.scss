@@ -1,0 +1,72 @@
+.project_card_wrap {
+  height: 120px;
+  display: flex;
+  // align-items: center;
+  border-radius: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
+  // width: 90%;
+  align-items: center;
+
+  .img_wrap {
+    border-radius: 8px;
+    height: 80px;
+    width: 100px;
+    // height: 68px;
+    flex-shrink: 0;
+
+    image {
+      object-fit: cover;
+      width: 100%;
+      height: 80px;
+    }
+  }
+
+  .info_wrap {
+    flex: 1;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    // justify-content: center;
+    font-size: 14px;
+    font-weight: 400;
+
+    .location {
+      font-size: 17px;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+      white-space: nowrap;
+    }
+
+    .area {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .price {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-top: auto;
+
+      image {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .collection {
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+  }
+}

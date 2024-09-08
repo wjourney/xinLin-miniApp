@@ -55,6 +55,7 @@
     "@tarojs/runtime": "3.6.23",
     "@tarojs/shared": "3.6.23",
     "@tarojs/taro": "3.6.23",
+    "clsx": "^2.1.1",
     "moment": "^2.30.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

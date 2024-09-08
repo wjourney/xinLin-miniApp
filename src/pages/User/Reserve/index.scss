@@ -87,4 +87,25 @@
       }
     }
   }
+
+  .no_reserve_wrap {
+    height: 100%;
+    width: 100%;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    image {
+      height: 340px;
+    }
+
+    .text {
+      height: 24px;
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(87, 146, 240, 1);
+      text-align: center;
+    }
+  }
 }

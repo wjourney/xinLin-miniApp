@@ -11,6 +11,8 @@ import LeftArrow from "@/assets/svg/leftArrow.svg";
 import TopNav from "@/components/TopNav";
 import Trumpt from "@/assets/svg/trumpt.svg";
 
+const mockData = [];
+
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -37,21 +39,28 @@ export default function Index() {
   return (
     <View className="page_view">
       <TopNav title={"我的消息"} hasBack={true} />
-      <View className="message_wrapper">
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-      </View>
+      {mockData?.length === 0 ? (
+        <View className="no_message_wrap">
+          <Image src={require("@/assets/images/no-message.png")} />
+          <View className="text">暂无收藏</View>
+        </View>
+      ) : (
+        <View className="message_wrapper">
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+          <MessageCard />
+        </View>
+      )}
     </View>
   );
 }

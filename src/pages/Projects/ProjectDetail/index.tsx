@@ -1,7 +1,7 @@
-import { View, Image, Text, Input, Textarea } from "@tarojs/components";
+import { View, Image, Text, Map, Input, Textarea } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Taro from "@tarojs/taro";
 import "./index.scss";
 import LocationSvg from "@/assets/svg/location.svg";
@@ -13,6 +13,7 @@ import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui";
 export default function Index() {
   const [isSelectConsultantModalVisible, setIsSelectConsultantModalVisible] =
     useState(false);
+  const mapRef = useRef(null);
 
   const ConsultantCard = ({}) => (
     <View
@@ -26,6 +27,18 @@ export default function Index() {
       <Text className="name">刘亦菲(办公)</Text>
     </View>
   );
+
+  // 标记点
+  const markers = [
+    {
+      id: 0,
+      latitude: 30.572269,
+      longitude: 104.066541,
+      title: "成都",
+      width: 20,
+      height: 20,
+    },
+  ];
 
   return (
     <View className="page_view">
@@ -92,7 +105,19 @@ export default function Index() {
         <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
         <View className="zhoubianpeitao">
           <View className="title">周边配套</View>
-          <View className="project_wrap"></View>
+          <View className="zhoubian">
+            <Map
+              ref={mapRef} // 显示用户当前位置
+              longitude={104.066541} //中心经度
+              latitude={30.572269} //中心纬度
+              scale={16} //缩放
+              // markers={markers} //标记点
+              // polyline={polyline} //路线
+              // onTap={handleTap} //用户选择位置
+              style={{ width: "100%", height: 200 }}
+              onError={(err) => console.log(err)}
+            />
+          </View>
         </View>
         {/* <View style={{ marginTop: 16 }} className="diver_wrap"></View> */}
         <View className="btn_wrap">

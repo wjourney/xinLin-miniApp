@@ -60,7 +60,8 @@ export default function Index() {
           </View>
         </View>
 
-        <View style={{ marginTop: 16 }} className="diver_wrap"></View>
+        <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
+        {/* <View style={{ paddingTop: 16 }} className="diver_wrap"></View> */}
         <View className="investment_consultant">
           <View className="title">招商顾问</View>
           <View className="avatar_wrap">
@@ -76,7 +77,7 @@ export default function Index() {
           </View>
           <View className="phone_num">招商中心：400-232-2323</View>
         </View>
-        <View style={{ marginTop: 16 }} className="diver_wrap"></View>
+        <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
         <View className="belong_project">
           <View className="title">所属项目</View>
           <View className="project_wrap">
@@ -84,7 +85,7 @@ export default function Index() {
             <Image src={MoreSvg} />
           </View>
         </View>
-        <View style={{ marginTop: 16 }} className="diver_wrap"></View>
+        <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
         <View className="else_info">
           <View className="title">其他信息</View>
           <View className="text_wrap" />
