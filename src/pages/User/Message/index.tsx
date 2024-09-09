@@ -42,7 +42,7 @@ export default function Index() {
       {mockData?.length === 0 ? (
         <View className="no_message_wrap">
           <Image src={require("@/assets/images/no-message.png")} />
-          <View className="text">暂无收藏</View>
+          <View className="text">暂无消息</View>
         </View>
       ) : (
         <View className="message_wrapper">

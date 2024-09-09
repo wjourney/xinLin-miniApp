@@ -4,8 +4,9 @@ import BottomTabBar from "@/components/BottomTabBar";
 import { Swiper, SwiperItem } from "@tarojs/components";
 import "./index.scss";
 import { AtTabs, AtTabsPane } from "taro-ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TopNav from "@/components/TopNav";
+import Taro from "@tarojs/taro";
 
 const mockImages = [
   {
@@ -42,6 +43,31 @@ const Card = ({}) => (
 
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  // const [navHeight, setNavHeight] = useState(0);
+
+  // const getNavHeight = () => {
+  //   // 获取系统信息
+  //   const systemInfo = Taro.getSystemInfoSync();
+  //   // 获取胶囊信息
+  //   const menuButtonInfo = Taro.getMenuButtonBoundingClientRect();
+
+  //   // 状态栏高度 获取不到的情况给通用的44  图中的1
+  //   const statusBarHeight = systemInfo.statusBarHeight ?? 44;
+
+  //   // 状态栏到胶囊的间距 图中的2
+  //   const menuButtonStatusBarGap = menuButtonInfo.top - statusBarHeight;
+
+  //   // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度   1+ 2 + 2 + 3
+  //   const navBarHeight =
+  //     menuButtonStatusBarGap * 2 + menuButtonInfo.height + statusBarHeight;
+
+  //   return navBarHeight;
+  // };
+
+  // useEffect(() => {
+  //   setNavHeight(getNavHeight());
+  // }, []);
+
   return (
     <View className="page_view">
       <TopNav title={"资讯"} />
@@ -75,6 +101,15 @@ export default function Index() {
         >
           <AtTabsPane current={currentIndex} index={0}>
             <View className="list_wrap">
+              <Card />
+              <Card />
+              <Card />
+              <Card />
+              <Card />
+              <Card />
+              <Card />
+              <Card />
+              <Card />
               <Card />
               <Card />
               <Card />

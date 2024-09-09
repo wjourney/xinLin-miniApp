@@ -209,9 +209,6 @@ export default function Index() {
             >
               查看更多
             </View>
-            {/* <BuildingCard /> */}
-            {/* <BuildingCard /> */}
-            {/* <BuildingCard /> */}
           </View>
         </View>
       </View>

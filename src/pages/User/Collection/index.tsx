@@ -20,7 +20,7 @@ export default function Index() {
       {mockData?.length === 0 ? (
         <View className="no_collection_wrap">
           <Image src={require("@/assets/images/no-collection.png")} />
-          <View className="text">暂无消息</View>
+          <View className="text">暂无收藏</View>
         </View>
       ) : (
         <View className="user_collection_wrapper">

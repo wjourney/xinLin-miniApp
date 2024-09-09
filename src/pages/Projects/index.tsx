@@ -22,6 +22,31 @@ export default function Index() {
   const [selectPlace, setSelectPlace] = useState("中国");
   const [searchValue, setSearchValue] = useState("");
 
+  const [navHeight, setNavHeight] = useState(0);
+
+  const getNavHeight = () => {
+    // 获取系统信息
+    const systemInfo = Taro.getSystemInfoSync();
+    // 获取胶囊信息
+    const menuButtonInfo = Taro.getMenuButtonBoundingClientRect();
+
+    // 状态栏高度 获取不到的情况给通用的44  图中的1
+    const statusBarHeight = systemInfo.statusBarHeight ?? 44;
+
+    // 状态栏到胶囊的间距 图中的2
+    const menuButtonStatusBarGap = menuButtonInfo.top - statusBarHeight;
+
+    // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度   1+ 2 + 2 + 3
+    const navBarHeight =
+      menuButtonStatusBarGap * 2 + menuButtonInfo.height + statusBarHeight;
+
+    return navBarHeight;
+  };
+  console.log("navHeight", navHeight);
+  useEffect(() => {
+    setNavHeight(getNavHeight());
+  }, []);
+
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的收藏" });
   }, []);
@@ -67,7 +92,16 @@ export default function Index() {
             }
           />
         </View>
-        <View className="list_wrap">
+        <View
+          className="list_wrap"
+          style={{
+            height:
+              Taro.getSystemInfoSync()?.screenHeight - navHeight - 16 - 38,
+          }}
+        >
+          <ProjectCard />
+          <ProjectCard />
+          <ProjectCard />
           <ProjectCard />
           <ProjectCard />
           <ProjectCard />

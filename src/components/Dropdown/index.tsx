@@ -1,6 +1,11 @@
 import { View, Text } from "@tarojs/components";
 import classnames from "classnames";
-import React, { useEffect, useImperativeHandle, useState } from "react";
+import React, {
+  CSSProperties,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import "taro-ui/dist/style/components/icon.scss";
 import styles from "./index.module.scss";
 import Taro from "@tarojs/taro";

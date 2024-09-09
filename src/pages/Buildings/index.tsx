@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View, Text, Image, Button } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
@@ -7,6 +7,7 @@ import BuildingCard from "./BuildingCard";
 import Dropdown from "@/components/Dropdown";
 import { AtTag } from "taro-ui";
 import TopNav from "@/components/TopNav";
+import Taro from "@tarojs/taro";
 
 const mockPlace = [
   "全部",
@@ -34,6 +35,31 @@ const mockProjects = [
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
   const dropdownRef = useRef();
+
+  const [navHeight, setNavHeight] = useState(0);
+
+  const getNavHeight = () => {
+    // 获取系统信息
+    const systemInfo = Taro.getSystemInfoSync();
+    // 获取胶囊信息
+    const menuButtonInfo = Taro.getMenuButtonBoundingClientRect();
+
+    // 状态栏高度 获取不到的情况给通用的44  图中的1
+    const statusBarHeight = systemInfo.statusBarHeight ?? 44;
+
+    // 状态栏到胶囊的间距 图中的2
+    const menuButtonStatusBarGap = menuButtonInfo.top - statusBarHeight;
+
+    // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度   1+ 2 + 2 + 3
+    const navBarHeight =
+      menuButtonStatusBarGap * 2 + menuButtonInfo.height + statusBarHeight;
+
+    return navBarHeight;
+  };
+  console.log("navHeight", navHeight);
+  useEffect(() => {
+    setNavHeight(getNavHeight());
+  }, []);
 
   return (
     <View className="page_view">
@@ -115,7 +141,17 @@ export default function Index() {
             </View>
           </Dropdown.Item>
         </Dropdown>
-        <View className="list_wrap">
+        <View
+          className="list_wrap"
+          style={{
+            height:
+              Taro.getSystemInfoSync()?.screenHeight - navHeight - 16 - 38,
+          }}
+        >
+          <BuildingCard />
+          <BuildingCard />
+          <BuildingCard />
+          <BuildingCard />
           <BuildingCard />
           <BuildingCard />
           <BuildingCard />
