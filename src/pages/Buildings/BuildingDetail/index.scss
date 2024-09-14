@@ -58,7 +58,7 @@
       padding-left: 16px;
       padding-right: 16px;
       margin-top: 16px;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 400;
       color: #000000;
     }
@@ -72,7 +72,7 @@
       align-items: center;
 
       text {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 400;
         line-height: 20px;
         color: rgba(77, 77, 77, 1);
@@ -84,24 +84,44 @@
       }
     }
 
-    .tag_wrap {
-      padding-left: 16px;
-      padding-right: 16px;
+    .tag__and_action_wrap {
       display: flex;
-      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 16px;
       margin-top: 16px;
 
-      .at-tag {
-        padding: 4px 16px;
-        border-radius: 44px;
-        height: 20px;
-        font-size: 12px;
+      .tag_wrap {
+        padding-left: 16px;
+        padding-right: 16px;
         display: flex;
-        color: #171717;
-        justify-content: center;
+        gap: 8px;
+        height: 30px;
+
+        .at-tag {
+          padding: 4px 8px;
+          border-radius: 4px;
+          height: 20px;
+          font-size: 12px;
+          display: flex;
+          color: #4ba8e6;
+          justify-content: center;
+          align-items: center;
+          line-height: unset;
+          background-color: rgb(223, 235, 241);
+          // border: solid 1px #4ba8e6;
+        }
+      }
+      .action_wrap {
+        display: flex;
+        gap: 16px;
+        height: 100%;
         align-items: center;
-        line-height: unset;
-        background-color: #e5e3e3;
+
+        image {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
 
@@ -109,28 +129,33 @@
       padding-left: 16px;
       padding-right: 16px;
       padding-bottom: 16px;
-      margin-top: 16px;
+      margin-top: 24px;
       // height: 80px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 16px;
 
       .info_item {
         display: flex;
         // justify-content: center;
         flex-direction: column;
-        // align-items: center;
+        align-items: center;
         // border-width: 1px;
         // border: solid #4d4d4d;
 
         .value {
           font-size: 16px;
-          color: rgba(0, 0, 0, 0.8);
+          color: rgba(0, 0, 0, 1);
+          font-weight: 400;
         }
 
         .label {
           font-size: 12px;
-          color: rgba(77, 77, 77, 1);
+          color: rgba(77, 77, 77, 0.6);
+          font-weight: 400;
+        }
+        .diver_line {
+          height: 1px;
         }
       }
     }

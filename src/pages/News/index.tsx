@@ -36,37 +36,13 @@ const Card = ({}) => (
       <View className="des">
         这是一条咨讯不忘初心、牢记使命地点的主题教育知识学习做党的忠实拥护者和建设者顶顶顶
       </View>
-      <View className="date">面积：1000m²</View>
+      <View className="date">2024-4-23</View>
     </View>
   </View>
 );
 
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const [navHeight, setNavHeight] = useState(0);
-
-  // const getNavHeight = () => {
-  //   // 获取系统信息
-  //   const systemInfo = Taro.getSystemInfoSync();
-  //   // 获取胶囊信息
-  //   const menuButtonInfo = Taro.getMenuButtonBoundingClientRect();
-
-  //   // 状态栏高度 获取不到的情况给通用的44  图中的1
-  //   const statusBarHeight = systemInfo.statusBarHeight ?? 44;
-
-  //   // 状态栏到胶囊的间距 图中的2
-  //   const menuButtonStatusBarGap = menuButtonInfo.top - statusBarHeight;
-
-  //   // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度   1+ 2 + 2 + 3
-  //   const navBarHeight =
-  //     menuButtonStatusBarGap * 2 + menuButtonInfo.height + statusBarHeight;
-
-  //   return navBarHeight;
-  // };
-
-  // useEffect(() => {
-  //   setNavHeight(getNavHeight());
-  // }, []);
 
   return (
     <View className="page_view">

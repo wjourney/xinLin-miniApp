@@ -23,8 +23,11 @@ export default function Index() {
       />
       <View className="info_wrap">
         <View className="location">衡山路8号｜4楼</View>
-        <View className="area">面积：1000m²</View>
-        <View className="price">5.5/m²/天</View>
+        <View className="area">1000m²</View>
+        <View className="price">
+          <Text style={{ color: "#AE1D23", fontWeight: 500 }}>5.5</Text>
+          <Text>/m²/天</Text>
+        </View>
       </View>
       <Image
         className="collection"

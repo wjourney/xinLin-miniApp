@@ -12,7 +12,8 @@ import News from "@/assets/svg/news.svg";
 import NewsBlue from "@/assets/svg/news-blue.svg";
 import User from "@/assets/svg/user.svg";
 import UserBlue from "@/assets/svg/user-blue.svg";
-
+import Login from "@/components/Login";
+import { login } from "@/api/user";
 interface IBottomTabBarProps {
   currentIndex: number;
 }
@@ -26,8 +27,16 @@ const indexToUrl = {
 };
 
 const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
+
   const handleClick = (value) => {
-    Taro.switchTab({ url: indexToUrl[value] });
+    console.log("value", value);
+    if (value === 4) {
+      // Taro.switchTab({ url: indexToUrl[value] });
+      setIsLoginVisible(true);
+    } else {
+      Taro.switchTab({ url: indexToUrl[value] });
+    }
   };
 
   const tabList = [
@@ -39,16 +48,19 @@ const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
   ];
 
   return (
-    <AtTabBar
-      fixed
-      color="#999999"
-      selectedColor="#4BA8E6"
-      iconSize={24}
-      fontSize={12}
-      tabList={tabList}
-      onClick={handleClick}
-      current={currentIndex}
-    />
+    <>
+      <AtTabBar
+        fixed
+        color="#999999"
+        selectedColor="#4BA8E6"
+        iconSize={24}
+        fontSize={12}
+        tabList={tabList}
+        onClick={handleClick}
+        current={currentIndex}
+      />
+      <Login visible={isLoginVisible} setVisible={setIsLoginVisible} />
+    </>
   );
 };
 

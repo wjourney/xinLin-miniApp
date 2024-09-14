@@ -1,18 +1,19 @@
 .project_card_wrap {
-  height: 120px;
+  height: 96px;
   display: flex;
   // align-items: center;
   border-radius: 8px;
-  padding-left: 8px;
+  // padding-left: 8px;
   padding-right: 8px;
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
+  // background: rgba(255, 255, 255, 1);
+  // box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
   // width: 90%;
   align-items: center;
 
   .img_wrap {
     border-radius: 8px;
-    height: 80px;
+    // height: 80px;
+    height: 88%;
     width: 100px;
     // height: 68px;
     flex-shrink: 0;

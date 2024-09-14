@@ -4,7 +4,8 @@ import BottomTabBar from "@/components/BottomTabBar";
 import { useEffect } from "react";
 import Taro from "@tarojs/taro";
 import "./index.scss";
-import LocationSvg from "@/assets/svg/location.svg";
+import LocationSvg from "@/assets/svg/location_gray.svg";
+import Collection from "@/assets/svg/heart_love.svg";
 import { AtTag, AtAvatar, AtDivider, AtTextarea } from "taro-ui";
 import MoreSvg from "@/assets/svg/more.svg";
 import TopNav from "@/components/TopNav";
@@ -24,13 +25,17 @@ export default function Index() {
         <View className="building_name">这是房子名字｜3楼｜160m</View>
         <View className="building_location">
           <Text> 浙江省杭州市上水城区110号</Text>
-
-          <Image src={LocationSvg} />
         </View>
-        <View className="tag_wrap">
-          <AtTag>采光好</AtTag>
-          <AtTag>户型方正</AtTag>
-          <AtTag>电梯旁</AtTag>
+        <View className="tag__and_action_wrap">
+          <View className="tag_wrap">
+            <AtTag>采光好</AtTag>
+            <AtTag>户型方正</AtTag>
+            <AtTag>电梯旁</AtTag>
+          </View>
+          <View className="action_wrap">
+            <Image src={LocationSvg} />
+            <Image src={Collection} />
+          </View>
         </View>
         <View className="building_info">
           <View className="info_item">
