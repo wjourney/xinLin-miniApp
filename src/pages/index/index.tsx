@@ -8,9 +8,11 @@ import SearchSvg from "@/assets/svg/search.svg";
 import MoreSvg from "@/assets/svg/more.svg";
 import { Picker } from "@tarojs/components";
 import { AtList, AtInput, AtListItem } from "taro-ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperItem } from "@tarojs/components";
 import TopNav from "@/components/TopNav";
+import { getRecommendProjects } from "@/api/projects";
+import { getRecommendBuildings } from "@/api/buildings";
 
 const mockImages = [
   {
@@ -63,6 +65,29 @@ export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
   const [selectPlace, setSelectPlace] = useState("中国");
   const [searchValue, setSearchValue] = useState("");
+  const [recommendProjects, setRecommendProjects] = useState();
+  const [recommendBuildingss, setRecommendBuildings] = useState();
+
+  const handleGetRecommendProjects = async () => {
+    const res = await getRecommendProjects();
+    const { code, data } = res;
+    if (code === 200) {
+      setRecommendProjects(data);
+    }
+  };
+
+  const handleGetRecommendBuildings = async () => {
+    const res = await getRecommendBuildings();
+    const { code, data } = res;
+    if (code === 200) {
+      setRecommendBuildings(data);
+    }
+  };
+
+  useEffect(() => {
+    handleGetRecommendProjects();
+    handleGetRecommendBuildings();
+  }, []);
 
   const BuildingCard = ({ index }) => (
     <View
@@ -119,7 +144,14 @@ export default function Index() {
               type="text"
               placeholder="搜索项目"
               value={searchValue}
-              onInput={(target) => setSearchValue(target?.detail?.value)}
+              onFocus={() => {
+                Taro.setStorageSync("fromPage", "home");
+                Taro.switchTab({
+                  url: `/pages/Projects/index`,
+                  // complete: () => Taro.setStorageSync("fromPage", "home"),
+                });
+              }}
+              // onInput={(target) => setSearchValue(target?.detail?.value)}
             />
             <Image className="searchSvg" src={SearchSvg} />
           </View>

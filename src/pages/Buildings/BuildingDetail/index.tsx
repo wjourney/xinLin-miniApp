@@ -15,6 +15,11 @@ export default function Index() {
   //   Taro.setNavigationBarTitle({ title: "房源详情" });
   // }, []);
 
+  const handlePhone = () => {
+    Taro.makePhoneCall({
+      phoneNumber: "19934287005",
+    });
+  };
   return (
     <View className="page_view">
       <TopNav title={"房源详情"} hasBack={true} />
@@ -41,19 +46,19 @@ export default function Index() {
           <View className="info_item">
             {/* <View className="info_item" style={{ borderRight: "solid #E6E6E6" }}> */}
             <View className="value">160</View>
-            <View className="label">面积</View>
+            <View className="label">面积(m²)</View>
           </View>
           <View className="info_item">
             <View className="value">3</View>
-            <View className="label">楼层</View>
+            <View className="label">楼层(层)</View>
           </View>
           <View className="info_item">
             <View className="value">2.4</View>
-            <View className="label">价格</View>
+            <View className="label">价格(元/m²/天)</View>
           </View>
           <View className="info_item">
             <View className="value">8</View>
-            <View className="label">物业费</View>
+            <View className="label">物业费(元/m²/天)</View>
           </View>
           <View className="info_item">
             <View className="value">精装</View>
@@ -61,7 +66,7 @@ export default function Index() {
           </View>
           <View className="info_item">
             <View className="value">3.6m</View>
-            <View className="label">标准层层高</View>
+            <View className="label">层高</View>
           </View>
         </View>
 
@@ -78,9 +83,14 @@ export default function Index() {
               <Text className="name">刘亦菲</Text>
               <Text className="phone">19934287003</Text>
             </View>
-            <View className="call_img"></View>
+            <View className="call_img" onClick={handlePhone}>
+              <Image src={require("@/assets/svg/phone.svg")} />
+            </View>
           </View>
-          <View className="phone_num">招商中心：400-232-2323</View>
+          <View className="phone_num">
+            <View>招商中心：</View>
+            <View className="phone">400-232-2323</View>
+          </View>
         </View>
         <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
         <View className="belong_project">

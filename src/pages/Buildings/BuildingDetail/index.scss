@@ -133,7 +133,7 @@
       // height: 80px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      row-gap: 16px;
 
       .info_item {
         display: flex;
@@ -141,7 +141,13 @@
         flex-direction: column;
         align-items: center;
         // border-width: 1px;
-        // border: solid #4d4d4d;
+        // border-color: #4d4d4d;
+        border-right: solid 1px rgb(193, 190, 190);
+
+        &:nth-child(3),
+        &:nth-child(6) {
+          border-right: none;
+        }
 
         .value {
           font-size: 16px;
@@ -179,12 +185,12 @@
       }
 
       .avatar_wrap {
+        margin-top: 8px;
         display: flex;
         align-items: center;
         height: 64px;
 
         .avatar {
-          margin-top: 8px;
           width: 64px;
           height: 64px;
           border-radius: 50%;
@@ -200,6 +206,23 @@
             font-size: 14px;
           }
         }
+
+        .call_img {
+          margin-left: auto;
+          width: 36px;
+          height: 36px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          background-color: #c5e0f2;
+          padding: 4px;
+
+          image {
+            width: 26px;
+            height: 26px;
+          }
+        }
       }
 
       .phone_num {
@@ -209,6 +232,10 @@
         margin-top: 6px;
         font-size: 14px;
         color: rgba(77, 77, 77, 1);
+
+        .phone {
+          text-decoration: underline;
+        }
       }
     }
 

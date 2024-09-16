@@ -1,7 +1,7 @@
 import { View, Image, Text, Input } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import { useDidHide, useDidShow, useLoad, useUnload } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.scss";
 import ProjectCard from "./ProjectCard";
 import Taro from "@tarojs/taro";
@@ -21,7 +21,8 @@ const mockPlaces = {
 export default function Index() {
   const [selectPlace, setSelectPlace] = useState("中国");
   const [searchValue, setSearchValue] = useState("");
-
+  const inputRef = useRef<any>(null);
+  const [isInputFocus, setIsInputFocus] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
 
   const getNavHeight = () => {
@@ -42,14 +43,35 @@ export default function Index() {
 
     return navBarHeight;
   };
-  console.log("navHeight", navHeight);
-  useEffect(() => {
-    setNavHeight(getNavHeight());
-  }, []);
 
-  useEffect(() => {
+  const handleFocusInput = () => {
+    const from = Taro.getStorageSync("fromPage");
+    if (!!from) {
+      setTimeout(() => {
+        setIsInputFocus(true);
+      }, 100); // 确保视图更新，时间可以调整
+    }
+  };
+
+  useLoad(() => {
+    setNavHeight(getNavHeight());
     Taro.setNavigationBarTitle({ title: "我的收藏" });
-  }, []);
+    handleFocusInput();
+  });
+
+  useDidShow(() => {
+    handleFocusInput();
+  });
+
+  useUnload(() => {
+    Taro.removeStorageSync("fromPage");
+    setIsInputFocus(false);
+  });
+
+  useDidHide(() => {
+    Taro.removeStorageSync("fromPage");
+    setIsInputFocus(false);
+  });
 
   return (
     <View className="page_view">
@@ -66,7 +88,6 @@ export default function Index() {
                 }
               >
                 <View className="select_location_wrap">
-                  {/* <Image src={BlueLocationSvg} /> */}
                   {selectPlace}
                   <Image src={DownSvg} />
                 </View>
@@ -75,10 +96,14 @@ export default function Index() {
           </View>
           <View className="search">
             <Input
+              id="searchInput"
+              focus={isInputFocus}
               type="text"
+              ref={inputRef}
               placeholder="搜索项目"
               value={searchValue}
               onInput={(target) => setSearchValue(target?.detail?.value)}
+              onBlur={() => setIsInputFocus(false)} // 当输入框失焦时将 focus 置为 false
             />
             <Image className="searchSvg" src={SearchSvg} />
           </View>
