@@ -398,4 +398,64 @@
       }
     }
   }
+
+  .select_consultant_modal_content {
+    height: 440px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    // justify-content: space-between;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+
+    .title {
+      width: 100%;
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .prompt {
+      display: flex;
+      margin-top: 12px;
+      font-weight: 400;
+    }
+    .select_your_consultant {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding-left: 16px;
+      padding-right: 16px;
+
+      .item {
+        margin-top: 16px;
+        display: flex;
+        width: 100px;
+        // height: 100px;
+        flex-direction: column;
+        // width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        flex-shrink: 0;
+
+        .avatar {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+        }
+
+        .name {
+          margin-top: 12px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
 }

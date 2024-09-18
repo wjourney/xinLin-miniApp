@@ -4,6 +4,7 @@ export default defineAppConfig({
     "pages/Buildings/index",
     "pages/Buildings/BuildingDetail/index",
     "pages/Buildings/ReserveBuilding/index",
+    "pages/Projects/ReserveProject/index",
     "pages/Projects/index",
     "pages/Projects/ProjectDetail/index",
     "pages/News/index",

@@ -7,6 +7,7 @@ import { AtTabs, AtTabsPane } from "taro-ui";
 import { useEffect, useState } from "react";
 import TopNav from "@/components/TopNav";
 import Taro from "@tarojs/taro";
+import { getRecommendNews } from "@/api/news";
 
 const mockImages = [
   {
@@ -43,6 +44,19 @@ const Card = ({}) => (
 
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [recommendNewsData, setRecommendNewsData] = useState([]);
+
+  const getRecommendNewsData = async () => {
+    const res = await getRecommendNews();
+    const { code, data } = res;
+    if (code === 200) {
+      setRecommendNewsData(data);
+    }
+  };
+
+  useEffect(() => {
+    getRecommendNewsData();
+  }, []);
 
   return (
     <View className="page_view">

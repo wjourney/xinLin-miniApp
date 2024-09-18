@@ -18,7 +18,7 @@ const Login: React.FC<
     setVisible: (visible) => void;
     // handleLogin?: (status) => void;
     confirms?: (cm) => void;
-    handleFn: () => void;
+    handleFn?: () => void;
   }>
 > = ({ visible, setVisible, confirms, handleFn }) => {
   const handleGetPhoneNumber = async (

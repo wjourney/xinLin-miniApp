@@ -3,10 +3,22 @@ import BottomTabBar from "@/components/BottomTabBar";
 import { View, Text, Image } from "@tarojs/components";
 import "./index.scss";
 import Taro from "@tarojs/taro";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getUserInfo } from "@/api/user";
+import Login from "@/components/Login";
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
+
+  const handleCollectBuildings = async () => {
+    const res = await getUserInfo();
+    if (res.code === 200 && !!res?.data?.isBindPhone) {
+      // Taro.switchTab({ url: indexToUrl[value] });
+    } else {
+      setIsLoginVisible(true);
+    }
+  };
 
   return (
     <View
@@ -30,8 +42,20 @@ export default function Index() {
         </View>
       </View>
       <Image
+        onClick={(event) => {
+          handleCollectBuildings();
+          event?.stopPropagation();
+        }}
         className="collection"
         src={require("@/assets/svg/heart_love.svg")}
+      />
+      <Login
+        visible={isLoginVisible}
+        setVisible={setIsLoginVisible}
+        // handleFn={() => {
+        //   Taro.switchTab({ url: indexToUrl[4] });
+        //   setIsLoginVisible(false);
+        // }}
       />
     </View>
   );

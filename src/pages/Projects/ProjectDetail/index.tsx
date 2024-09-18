@@ -13,6 +13,9 @@ import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui";
 export default function Index() {
   const [isSelectConsultantModalVisible, setIsSelectConsultantModalVisible] =
     useState(false);
+  const [isAppointBuildingVisible, setIsAppointBuildingVisible] =
+    useState(false);
+
   const mapRef = useRef(null);
 
   const ConsultantCard = ({}) => (
@@ -144,7 +147,62 @@ export default function Index() {
           </View>
           <View className="btn_wrap">
             <View className="consult">电话咨询</View>
-            <View className="reserve">预约看房</View>
+            <View
+              className="reserve"
+              onClick={() => setIsAppointBuildingVisible(true)}
+            >
+              预约看房
+            </View>
+          </View>
+        </View>
+      </AtModal>
+      <AtModal
+        onClose={() => setIsSelectConsultantModalVisible(false)}
+        onCancel={() => setIsSelectConsultantModalVisible(false)}
+        // onConfirm={this.handleConfirm}
+        isOpened={true}
+        // isOpened={isSelectConsultantModalVisible}
+      >
+        <View className="select_consultant_modal_content">
+          <View className="title">预约看房</View>
+          <View className="prompt">请选择您的招商顾问</View>
+
+          <View className="select_your_consultant">
+            <View
+              className="item"
+              onClick={() =>
+                Taro.navigateTo({
+                  url: "/pages/Projects/ReserveProject/index",
+                })
+              }
+            >
+              <Image
+                className="avatar"
+                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
+              />
+              <View className="name">刘亦菲</View>
+            </View>
+            <View className="item">
+              <Image
+                className="avatar"
+                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
+              />
+              <View className="name">刘亦菲</View>
+            </View>
+            <View className="item">
+              <Image
+                className="avatar"
+                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
+              />
+              <View className="name">刘亦菲</View>
+            </View>
+            <View className="item">
+              <Image
+                className="avatar"
+                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
+              />
+              <View className="name">刘亦菲</View>
+            </View>
           </View>
         </View>
       </AtModal>

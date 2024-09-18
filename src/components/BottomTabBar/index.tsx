@@ -30,7 +30,6 @@ const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
 
   const handleClick = async (value) => {
-    console.log("value", value);
     if (value === 4) {
       const res = await getUserInfo();
       if (res.code === 200 && !!res?.data?.isBindPhone) {

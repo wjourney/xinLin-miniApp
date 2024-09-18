@@ -8,6 +8,7 @@ import Dropdown from "@/components/Dropdown";
 import { AtTag } from "taro-ui";
 import TopNav from "@/components/TopNav";
 import Taro from "@tarojs/taro";
+import CheckMark from "@/assets/svg/checkmark.svg";
 
 const mockPlace = [
   "全部",
@@ -16,11 +17,27 @@ const mockPlace = [
   "南京市",
   "北京市",
   "武汉市",
-  "南京市",
+  "南京市2",
+  "南京市23",
+  "南京市222",
+  "南京市12",
+];
+
+const mockAreas = [
+  "全部",
+  "青浦区",
+  "徐汇区",
+  "静安区",
+  "宝山区",
+  "闵行区",
+  "徐汇区2",
+  "徐汇区23",
+  "徐汇区21",
+  "徐汇区2221",
+  "徐汇区124",
 ];
 
 const mockProjects = [
-  "全部",
   "项目1",
   "项目2",
   "项目3",
@@ -32,11 +49,26 @@ const mockProjects = [
   "项目9",
 ];
 
+const mockPrices = ["1-3", "2-6", "7-13", "14-34", "35-39"];
+const mockAcreage = ["0-100", "100-300", "300-600", "600-1200", "1200-1700"];
+
+enum BusinessType {
+  all = "全部",
+  office = "办公",
+  business = "商业",
+}
+
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
   const dropdownRef = useRef();
-
   const [navHeight, setNavHeight] = useState(0);
+  const [selectCity, setSelectCity] = useState("全部");
+  const [selectArea, setSelectArea] = useState("全部");
+  const [selectProject, setSelectProject] = useState("项目1");
+  const [selectBusinessType, setSelectBusinessType] = useState("all");
+
+  const [selectPrice, setSelectPrice] = useState("1-3");
+  const [selectAcreage, setSelectAcreage] = useState("0-100");
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -70,73 +102,145 @@ export default function Index() {
             <View className="dropdown_wrap" style={{ height: 240 }}>
               <View className="project_wrap">
                 <View className="city_item_wrap">
-                  <View className="item">上海市</View>
-                  <View className="item">上海市</View>
-                  <View className="item">上海市</View>
+                  {mockPlace?.map((item) => (
+                    <View
+                      style={{
+                        background: item === selectCity ? "white" : "",
+                        color: item === selectCity ? "#4BA8E6" : "",
+                      }}
+                      className="item"
+                      onClick={() => setSelectCity(item)}
+                    >
+                      {item}
+                    </View>
+                  ))}
                 </View>
                 <View className="area_item_wrap">
-                  <View className="item">徐汇区</View>
-                  <View className="item">青浦区</View>
-                  <View className="item">嘉定区</View>
+                  {mockAreas?.map((item) => (
+                    <View
+                      style={{
+                        background: item === selectArea ? "white" : "",
+                        color: item === selectArea ? "#4BA8E6" : "",
+                      }}
+                      onClick={() => setSelectArea(item)}
+                      className="item"
+                    >
+                      {item}
+                    </View>
+                  ))}
                 </View>
                 <View className="project_item_wrap">
-                  <View className="item">衡山路8号</View>
-                  <View className="item">衡山路8号</View>
-                  <View className="item">衡山路8号</View>
+                  {mockProjects?.map((item) => (
+                    <View
+                      style={{
+                        background: item === selectProject ? "white" : "",
+                        color: item === selectProject ? "#4BA8E6" : "",
+                      }}
+                      onClick={() => setSelectProject(item)}
+                      className="item_warp"
+                    >
+                      <Text> {item}</Text>
+                      {item === selectProject && <Image src={CheckMark} />}
+                    </View>
+                  ))}
                 </View>
                 <View></View>
               </View>
               <View className="btn_wrap">
                 <View className="rest">重置</View>
-                <View className="confirm">确认</View>
+                <View
+                  className="confirm"
+                  onClick={() => dropdownRef?.current?.close()}
+                >
+                  确认
+                </View>
               </View>
             </View>
           </Dropdown.Item>
           <Dropdown.Item title="业态" key={2}>
             <View className="dropdown_wrap" style={{ height: 162 }}>
               <View className="business_wrap">
-                <View className="item">全部</View>
-                <View className="item">商业</View>
+                {Object.entries(BusinessType)?.map(([value, label], index) => (
+                  <View
+                    className="item"
+                    onClick={() => setSelectBusinessType(value)}
+                    style={{
+                      borderBottom:
+                        index === Object.entries(BusinessType)?.length - 1
+                          ? "none"
+                          : "",
+                      color: value === selectBusinessType ? "#4BA8E6" : "",
+                    }}
+                  >
+                    {label}
+                  </View>
+                ))}
+
+                {/* <View className="item">商业</View>
                 <View className="item" style={{ borderBottom: "none" }}>
                   办公
-                </View>
+                </View> */}
               </View>
               <View className="btn_wrap">
                 <View className="rest">重置</View>
-                <View className="confirm">确认</View>
+                <View
+                  className="confirm"
+                  onClick={() => dropdownRef?.current?.close()}
+                >
+                  确认
+                </View>
               </View>
             </View>
           </Dropdown.Item>
           <Dropdown.Item title="价格" key={3}>
             <View className="dropdown_wrap" style={{ height: 162 }}>
               <View className="price_wrap">
-                <AtTag>1-3元/㎡/天</AtTag>
-                <AtTag>1-3元/㎡/天</AtTag>
-                <AtTag>1-3元/㎡/天</AtTag>
-                <AtTag>1-3元/㎡/天</AtTag>
-                <AtTag>1-3元/㎡/天</AtTag>
-                <AtTag>1-3元/㎡/天</AtTag>
+                {mockPrices?.map((item) => (
+                  <View
+                    className="tag"
+                    style={{
+                      background:
+                        item === selectPrice ? "rgb(223, 235, 241)" : "",
+                      color: item === selectPrice ? "#4BA8ED" : "",
+                    }}
+                    onClick={() => setSelectPrice(item)}
+                  >{`${item}元/㎡/天`}</View>
+                ))}
               </View>
-
               <View className="btn_wrap">
                 <View className="rest">重置</View>
-                <View className="confirm">确认</View>
+                <View
+                  className="confirm"
+                  onClick={() => dropdownRef?.current?.close()}
+                >
+                  确认
+                </View>
               </View>
             </View>
           </Dropdown.Item>
           <Dropdown.Item title="面积" key={4}>
             <View className="dropdown_wrap" style={{ height: 162 }}>
               <View className="area_wrap">
-                <AtTag>0-100㎡</AtTag>
-                <AtTag>0-100㎡</AtTag>
-                <AtTag>0-100㎡</AtTag>
-                <AtTag>0-100㎡</AtTag>
-                <AtTag>0-100㎡</AtTag>
-                <AtTag>0-100㎡</AtTag>
+                {mockAcreage?.map((item) => (
+                  <View
+                    style={{
+                      background:
+                        item === selectAcreage ? "rgb(223, 235, 241)" : "",
+                      color: item === selectAcreage ? "#4BA8ED" : "",
+                    }}
+                    onClick={() => setSelectAcreage(item)}
+                    className="tag"
+                  >{`${item}㎡`}</View>
+                ))}
               </View>
               <View className="btn_wrap">
                 <View className="rest">重置</View>
-                <View className="confirm">确认</View>
+                <View
+                  className="confirm"
+                  onClick={() => dropdownRef?.current?.close()}
+                >
+                  确认
+                </View>
               </View>
             </View>
           </Dropdown.Item>
