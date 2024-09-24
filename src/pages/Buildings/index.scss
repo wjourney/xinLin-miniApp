@@ -192,8 +192,6 @@
     }
 
     .list_wrap {
-      padding-left: 16px;
-      padding-right: 16px;
       padding-bottom: 24px;
       display: flex;
       margin-top: 16px;
@@ -201,6 +199,10 @@
       gap: 12px;
       box-sizing: border-box;
       overflow-y: auto;
+
+      // & ::-webkit-scrollbar {
+      //   display: none;
+      // }
     }
 
     .tag {

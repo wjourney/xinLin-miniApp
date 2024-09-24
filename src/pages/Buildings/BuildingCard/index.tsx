@@ -6,15 +6,27 @@ import Taro from "@tarojs/taro";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "@/api/user";
 import Login from "@/components/Login";
+import { getBuildingDetail, collectionBuilding } from "@/api/buildings";
 
-export default function Index() {
+export default function Index({ buildingItem }) {
   // const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoginVisible, setIsLoginVisible] = useState(false);
 
-  const handleCollectBuildings = async () => {
+  const handleCollectHouse = async () => {
     const res = await getUserInfo();
     if (res.code === 200 && !!res?.data?.isBindPhone) {
-      // Taro.switchTab({ url: indexToUrl[value] });
+      const result = await collectionBuilding({
+        parkId: buildingItem?.parkId,
+        houseId: buildingItem?.id,
+        like: !buildingItem?.liked,
+      });
+      const { code, data } = result;
+      if (code === 200) {
+        Taro.showToast({
+          title: buildingItem?.liked ? "取消收藏成功" : "收藏成功",
+          icon: "none",
+        });
+      }
     } else {
       setIsLoginVisible(true);
     }
@@ -29,25 +41,26 @@ export default function Index() {
         });
       }}
     >
-      <Image
-        className="img_wrap"
-        src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
-      />
+      <Image className="img_wrap" src={buildingItem?.thumbnail} />
       <View className="info_wrap">
         <View className="location">衡山路8号｜4楼</View>
         <View className="area">1000m²</View>
         <View className="price">
-          <Text style={{ color: "#AE1D23", fontWeight: 500 }}>5.5</Text>
+          <Text style={{ color: "#AE1D23", fontWeight: 500 }}>
+            {buildingItem?.price}
+          </Text>
           <Text>/m²/天</Text>
         </View>
       </View>
       <Image
         onClick={(event) => {
-          handleCollectBuildings();
+          handleCollectHouse();
           event?.stopPropagation();
         }}
         className="collection"
-        src={require("@/assets/svg/heart_love.svg")}
+        src={require(buildingItem?.liked
+          ? "@/assets/svg/heart_love.svg"
+          : "@/assets/svg/heart_notLove.svg")}
       />
       <Login
         visible={isLoginVisible}

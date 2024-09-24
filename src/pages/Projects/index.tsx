@@ -1,4 +1,4 @@
-import { View, Image, Text, Input } from "@tarojs/components";
+import { View, Image, Text, Input, ScrollView } from "@tarojs/components";
 import { useDidHide, useDidShow, useLoad, useUnload } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,8 @@ import DownSvg from "@/assets/svg/down.svg";
 import SearchSvg from "@/assets/svg/search.svg";
 import BlueLocationSvg from "@/assets/svg/location-blue.svg";
 import TopNav from "@/components/TopNav";
+import { getProjects } from "@/api/projects";
+import { AtLoadMore } from "taro-ui";
 
 const mockPlaces = {
   selector: ["美国", "中国", "巴西", "日本"],
@@ -24,6 +26,14 @@ export default function Index() {
   const inputRef = useRef<any>(null);
   const [isInputFocus, setIsInputFocus] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
+  // const [hasNext, setHasNext] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState(false);
+  const [projectList, setProjectList] = useState({
+    hasNext: false,
+    total: 0,
+    items: [],
+  });
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -44,6 +54,47 @@ export default function Index() {
     return navBarHeight;
   };
 
+  const getProjectsList = async () => {
+    try {
+      if (page === 1) {
+        setLoading(true);
+        Taro.showLoading({
+          title: "加载中..",
+        });
+      }
+      const res = await getProjects({
+        page,
+        pageSize: 20,
+      });
+      const { code, data = {} } = res || {};
+      const { has_next, items = [], list = [], total_points = 0 } = data;
+
+      if (code === 0) {
+        setProjectList((pre) => ({
+          hasNext: hasNext,
+          total: total,
+          items: [...pre?.items, ...list],
+        }));
+        if (has_next) {
+          setPage(page + 1);
+        }
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+      if (page === 1) {
+        setLoading(false);
+        Taro.hideLoading();
+      }
+    }
+  };
+
+  const handleLoadMore = () => {
+    if (projectList?.hasNext) {
+      getProjectsList();
+    }
+  };
+
   const handleFocusInput = () => {
     const from = Taro.getStorageSync("fromPage");
     if (!!from) {
@@ -52,6 +103,10 @@ export default function Index() {
       }, 100); // 确保视图更新，时间可以调整
     }
   };
+
+  useEffect(() => {
+    getProjectsList();
+  }, []);
 
   useLoad(() => {
     setNavHeight(getNavHeight());
@@ -117,22 +172,27 @@ export default function Index() {
             }
           />
         </View>
-        <View
+        <ScrollView
           className="list_wrap"
+          id={"scroll-views"}
+          scrollY
+          // scrollTop={scrollTop} // 控制滚动位置
+          refresherThreshold={60}
+          lowerThreshold={100}
+          onScrollToLower={handleLoadMore}
+          // ref={scrollViewRef}
           style={{
             height:
               Taro.getSystemInfoSync()?.screenHeight - navHeight - 16 - 38,
           }}
         >
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-        </View>
+          {projectList?.items?.map((item) => (
+            <ProjectCard projectItem={item} />
+          ))}
+          {/* {hasNext ? (
+            <AtLoadMore status={"loading"} loadingText="正在加载..." />
+          ) : null} */}
+        </ScrollView>
       </View>
       <BottomTabBar currentIndex={2} />
     </View>

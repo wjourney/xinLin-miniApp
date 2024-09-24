@@ -9,3 +9,8 @@ export const getRecommendNews = (): Promise<any> => {
 export const getNews = (body: any): Promise<any> => {
   return request(`/api/schedule`, "POST", body);
 };
+
+// 首页推荐banner
+export const getBanners = (from): Promise<any> => {
+  return request(`/api/banners?category=${from}`, "GET");
+};

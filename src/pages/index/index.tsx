@@ -13,6 +13,7 @@ import { Swiper, SwiperItem } from "@tarojs/components";
 import TopNav from "@/components/TopNav";
 import { getRecommendProjects } from "@/api/projects";
 import { getRecommendBuildings } from "@/api/buildings";
+import { getBanners } from "@/api/news";
 
 const mockImages = [
   {
@@ -32,29 +33,6 @@ const mockImages = [
   },
 ];
 
-const mockBuildings = [
-  {
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D",
-    text: "锦和越界",
-    price: "2.6元/m²/天",
-  },
-  {
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D",
-    text: "锦和越界",
-    price: "2.6元/m²/天",
-  },
-  {
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D",
-    text: "锦和越界",
-    price: "2.6元/m²/天",
-  },
-  {
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D",
-    text: "锦和越界",
-    price: "2.6元/m²/天",
-  },
-];
-
 const mockPlaces = {
   selector: ["美国", "中国", "巴西", "日本"],
   timeSel: "12:01",
@@ -65,11 +43,20 @@ export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
   const [selectPlace, setSelectPlace] = useState("中国");
   const [searchValue, setSearchValue] = useState("");
-  const [recommendProjects, setRecommendProjects] = useState();
-  const [recommendBuildingss, setRecommendBuildings] = useState();
+  const [recommendProjects, setRecommendProjects] = useState([]);
+  const [recommendBuildings, setRecommendBuildings] = useState([]);
+  const [bannersData, setBannersData] = useState([]);
+
+  const getBannersData = async () => {
+    const res = await getBanners("home");
+    const { code, data } = res;
+    if (code === 200) {
+      setBannersData(data);
+    }
+  };
 
   const handleGetRecommendProjects = async () => {
-    const res = await getRecommendProjects();
+    const res = await getRecommendProjects("上海市");
     const { code, data } = res;
     if (code === 200) {
       setRecommendProjects(data);
@@ -77,7 +64,7 @@ export default function Index() {
   };
 
   const handleGetRecommendBuildings = async () => {
-    const res = await getRecommendBuildings();
+    const res = await getRecommendBuildings("上海市");
     const { code, data } = res;
     if (code === 200) {
       setRecommendBuildings(data);
@@ -87,36 +74,37 @@ export default function Index() {
   useEffect(() => {
     handleGetRecommendProjects();
     handleGetRecommendBuildings();
+    getBannersData();
   }, []);
 
-  const BuildingCard = ({ index }) => (
+  const BuildingCard = ({ buildingItem, index }) => (
     <View
       style={{ marginLeft: index === 0 ? 16 : 0 }}
       className="building_card_wrap"
       onClick={() => {
         Taro.navigateTo({
-          url: "/pages/Buildings/BuildingDetail/index",
+          url: `/pages/Buildings/BuildingDetail/index?id=${buildingItem?.id}`,
         });
       }}
     >
-      <Image src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D" />
-      <Text className="location">锦和越界</Text>
-      <Text className="price">2.6元/m²/天</Text>
+      <Image src={buildingItem?.thumbnail} />
+      <Text className="location">{buildingItem?.parkName}</Text>
+      <Text className="price">{buildingItem?.price}元/m²/天</Text>
     </View>
   );
 
-  const ProjectCard = ({}) => (
+  const ProjectCard = ({ projectItem }) => (
     <View
       className="project_card_wrap"
       onClick={() => {
         Taro.navigateTo({
-          url: "/pages/Projects/ProjectDetail/index",
+          url: `/pages/Projects/ProjectDetail/index?id=${projectItem?.id}`,
         });
       }}
     >
-      <Image src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D" />
-      <Text className="location">锦和越界智造局</Text>
-      <Text className="price">上海市徐汇区虹梅路110号</Text>
+      <Image src={projectItem?.thumbnail} />
+      <Text className="location">{projectItem?.parkName}</Text>
+      <Text className="price">{`${projectItem?.districtName}${projectItem?.address}`}</Text>
     </View>
   );
 
@@ -164,7 +152,7 @@ export default function Index() {
           indicatorDots
           autoplay
         >
-          {mockImages?.map((item) => (
+          {bannersData?.map((item: any) => (
             <SwiperItem>
               <View className="swiper_content">
                 <Image src={item?.url} />
@@ -192,8 +180,8 @@ export default function Index() {
             </View>
           </View>
           <View className="list_wrap">
-            {mockBuildings.map((item, index) => (
-              <BuildingCard index={index} />
+            {recommendBuildings?.map((item, index) => (
+              <BuildingCard index={index} buildingItem={item} />
             ))}
             <View
               className="look_more_building"
@@ -227,10 +215,9 @@ export default function Index() {
             </View>
           </View>
           <View className="list_wrap">
-            <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
+            {recommendProjects?.map((item) => (
+              <ProjectCard projectItem={item} />
+            ))}
             <View
               className="look_more_project"
               onClick={() =>

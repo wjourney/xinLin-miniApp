@@ -6,6 +6,7 @@ import Taro from "@tarojs/taro";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import TopNav from "@/components/TopNav";
 import ReserveCard from "@/pages/User/Reserve/ReserveCard";
+import { getMyCollection } from "@/api/my";
 
 export const reserveType = {
   0: "待确认",
@@ -22,10 +23,22 @@ const mockData = [];
 
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const [listData, setListData] = useState();
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的预约" });
   }, []);
+
+  // const getCollectionData = async () => {
+  //   const res = await getMyCollection();
+  //   const { code, data } = res;
+  //   if (code === 200) {
+  //     setListData(data);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getCollectionData();
+  // }, []);
 
   return (
     <View className="page_view">

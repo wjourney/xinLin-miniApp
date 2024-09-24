@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import "./index.scss";
 import Taro from "@tarojs/taro";
 
-export default function Index() {
+export default function Index({ item }) {
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的收藏" });
   }, []);

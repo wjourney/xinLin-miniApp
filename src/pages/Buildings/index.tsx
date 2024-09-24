@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { View, Text, Image, Button } from "@tarojs/components";
+import { View, Text, Image, Button, ScrollView } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import "./index.scss";
@@ -9,6 +9,10 @@ import { AtTag } from "taro-ui";
 import TopNav from "@/components/TopNav";
 import Taro from "@tarojs/taro";
 import CheckMark from "@/assets/svg/checkmark.svg";
+import React from "react";
+import VirtualList from "@tarojs/components-advanced/dist/components/virtual-list";
+import { AtLoadMore, AtFloatLayout } from "taro-ui";
+import { getBuildings, getBuildingDetail } from "@/api/buildings";
 
 const mockPlace = [
   "全部",
@@ -59,16 +63,23 @@ enum BusinessType {
 }
 
 export default function Index() {
-  // const [currentIndex, setCurrentIndex] = useState(0);
   const dropdownRef = useRef();
   const [navHeight, setNavHeight] = useState(0);
   const [selectCity, setSelectCity] = useState("全部");
   const [selectArea, setSelectArea] = useState("全部");
   const [selectProject, setSelectProject] = useState("项目1");
   const [selectBusinessType, setSelectBusinessType] = useState("all");
-
   const [selectPrice, setSelectPrice] = useState("1-3");
   const [selectAcreage, setSelectAcreage] = useState("0-100");
+  const [loading, setLoading] = useState(false);
+  // const [listData, setListData] = useState<any>([]);
+  // const [hasNext, setHasNext] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [buildingList, setBuildingList] = useState({
+    hasNext: false,
+    total: 0,
+    items: [],
+  });
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -88,10 +99,52 @@ export default function Index() {
 
     return navBarHeight;
   };
-  console.log("navHeight", navHeight);
+
+  const getBuildingsList = async () => {
+    try {
+      if (page === 1) {
+        setLoading(true);
+        Taro.showLoading({
+          title: "加载中..",
+        });
+      }
+      const res = await getBuildings({
+        page,
+        pageSize: 20,
+      });
+      const { code, data = {} } = res || {};
+      const { hasNext, list = [], total = 0 } = data;
+      if (code === 200) {
+        setBuildingList((pre) => ({
+          hasNext: hasNext,
+          total: total,
+          items: [...pre?.items, ...list],
+        }));
+        if (hasNext) {
+          setPage(page + 1);
+        }
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+      if (page === 1) {
+        setLoading(false);
+        Taro.hideLoading();
+      }
+    }
+  };
+
+  const handleLoadMore = () => {
+    if (buildingList?.hasNext) {
+      getBuildingsList();
+    }
+  };
+
   useEffect(() => {
     setNavHeight(getNavHeight());
+    getBuildingsList();
   }, []);
+  console.log("buildingList", buildingList);
 
   return (
     <View className="page_view">
@@ -245,24 +298,27 @@ export default function Index() {
             </View>
           </Dropdown.Item>
         </Dropdown>
-        <View
+        <ScrollView
           className="list_wrap"
+          id={"scroll-views"}
+          scrollY
+          // scrollTop={scrollTop} // 控制滚动位置
+          refresherThreshold={60}
+          lowerThreshold={100}
+          onScrollToLower={handleLoadMore}
+          // ref={scrollViewRef}
           style={{
             height:
               Taro.getSystemInfoSync()?.screenHeight - navHeight - 16 - 38,
           }}
         >
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-          <BuildingCard />
-        </View>
+          {buildingList?.items?.map((item) => (
+            <BuildingCard buildingItem={item} />
+          ))}
+          {/* {buildingList?.hasNext ? (
+            <AtLoadMore status={"loading"} loadingText="正在加载..." />
+          ) : null} */}
+        </ScrollView>
       </View>
       <BottomTabBar currentIndex={1} />
     </View>

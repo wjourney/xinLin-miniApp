@@ -122,6 +122,13 @@ export default function Index() {
           </View>
           <Input />
         </View>
+        <View className="input_warp">
+          <View className="label">
+            <Text className="star">*</Text>
+            <Text className="label_value">联系方式</Text>
+          </View>
+          <Input />
+        </View>
         <View className="input_warp" style={{ marginTop: 16 }}>
           <View className="label">
             <Text className="star">*</Text>

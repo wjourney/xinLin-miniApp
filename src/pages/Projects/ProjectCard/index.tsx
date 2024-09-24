@@ -6,7 +6,7 @@ import "./index.scss";
 import Taro from "@tarojs/taro";
 import LocationSvg from "@/assets/svg/location.svg";
 
-export default function Index() {
+export default function Index({ projectItem }) {
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的收藏" });
   }, []);
