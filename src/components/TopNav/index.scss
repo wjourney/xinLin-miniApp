@@ -15,11 +15,16 @@
     font-weight: 500;
   }
 
-  image {
+  .back_wrap {
+    width: 48px;
+    // height: 100%;
     position: absolute;
     left: 0;
-    width: 12px;
-    height: 24px;
     padding-left: 16px;
+
+    image {
+      width: 12px;
+      height: 24px;
+    }
   }
 }

@@ -8,7 +8,7 @@ import { getUserInfo } from "@/api/user";
 import Login from "@/components/Login";
 import { getBuildingDetail, collectionBuilding } from "@/api/buildings";
 
-export default function Index({ buildingItem }) {
+export default function Index({ buildingItem, refreshFn }) {
   // const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoginVisible, setIsLoginVisible] = useState(false);
 
@@ -26,6 +26,7 @@ export default function Index({ buildingItem }) {
           title: buildingItem?.liked ? "取消收藏成功" : "收藏成功",
           icon: "none",
         });
+        refreshFn(buildingItem?.id, !buildingItem?.liked);
       }
     } else {
       setIsLoginVisible(true);
@@ -35,13 +36,16 @@ export default function Index({ buildingItem }) {
   return (
     <View
       className="building_card_wrap"
-      onClick={() => {
-        Taro.navigateTo({
-          url: "/pages/Buildings/BuildingDetail/index",
-        });
+      onClick={(event) => {
+        event.stopPropagation();
+        if (!isLoginVisible) {
+          Taro.navigateTo({
+            url: `/pages/Buildings/BuildingDetail/index?id=${buildingItem?.id}`,
+          });
+        }
       }}
     >
-      <Image className="img_wrap" src={buildingItem?.thumbnail} />
+      <Image className="building_item_img_wrap" src={buildingItem?.thumbnail} />
       <View className="info_wrap">
         <View className="location">衡山路8号｜4楼</View>
         <View className="area">1000m²</View>

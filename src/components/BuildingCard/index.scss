@@ -12,11 +12,12 @@
   margin-left: 16px;
   margin-right: 16px;
 
-  .img_wrap {
+  .building_item_img_wrap {
     border-radius: 8px;
-    height: 100%;
     width: 120px;
     height: 88%;
+    object-fit: cover;
+    display: block;
   }
 
   .info_wrap {

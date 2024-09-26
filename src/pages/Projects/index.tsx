@@ -1,5 +1,11 @@
 import { View, Image, Text, Input, ScrollView } from "@tarojs/components";
-import { useDidHide, useDidShow, useLoad, useUnload } from "@tarojs/taro";
+import {
+  useDidHide,
+  useDidShow,
+  useLoad,
+  useReachBottom,
+  useUnload,
+} from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import { useEffect, useRef, useState } from "react";
 import "./index.scss";
@@ -11,17 +17,17 @@ import DownSvg from "@/assets/svg/down.svg";
 import SearchSvg from "@/assets/svg/search.svg";
 import BlueLocationSvg from "@/assets/svg/location-blue.svg";
 import TopNav from "@/components/TopNav";
-import { getProjects } from "@/api/projects";
+import { getProjects, getProjectsOptions } from "@/api/projects";
 import { AtLoadMore } from "taro-ui";
 
 const mockPlaces = {
-  selector: ["美国", "中国", "巴西", "日本"],
+  selector: ["杭州", "上海", "武汉", "北京"],
   timeSel: "12:01",
   dateSel: "2018-04-22",
 };
 
 export default function Index() {
-  const [selectPlace, setSelectPlace] = useState("中国");
+  const [selectPlace, setSelectPlace] = useState("上海");
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef<any>(null);
   const [isInputFocus, setIsInputFocus] = useState(false);
@@ -34,6 +40,7 @@ export default function Index() {
     total: 0,
     items: [],
   });
+  const [filterOptions, setFilterOptions] = useState();
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -54,6 +61,10 @@ export default function Index() {
     return navBarHeight;
   };
 
+  const getFilterOptionsData = async () => {
+    const res = await getProjectsOptions();
+  };
+
   const getProjectsList = async () => {
     try {
       if (page === 1) {
@@ -67,15 +78,16 @@ export default function Index() {
         pageSize: 20,
       });
       const { code, data = {} } = res || {};
-      const { has_next, items = [], list = [], total_points = 0 } = data;
+      const { hasNext, list, total } = data;
 
-      if (code === 0) {
+      if (code === 200) {
+        console.log("ffff", list);
         setProjectList((pre) => ({
           hasNext: hasNext,
           total: total,
           items: [...pre?.items, ...list],
         }));
-        if (has_next) {
+        if (hasNext) {
           setPage(page + 1);
         }
       }
@@ -106,6 +118,7 @@ export default function Index() {
 
   useEffect(() => {
     getProjectsList();
+    getFilterOptionsData();
   }, []);
 
   useLoad(() => {
@@ -127,6 +140,10 @@ export default function Index() {
     Taro.removeStorageSync("fromPage");
     setIsInputFocus(false);
   });
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <View className="page_view">
@@ -175,12 +192,9 @@ export default function Index() {
         <ScrollView
           className="list_wrap"
           id={"scroll-views"}
-          scrollY
-          // scrollTop={scrollTop} // 控制滚动位置
-          refresherThreshold={60}
-          lowerThreshold={100}
           onScrollToLower={handleLoadMore}
-          // ref={scrollViewRef}
+          lowerThreshold={100}
+          scrollY={true}
           style={{
             height:
               Taro.getSystemInfoSync()?.screenHeight - navHeight - 16 - 38,
@@ -189,9 +203,18 @@ export default function Index() {
           {projectList?.items?.map((item) => (
             <ProjectCard projectItem={item} />
           ))}
-          {/* {hasNext ? (
-            <AtLoadMore status={"loading"} loadingText="正在加载..." />
-          ) : null} */}
+          {projectList?.hasNext ? (
+            <AtLoadMore
+              style={{
+                marginTop: 12,
+                display: "flex",
+                justifyContent: "center",
+                fontSize: 13,
+              }}
+              status={"loading"}
+              loadingText="正在加载..."
+            />
+          ) : null}
         </ScrollView>
       </View>
       <BottomTabBar currentIndex={2} />

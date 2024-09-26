@@ -3,7 +3,7 @@ import { View, Text, Image, Button, ScrollView } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import "./index.scss";
-import BuildingCard from "./BuildingCard";
+import BuildingCard from "@/components/BuildingCard";
 import Dropdown from "@/components/Dropdown";
 import { AtTag } from "taro-ui";
 import TopNav from "@/components/TopNav";
@@ -12,7 +12,11 @@ import CheckMark from "@/assets/svg/checkmark.svg";
 import React from "react";
 import VirtualList from "@tarojs/components-advanced/dist/components/virtual-list";
 import { AtLoadMore, AtFloatLayout } from "taro-ui";
-import { getBuildings, getBuildingDetail } from "@/api/buildings";
+import {
+  getBuildings,
+  getBuildingDetail,
+  getBuildingsOptions,
+} from "@/api/buildings";
 
 const mockPlace = [
   "全部",
@@ -80,23 +84,20 @@ export default function Index() {
     total: 0,
     items: [],
   });
+  const [filterOptions, setFilterOptions] = useState();
 
   const getNavHeight = () => {
     // 获取系统信息
     const systemInfo = Taro.getSystemInfoSync();
     // 获取胶囊信息
     const menuButtonInfo = Taro.getMenuButtonBoundingClientRect();
-
     // 状态栏高度 获取不到的情况给通用的44  图中的1
     const statusBarHeight = systemInfo.statusBarHeight ?? 44;
-
     // 状态栏到胶囊的间距 图中的2
     const menuButtonStatusBarGap = menuButtonInfo.top - statusBarHeight;
-
     // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度   1+ 2 + 2 + 3
     const navBarHeight =
       menuButtonStatusBarGap * 2 + menuButtonInfo.height + statusBarHeight;
-
     return navBarHeight;
   };
 
@@ -113,7 +114,7 @@ export default function Index() {
         pageSize: 20,
       });
       const { code, data = {} } = res || {};
-      const { hasNext, list = [], total = 0 } = data;
+      const { hasNext, data: list, total = 0 } = data;
       if (code === 200) {
         setBuildingList((pre) => ({
           hasNext: hasNext,
@@ -134,6 +135,10 @@ export default function Index() {
     }
   };
 
+  const getFilterOptionsData = async () => {
+    const res = await getBuildingsOptions();
+  };
+
   const handleLoadMore = () => {
     if (buildingList?.hasNext) {
       getBuildingsList();
@@ -143,8 +148,25 @@ export default function Index() {
   useEffect(() => {
     setNavHeight(getNavHeight());
     getBuildingsList();
+    getFilterOptionsData();
   }, []);
-  console.log("buildingList", buildingList);
+
+  const updateListAfterCollect = (id, liked) => {
+    const newData = buildingList?.items?.map((item: any) => {
+      if (item?.id === id) {
+        return {
+          ...item,
+          liked: liked,
+        };
+      } else {
+        return item;
+      }
+    });
+    setBuildingList((pre: any) => ({
+      ...pre,
+      items: newData,
+    }));
+  };
 
   return (
     <View className="page_view">
@@ -301,23 +323,32 @@ export default function Index() {
         <ScrollView
           className="list_wrap"
           id={"scroll-views"}
-          scrollY
-          // scrollTop={scrollTop} // 控制滚动位置
-          refresherThreshold={60}
-          lowerThreshold={100}
           onScrollToLower={handleLoadMore}
-          // ref={scrollViewRef}
+          lowerThreshold={100}
+          scrollY={true}
           style={{
             height:
               Taro.getSystemInfoSync()?.screenHeight - navHeight - 16 - 38,
           }}
         >
           {buildingList?.items?.map((item) => (
-            <BuildingCard buildingItem={item} />
+            <BuildingCard
+              buildingItem={item}
+              refreshFn={updateListAfterCollect}
+            />
           ))}
-          {/* {buildingList?.hasNext ? (
-            <AtLoadMore status={"loading"} loadingText="正在加载..." />
-          ) : null} */}
+          {buildingList?.hasNext ? (
+            <AtLoadMore
+              style={{
+                marginTop: 12,
+                display: "flex",
+                justifyContent: "center",
+                fontSize: 13,
+              }}
+              status={"loading"}
+              loadingText="正在加载..."
+            />
+          ) : null}
         </ScrollView>
       </View>
       <BottomTabBar currentIndex={1} />

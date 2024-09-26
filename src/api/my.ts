@@ -11,11 +11,13 @@ export const getMyReserves = (params): Promise<any> => {
 
 // 获取我的收藏
 export const getMyCollection = (): Promise<any> => {
-  // const { page, pageSize, confirm } = params;
   return request(`/api/fav_list`, "GET");
 };
 
-// 获取
-export const getNews = (body: any): Promise<any> => {
-  return request(`/api/schedule`, "POST", body);
+// 获取我的预约
+export const getMyReserve = (type?: string): Promise<any> => {
+  return request(
+    `/api/reservations${type !== "" ? `?confirm=${type}` : ""}`,
+    "GET"
+  );
 };

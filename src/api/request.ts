@@ -1,8 +1,8 @@
 import Taro from "@tarojs/taro";
 
 const url_all = {
-  DEV: "https://11v9336h60.goho.co", // 开发
-  PRO: "http://111.111.111.111:8080", // 生产
+  DEV: "https://www.shmod.cn", // 开发
+  PRO: "https://www.shmod.cn", // 生产
 };
 
 let BASEURL = url_all["DEV"]; // 调整当前环境

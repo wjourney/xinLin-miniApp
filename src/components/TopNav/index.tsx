@@ -9,7 +9,7 @@ import BackSvg from "@/assets/svg/back.svg";
 
 export default function Index({ title, hasBack = false }) {
   // const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectPlace, setSelectPlace] = useState("中国");
+  const [selectPlace, setSelectPlace] = useState("上海");
   const [searchValue, setSearchValue] = useState("");
   const [navHeight, setNavHeight] = useState<number>();
   const [statusBarHeight, setStatusBarHeight] = useState<number>();
@@ -41,7 +41,12 @@ export default function Index({ title, hasBack = false }) {
         // ...style,
       }}
     >
-      {hasBack && <Image src={BackSvg} onClick={() => Taro.navigateBack()} />}
+      {hasBack && (
+        <View className="back_wrap" onClick={() => Taro.navigateBack()}>
+          <Image src={BackSvg} />
+        </View>
+      )}
+
       <Text> {title}</Text>
     </View>
   );

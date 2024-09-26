@@ -1,4 +1,12 @@
-import { View, Image, Text, Input, Textarea } from "@tarojs/components";
+import {
+  View,
+  Image,
+  Text,
+  Input,
+  Textarea,
+  Swiper,
+  SwiperItem,
+} from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import { useEffect, useState } from "react";
@@ -10,13 +18,17 @@ import { AtTag, AtAvatar, AtDivider, AtTextarea } from "taro-ui";
 import MoreSvg from "@/assets/svg/more.svg";
 import TopNav from "@/components/TopNav";
 import { getBuildingDetail, collectionBuilding } from "@/api/buildings";
+import { login, getUserInfo } from "@/api/user";
+import Login from "@/components/Login";
 
 export default function Index() {
   const router = Taro.getCurrentInstance()?.router;
   const params: any = router?.params;
   const [detailData, setDetailData] = useState<any>();
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
 
-  const getBuildingDetailData = async (id) => {
+  const getBuildingDetailData = async () => {
+    const { id } = params;
     const res = await getBuildingDetail(id);
     const { code, data } = res;
     if (code === 200) {
@@ -25,8 +37,7 @@ export default function Index() {
   };
 
   useEffect(() => {
-    const { id } = params;
-    getBuildingDetailData(id);
+    getBuildingDetailData();
   }, []);
 
   const handlePhone = (phoneNum) => {
@@ -35,29 +46,67 @@ export default function Index() {
     });
   };
 
+  // const handleCollectHouse = async () => {
+  //   const res = await collectionBuilding({
+  //     parkId: detailData?.parkId,
+  //     houseId: detailData?.id,
+  //     like: !detailData?.liked,
+  //   });
+  //   const { code, data } = res;
+  //   if (code === 200) {
+  //     Taro.showToast({
+  //       title: detailData?.liked ? "取消收藏成功" : "收藏成功",
+  //       icon: "none",
+  //     });
+  //     const { id } = params;
+  //     getBuildingDetailData(id);
+  //   }
+  // };
+
   const handleCollectHouse = async () => {
-    const res = await collectionBuilding({
-      parkId: detailData?.parkId,
-      houseId: detailData?.id,
-      like: !detailData?.liked,
-    });
-    const { code, data } = res;
-    if (code === 200) {
-      Taro.showToast({
-        title: detailData?.liked ? "取消收藏成功" : "收藏成功",
-        icon: "none",
+    const res = await getUserInfo();
+    if (res.code === 200 && !!res?.data?.isBindPhone) {
+      const result = await collectionBuilding({
+        parkId: detailData?.parkId,
+        houseId: detailData?.id,
+        like: !detailData?.liked,
       });
-      const { id } = params;
-      getBuildingDetailData(id);
+      const { code, data } = result;
+      if (code === 200) {
+        Taro.showToast({
+          title: detailData?.liked ? "取消收藏成功" : "收藏成功",
+          icon: "none",
+        });
+        getBuildingDetailData();
+        // refreshFn(detailData?.id, !detailData?.liked);
+      }
+    } else {
+      setIsLoginVisible(true);
     }
   };
   return (
     <View className="page_view">
       <TopNav title={"房源详情"} hasBack={true} />
       <View className="build_detail_wrap">
-        <View className="img_wrap">
+        {/* <View className="img_wrap">
           <Image src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D" />
-        </View>
+        </View> */}
+        <Swiper
+          className="swiper_wrap"
+          indicatorColor="#999"
+          indicatorActiveColor="#333"
+          circular
+          indicatorDots
+          autoplay
+        >
+          {detailData?.sliderPics?.map((item: any) => (
+            <SwiperItem>
+              <View className="swiper_content">
+                <Image src={item} />
+              </View>
+            </SwiperItem>
+          ))}
+        </Swiper>
         <View className="building_name">
           {detailData?.parkName}｜{detailData?.floor}楼｜{detailData?.area}㎡
         </View>
@@ -169,6 +218,14 @@ export default function Index() {
           <View className="btn">预约看房</View>
         </View>
       </View>
+      <Login
+        visible={isLoginVisible}
+        setVisible={setIsLoginVisible}
+        // handleFn={() => {
+        //   Taro.switchTab({ url: indexToUrl[4] });
+        //   setIsLoginVisible(false);
+        // }}
+      />
     </View>
   );
 }

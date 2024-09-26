@@ -29,3 +29,8 @@ export const collectionBuilding = (body: {
 export const appointBuilding = (body: any): Promise<any> => {
   return request(`/api/reservation`, "POST", body);
 };
+
+// 房源筛选项目
+export const getBuildingsOptions = (): Promise<any> => {
+  return request(`/api/houses_options`, "GET");
+};

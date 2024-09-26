@@ -1,4 +1,13 @@
-import { View, Image, Text, Map, Input, Textarea } from "@tarojs/components";
+import {
+  View,
+  Image,
+  Text,
+  Map,
+  Input,
+  Textarea,
+  Swiper,
+  SwiperItem,
+} from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import { useEffect, useRef, useState } from "react";
@@ -50,18 +59,6 @@ export default function Index() {
     </View>
   );
 
-  // 标记点
-  const markers = [
-    {
-      id: 0,
-      latitude: 30.572269,
-      longitude: 104.066541,
-      title: "成都",
-      width: 20,
-      height: 20,
-    },
-  ];
-
   const handlePhoneToBusinessCenter = () => {
     Taro.makePhoneCall({
       phoneNumber: "19934287005",
@@ -73,17 +70,35 @@ export default function Index() {
       <TopNav title={"项目详情"} hasBack={true} />
       <View className="build_detail_wrap">
         <View className="img_wrap">
-          <Image src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D" />
+          <Swiper
+            className="swiper_wrap"
+            indicatorColor="#999"
+            indicatorActiveColor="#333"
+            circular
+            indicatorDots
+            autoplay
+          >
+            {detailData?.sliderPics?.map((item: any) => (
+              <SwiperItem>
+                <View className="swiper_content">
+                  <Image src={item} />
+                </View>
+              </SwiperItem>
+            ))}
+          </Swiper>
         </View>
-        <View className="building_name">这是房子名字｜3楼｜160m</View>
+        <View className="building_name">{detailData?.name}</View>
         <View className="building_location">
-          <Text> 浙江省杭州市上水城区110号</Text>
-
+          <Text>
+            {detailData?.city}
+            {detailData?.districtName}
+            {detailData?.address}
+          </Text>
           <Image src={LocationSvg} />
         </View>
         <View className="building_info">
           <View className="info_item">
-            <View className="value">{detailData?.price}</View>
+            <View className="value">{detailData?.price || "2-4"}</View>
             <View className="label">价格(元/m/天)</View>
           </View>
           <View className="info_item">

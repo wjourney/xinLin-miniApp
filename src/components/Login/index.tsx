@@ -24,12 +24,14 @@ const Login: React.FC<
   const handleGetPhoneNumber = async (
     e: BaseEventOrig<ButtonProps.onGetPhoneNumberEventDetail>
   ) => {
+    e.stopPropagation();
     const iv = e.detail.iv;
     const encryptedData = e.detail.encryptedData;
 
     console.log("fff", e.detail);
     if (!iv || !encryptedData) {
       Taro.showToast({ title: "获取手机号失败", icon: "none" });
+      setVisible(false);
       return;
     }
 
@@ -47,6 +49,7 @@ const Login: React.FC<
             // if (info.phone_authorized) {
             // handleGetUserInfo();
             // }
+            setVisible(false);
             const result = await getPhoneNum({
               encryptedData,
               iv,
@@ -54,26 +57,28 @@ const Login: React.FC<
             const { code, data: resData } = result;
             if (code === 200) {
               handleFn();
+              setVisible(false);
             }
           }
         } else {
           console.log("登录失败！" + result.errMsg);
+          setVisible(false);
         }
       },
     });
   };
-  const handleBtnClick = async (event) => {
-    // onClick?.(event);
-  };
+  // const handleBtnClick = async (event) => {
+  //   // onClick?.(event);
+  // };
 
   return (
     <AtFloatLayout
       isOpened={visible}
       // isOpened={true}
       className="login-phone-modal"
-      // onClose={() => {
-      //   setVisible(false);
-      // }}
+      onClose={() => {
+        setVisible(false);
+      }}
     >
       <View className="modal-content">
         <View className="logo">
@@ -86,7 +91,9 @@ const Login: React.FC<
           //   console.log("ff", phoneInfo);
           //   handleLogin();
           // }}
-          onClick={handleBtnClick}
+          // onClick={(event) => {
+          //   handleBtnClick(event);
+          // }}
           onGetPhoneNumber={handleGetPhoneNumber}
         >
           手机号快捷登录

@@ -24,13 +24,13 @@ import clsx from "clsx";
 import ListMode from "@/assets/svg/listMode.svg";
 
 const mockPlaces = {
-  selector: ["美国", "中国", "巴西", "日本"],
+  selector: ["杭州", "上海", "武汉", "北京"],
   timeSel: "12:01",
   dateSel: "2018-04-22",
 };
 
 export default function Index() {
-  const [selectPlace, setSelectPlace] = useState("中国");
+  const [selectPlace, setSelectPlace] = useState("上海");
   const [searchValue, setSearchValue] = useState("");
   const [activeKey, setActiveKey] = useState("");
   const [navHeight, setNavHeight] = useState(0);

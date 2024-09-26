@@ -6,7 +6,7 @@ import Taro from "@tarojs/taro";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import TopNav from "@/components/TopNav";
 import ReserveCard from "@/pages/User/Reserve/ReserveCard";
-import { getMyCollection } from "@/api/my";
+import { getMyReserve } from "@/api/my";
 
 export const reserveType = {
   0: "待确认",
@@ -14,31 +14,32 @@ export const reserveType = {
   2: "已看房",
   3: "已作废",
 };
-// {mockData?.length === 0 ? (
-//   <View className="no_message_wrap">
-//     <Image src={require("@/assets/images//no-message.png")} />
-//     <View className="text">暂无收藏</View>
-//   </View>
-const mockData = [];
 
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [listData, setListData] = useState();
+  const [listData, setListData] = useState([]);
+
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的预约" });
   }, []);
 
-  // const getCollectionData = async () => {
-  //   const res = await getMyCollection();
-  //   const { code, data } = res;
-  //   if (code === 200) {
-  //     setListData(data);
-  //   }
-  // };
+  const getMyReserveData = async (currentIndex) => {
+    console.log("dff", currentIndex);
+    let param;
+    if (currentIndex !== 0) {
+      param = currentIndex - 1;
+    }
+    const res =
+      currentIndex === 0 ? await getMyReserve("") : await getMyReserve(param);
+    const { code, data } = res;
+    if (code === 200) {
+      setListData(data);
+    }
+  };
 
-  // useEffect(() => {
-  //   getCollectionData();
-  // }, []);
+  useEffect(() => {
+    getMyReserveData(currentIndex);
+  }, []);
 
   return (
     <View className="page_view">
@@ -54,56 +55,80 @@ export default function Index() {
             { title: "已看房" },
             { title: "已作废" },
           ]}
-          onClick={(value) => setCurrentIndex(value)}
+          onClick={(value) => {
+            setCurrentIndex(value);
+            getMyReserveData(value);
+          }}
         >
           <AtTabsPane current={currentIndex} index={0}>
-            {mockData?.length === 0 ? (
+            {listData?.length === 0 ? (
               <View className="no_reserve_wrap">
                 <Image src={require("@/assets/images/no-reserve.png")} />
-                <View className="text">暂无预约</View>
+                <View className="text">暂无数据</View>
               </View>
             ) : (
               <View className="list_wrap">
-                <ReserveCard reserveType={1} />
-                <ReserveCard reserveType={1} />
-                <ReserveCard reserveType={1} />
-                <ReserveCard reserveType={1} />
-                <ReserveCard reserveType={1} />
-                <ReserveCard reserveType={1} />
+                {listData?.map((item) => (
+                  <ReserveCard reserveType={1} />
+                ))}
               </View>
             )}
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={1}>
-            <View className="list_wrap">
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-            </View>
+            {listData?.length === 0 ? (
+              <View className="no_reserve_wrap">
+                <Image src={require("@/assets/images/no-reserve.png")} />
+                <View className="text">暂无数据</View>
+              </View>
+            ) : (
+              <View className="list_wrap">
+                {listData?.map((item) => (
+                  <ReserveCard reserveType={2} />
+                ))}
+              </View>
+            )}
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={2}>
-            <View className="list_wrap">
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-            </View>
+            {listData?.length === 0 ? (
+              <View className="no_reserve_wrap">
+                <Image src={require("@/assets/images/no-reserve.png")} />
+                <View className="text">暂无数据</View>
+              </View>
+            ) : (
+              <View className="list_wrap">
+                {listData?.map((item) => (
+                  <ReserveCard reserveType={1} />
+                ))}
+              </View>
+            )}
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={3}>
-            <View className="list_wrap">
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-            </View>
+            {listData?.length === 0 ? (
+              <View className="no_reserve_wrap">
+                <Image src={require("@/assets/images/no-reserve.png")} />
+                <View className="text">暂无数据</View>
+              </View>
+            ) : (
+              <View className="list_wrap">
+                {listData?.map((item) => (
+                  <ReserveCard reserveType={1} />
+                ))}
+              </View>
+            )}
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={4}>
-            <View className="list_wrap">
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-              <ReserveCard reserveType={1} />
-            </View>
+            {listData?.length === 0 ? (
+              <View className="no_reserve_wrap">
+                <Image src={require("@/assets/images/no-reserve.png")} />
+                <View className="text">暂无数据</View>
+              </View>
+            ) : (
+              <View className="list_wrap">
+                {listData?.map((item) => (
+                  <ReserveCard reserveType={1} />
+                ))}
+              </View>
+            )}
           </AtTabsPane>
         </AtTabs>
       </View>

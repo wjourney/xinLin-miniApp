@@ -1,3 +1,7 @@
+@import "~taro-ui/dist/style/components/load-more.scss";
+@import "~taro-ui/dist/style/components/activity-indicator.scss";
+@import "~taro-ui/dist/style/components/button.scss";
+
 .page_view {
   // position: relative;
   height: 100vh;
@@ -118,14 +122,22 @@
     }
 
     .list_wrap {
+      // width: calc(100vw - 32px);
+      overflow-x: hidden;
+      box-sizing: border-box;
       margin-top: 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
       overflow-y: auto;
-      padding-left: 16px;
-      padding-right: 16px;
-      padding-bottom: 24px;
+      // padding-left: 16px;
+      // padding-right: 16px;
+      // padding-bottom: 8px;
     }
+  }
+
+  .at-activity-indicator__content {
+    font-size: 16px !important;
+    margin-left: 0 !important;
   }
 }

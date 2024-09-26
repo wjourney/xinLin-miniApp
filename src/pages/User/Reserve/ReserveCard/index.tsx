@@ -23,7 +23,7 @@ export default function Index({ reserveType }) {
       <View className="title_wrap">
         <Image src={Calendar} />
         <View className="title">8/24（周六）21:40</View>
-        <View className="tag">待确认</View>
+        {/* <View className={`tag ${reserveType}`}>待确认</View> */}
       </View>
       <View className="divider"></View>
       <View className="info_wrap">

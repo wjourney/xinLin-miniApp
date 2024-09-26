@@ -15,3 +15,8 @@ export const getProjects = (params): Promise<any> => {
 export const getProjectDetail = (id): Promise<any> => {
   return request(`/api/park_detail/${id}`, "GET");
 };
+
+// 项目筛选项目
+export const getProjectsOptions = (): Promise<any> => {
+  return request(`/api/park_options`, "GET");
+};

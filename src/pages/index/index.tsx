@@ -15,33 +15,15 @@ import { getRecommendProjects } from "@/api/projects";
 import { getRecommendBuildings } from "@/api/buildings";
 import { getBanners } from "@/api/news";
 
-const mockImages = [
-  {
-    key: 1,
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/f2b0e436-69e0-11ef-b2bd-0ad83e4969ec_00001_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085359729&Signature=0jUiIDYyudsjgMJtjk52NFcQh1g%3D",
-    desc: "第一张图片第一张图片第一张图片第一张图片第一张图片第一张图片第一张图片第一张图片",
-  },
-  {
-    key: 1,
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/f2b0e436-69e0-11ef-b2bd-0ad83e4969ec_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085359888&Signature=bM73%2BTaDTGB1VAZIYin4zqrQNP8%3D",
-    desc: "第二张图片第二张图片第二张图片第二张图片第二张图片",
-  },
-  {
-    key: 1,
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00001_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=SgNVmPpoQ%2FBLyDIsMAOGGeHOL1I%3D",
-    desc: "第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片",
-  },
-];
-
 const mockPlaces = {
-  selector: ["美国", "中国", "巴西", "日本"],
+  selector: ["杭州", "上海", "武汉", "北京"],
   timeSel: "12:01",
   dateSel: "2018-04-22",
 };
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectPlace, setSelectPlace] = useState("中国");
+  const [selectPlace, setSelectPlace] = useState("上海");
   const [searchValue, setSearchValue] = useState("");
   const [recommendProjects, setRecommendProjects] = useState([]);
   const [recommendBuildings, setRecommendBuildings] = useState([]);
@@ -80,7 +62,7 @@ export default function Index() {
   const BuildingCard = ({ buildingItem, index }) => (
     <View
       style={{ marginLeft: index === 0 ? 16 : 0 }}
-      className="building_card_wrap"
+      className="index_building_card_wrap"
       onClick={() => {
         Taro.navigateTo({
           url: `/pages/Buildings/BuildingDetail/index?id=${buildingItem?.id}`,
@@ -88,7 +70,7 @@ export default function Index() {
       }}
     >
       <Image src={buildingItem?.thumbnail} />
-      <Text className="location">{buildingItem?.parkName}</Text>
+      <Text className="location">{`${buildingItem?.parkName}｜${buildingItem?.floor}｜${buildingItem?.totalArea}m²`}</Text>
       <Text className="price">{buildingItem?.price}元/m²/天</Text>
     </View>
   );
