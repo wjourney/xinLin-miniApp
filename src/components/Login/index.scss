@@ -11,6 +11,8 @@
     .layout-body {
       padding: 0;
       min-height: 0;
+      z-index: 999;
+
       .layout-body__content {
         display: flex;
         align-items: center;

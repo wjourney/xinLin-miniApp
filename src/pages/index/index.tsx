@@ -14,21 +14,32 @@ import TopNav from "@/components/TopNav";
 import { getRecommendProjects } from "@/api/projects";
 import { getRecommendBuildings } from "@/api/buildings";
 import { getBanners } from "@/api/news";
-
-const mockPlaces = {
-  selector: ["杭州", "上海", "武汉", "北京"],
-  timeSel: "12:01",
-  dateSel: "2018-04-22",
-};
+import { getProjects, getProjectsOptions } from "@/api/projects";
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectPlace, setSelectPlace] = useState("上海");
+  const [selectPlace, setSelectPlace] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [recommendProjects, setRecommendProjects] = useState([]);
   const [recommendBuildings, setRecommendBuildings] = useState([]);
   const [bannersData, setBannersData] = useState([]);
+  const [options, setOptions] = useState([]);
 
+  // 首页筛选项
+  const getFilterOptionsData = async () => {
+    const res = await getProjectsOptions();
+    const { code, data } = res;
+    if (code === 200) {
+      const citys = data?.map((item) => item.name);
+      setOptions(citys);
+      setSelectPlace(citys?.[0]);
+      handleGetRecommendProjects(citys?.[0]);
+      handleGetRecommendBuildings(citys?.[0]);
+    } else {
+    }
+  };
+
+  // 获取轮播图
   const getBannersData = async () => {
     const res = await getBanners("home");
     const { code, data } = res;
@@ -37,16 +48,18 @@ export default function Index() {
     }
   };
 
-  const handleGetRecommendProjects = async () => {
-    const res = await getRecommendProjects("上海市");
+  // 推荐项目
+  const handleGetRecommendProjects = async (selectPlace) => {
+    const res = await getRecommendProjects(selectPlace);
     const { code, data } = res;
     if (code === 200) {
       setRecommendProjects(data);
     }
   };
 
-  const handleGetRecommendBuildings = async () => {
-    const res = await getRecommendBuildings("上海市");
+  // 推荐房源
+  const handleGetRecommendBuildings = async (selectPlace) => {
+    const res = await getRecommendBuildings(selectPlace);
     const { code, data } = res;
     if (code === 200) {
       setRecommendBuildings(data);
@@ -54,14 +67,16 @@ export default function Index() {
   };
 
   useEffect(() => {
-    handleGetRecommendProjects();
-    handleGetRecommendBuildings();
     getBannersData();
+    getFilterOptionsData();
   }, []);
 
   const BuildingCard = ({ buildingItem, index }) => (
     <View
-      style={{ marginLeft: index === 0 ? 16 : 0 }}
+      style={{
+        marginLeft: index === 0 ? 16 : 0,
+        marginRight: index === recommendBuildings?.length - 1 ? 16 : 0,
+      }}
       className="index_building_card_wrap"
       onClick={() => {
         Taro.navigateTo({
@@ -69,8 +84,8 @@ export default function Index() {
         });
       }}
     >
-      <Image src={buildingItem?.thumbnail} />
-      <Text className="location">{`${buildingItem?.parkName}｜${buildingItem?.floor}｜${buildingItem?.totalArea}m²`}</Text>
+      <Image src={buildingItem?.thumbnail} mode="aspectFill" />
+      <Text className="location">{`${buildingItem?.parkName}｜${buildingItem?.floor}楼｜${buildingItem?.totalArea}m²`}</Text>
       <Text className="price">{buildingItem?.price}元/m²/天</Text>
     </View>
   );
@@ -84,7 +99,7 @@ export default function Index() {
         });
       }}
     >
-      <Image src={projectItem?.thumbnail} />
+      <Image src={projectItem?.thumbnail} mode="aspectFill" />
       <Text className="location">{projectItem?.parkName}</Text>
       <Text className="price">{`${projectItem?.districtName}${projectItem?.address}`}</Text>
     </View>
@@ -98,10 +113,12 @@ export default function Index() {
           <View className="choose_place">
             <Picker
               mode="selector"
-              range={mockPlaces.selector}
-              onChange={(target) =>
-                setSelectPlace(mockPlaces?.selector?.[target.detail.value])
-              }
+              range={options}
+              onChange={(target) => {
+                setSelectPlace(options?.[target.detail.value]);
+                handleGetRecommendProjects(options?.[target.detail.value]);
+                handleGetRecommendBuildings(options?.[target.detail.value]);
+              }}
             >
               <View className="select_location_wrap">
                 {selectPlace}
@@ -137,7 +154,7 @@ export default function Index() {
           {bannersData?.map((item: any) => (
             <SwiperItem>
               <View className="swiper_content">
-                <Image src={item?.url} />
+                <Image src={item?.url} mode="aspectFill" />
               </View>
             </SwiperItem>
           ))}
@@ -146,7 +163,7 @@ export default function Index() {
           <View className="title_wrap">
             <View className="big_title_wrap">
               <Text className="main_title">推荐房源</Text>
-              <Text className="prompt">精选优质房源，尽享优质服务</Text>
+              {/* <Text className="prompt">精选优质房源，尽享优质服务</Text> */}
             </View>
             <View className="lookMore">
               <Text
@@ -165,7 +182,7 @@ export default function Index() {
             {recommendBuildings?.map((item, index) => (
               <BuildingCard index={index} buildingItem={item} />
             ))}
-            <View
+            {/* <View
               className="look_more_building"
               onClick={() =>
                 Taro.switchTab({
@@ -175,14 +192,14 @@ export default function Index() {
             >
               <View className="text"> 查看更多</View>
               <Image src={MoreSvg} />
-            </View>
+            </View> */}
           </View>
         </View>
         <View className="projects_wrap">
           <View className="title_wrap">
             <View className="big_title_wrap">
               <Text className="main_title">项目展示</Text>
-              <Text className="prompt">优质服务、持续好评、热情款待</Text>
+              {/* <Text className="prompt">优质服务、持续好评、热情款待</Text> */}
             </View>
             <View
               className="lookMore"
@@ -193,7 +210,7 @@ export default function Index() {
               }
             >
               <Text>更多</Text>
-              <Image src={MoreSvg} />
+              <Image src={MoreSvg} mode="widthFix" />
             </View>
           </View>
           <View className="list_wrap">

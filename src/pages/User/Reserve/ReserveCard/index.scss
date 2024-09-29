@@ -3,7 +3,7 @@
   display: flex;
   // align-items: center;
   flex-direction: column;
-  padding: 16px;
+  padding: 12px;
   border-radius: 12px;
   box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
 
@@ -11,7 +11,7 @@
     border-radius: 8px;
     // height: 100%;
     // width: 90px;
-    height: 42px;
+    // height: 42px;
     display: flex;
     align-items: center;
     width: 100%;
@@ -70,14 +70,13 @@
       // flex-direction: column;
 
       image {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
       }
 
       text {
-        font-size: 14px;
+        font-size: 16px;
         color: rgba(102, 102, 102, 1);
-        font-size: 12px;
       }
     }
   }

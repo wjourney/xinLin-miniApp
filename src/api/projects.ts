@@ -7,8 +7,13 @@ export const getRecommendProjects = (city): Promise<any> => {
 
 // 获取分页项目
 export const getProjects = (params): Promise<any> => {
-  const { page, pageSize } = params;
-  return request(`/api/parks?page=${page}&size=${pageSize} `, "GET");
+  const { page, pageSize, city, districtName, searchValue } = params;
+  return request(
+    `/api/parks?page=${page}&size=${pageSize}&parkName=${searchValue}&city=${
+      city || ""
+    }&districtName=${districtName || ""}`,
+    "GET"
+  );
 };
 
 // 获取项目详情
@@ -19,4 +24,9 @@ export const getProjectDetail = (id): Promise<any> => {
 // 项目筛选项目
 export const getProjectsOptions = (): Promise<any> => {
   return request(`/api/park_options`, "GET");
+};
+
+// 获取项目地图
+export const getMapProjects = (): Promise<any> => {
+  return request(`/api/park/map`, "GET");
 };

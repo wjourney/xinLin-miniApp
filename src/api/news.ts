@@ -6,8 +6,8 @@ export const getRecommendNews = (): Promise<any> => {
 };
 
 // 获取分页资讯
-export const getNews = (body: any): Promise<any> => {
-  return request(`/api/schedule`, "POST", body);
+export const getNews = (category): Promise<any> => {
+  return request(`/api/news?category=${category}`, "GET");
 };
 
 // 首页推荐banner

@@ -84,13 +84,21 @@ export default function Index() {
       setIsLoginVisible(true);
     }
   };
+
+  const handleToReserve = async () => {
+    const res = await getUserInfo();
+    if (res.code === 200 && !!res?.data?.isBindPhone) {
+      Taro.navigateTo({
+        url: `/pages/Buildings/ReserveBuilding/index?houseId=${detailData?.id}&parkId=${detailData?.parkId}&managerId=${detailData?.managers?.[0]?.userId}&from=building`,
+      });
+    } else {
+      setIsLoginVisible(true);
+    }
+  };
   return (
     <View className="page_view">
       <TopNav title={"房源详情"} hasBack={true} />
       <View className="build_detail_wrap">
-        {/* <View className="img_wrap">
-          <Image src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D" />
-        </View> */}
         <Swiper
           className="swiper_wrap"
           indicatorColor="#999"
@@ -102,7 +110,7 @@ export default function Index() {
           {detailData?.sliderPics?.map((item: any) => (
             <SwiperItem>
               <View className="swiper_content">
-                <Image src={item} />
+                <Image src={item} mode="aspectFill" />
               </View>
             </SwiperItem>
           ))}
@@ -124,7 +132,16 @@ export default function Index() {
             ))}
           </View>
           <View className="action_wrap">
-            <Image src={LocationSvg} />
+            <Image
+              src={LocationSvg}
+              onClick={() => {
+                Taro.openLocation({
+                  latitude: detailData?.latitude,
+                  longitude: detailData?.longitude,
+                  scale: 18,
+                });
+              }}
+            />
             <Image
               onClick={handleCollectHouse}
               src={require(detailData?.liked
@@ -168,6 +185,7 @@ export default function Index() {
             <Image
               className="avatar"
               src={detailData?.managers?.[0]?.avatarUrl}
+              mode="aspectFill"
             />
             <View className="name_and_phone_wrap">
               <Text className="name">
@@ -207,14 +225,7 @@ export default function Index() {
           <View className="title">详细信息</View>
           <View className="text_wrap">{detailData?.detail}</View>
         </View>
-        <View
-          className="btn_wrap"
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/Buildings/ReserveBuilding/index?houseId=${detailData?.id}&parkId=${detailData?.parkId}`,
-            });
-          }}
-        >
+        <View className="btn_wrap" onClick={handleToReserve}>
           <View className="btn">预约看房</View>
         </View>
       </View>

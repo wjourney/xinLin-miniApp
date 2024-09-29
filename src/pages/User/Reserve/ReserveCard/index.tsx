@@ -10,8 +10,14 @@ import Calendar from "@/assets/svg/calendar.svg";
 import ReserveHome from "@/assets/svg/reserve-home.svg";
 import ReserveLocation from "@/assets/svg/reserve-location.svg";
 import ReservePhone from "@/assets/svg/reserve-phone.svg";
+import { get } from "http";
 
-export default function Index({ reserveType }) {
+function getWeekDay(dateStr) {
+  const days = ["日", "一", "二", "三", "四", "五", "六"];
+  return `星期${days[new Date(dateStr).getUTCDay()]}`;
+}
+
+export default function Index({ reserveType, item }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -19,25 +25,47 @@ export default function Index({ reserveType }) {
   }, []);
 
   return (
-    <View className="card_wrap">
+    <View
+      className="card_wrap"
+      onClick={() => {
+        if (!!item?.houseId) {
+          Taro.navigateTo({
+            url: `/pages/Buildings/BuildingDetail/index?id=${item?.houseId}`,
+          });
+        } else {
+          Taro.navigateTo({
+            url: `/pages/Projects/ProjectDetail/index?id=${item?.parkId}`,
+          });
+        }
+      }}
+    >
       <View className="title_wrap">
         <Image src={Calendar} />
-        <View className="title">8/24（周六）21:40</View>
+        <View className="title">
+          {new Date(item?.reservTime)?.toISOString()?.split("T")[0]}（
+          {getWeekDay(item?.reservTime)}）
+          {new Date(item?.reservTime).toISOString().slice(11, 16)}
+        </View>
         {/* <View className={`tag ${reserveType}`}>待确认</View> */}
       </View>
       <View className="divider"></View>
       <View className="info_wrap">
         <View className="item">
           <Image src={ReserveHome} />
-          <Text>锦和越界智造局｜5-6F｜锦和越界智造局</Text>
+          <Text>
+            {item?.parkName}
+            {!!item?.floor ? `｜${item?.floor}楼` : ""}
+          </Text>
         </View>
         <View className="item">
           <Image src={ReserveLocation} />
-          <Text>上海市黄浦区虹梅路1900号</Text>
+          <Text>{item?.address}</Text>
         </View>
         <View className="item">
           <Image src={ReservePhone} />
-          <Text>小红 1992382133</Text>
+          <Text>
+            {item?.manager} {item?.contact}
+          </Text>
         </View>
       </View>
     </View>

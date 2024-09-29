@@ -11,9 +11,9 @@ import {
 } from "@tarojs/components";
 import "./index.scss";
 import Taro from "@tarojs/taro";
-import { AtList, AtListItem } from "taro-ui";
 import Calendar from "@/assets/svg/calendar.svg";
-import { appointBuilding } from "@/api/buildings";
+import { appointBuilding, getBuildingsByParkId } from "@/api/buildings";
+import { login, getUserInfo } from "@/api/user";
 
 // 获取未来 10 年的数据
 const getYearsData = () => {
@@ -128,6 +128,42 @@ export default function Index() {
   ]);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectBuildingIndex, setSelectBuildingIndex] = useState<number>();
+  const [showBuildingOptions, setShowBuildingOptions] = useState([]);
+  const [buildingOptions, setBuildingOptions] = useState([]);
+  const [userInfo, setUserInfo] = useState();
+
+  const getBuildingsByParkIdData = async () => {
+    const res = await getBuildingsByParkId(params?.parkId);
+    const { data, code } = res;
+    if (code === 200) {
+      setShowBuildingOptions(
+        data?.map(
+          (item: any) =>
+            `${item?.parkName}｜${item?.floor}楼｜${item?.totalArea}㎡`
+        )
+      );
+      setBuildingOptions(data);
+    }
+  };
+
+  const getUserInfoData = async () => {
+    const res = await getUserInfo();
+    const { code, data } = res;
+    if (code === 200) {
+      setUserInfo(data);
+      setFormData((pre) => ({
+        ...pre,
+        contact: data?.phone,
+      }));
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    getBuildingsByParkIdData();
+    getUserInfoData();
+  }, []);
 
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "预约看房" });
@@ -135,7 +171,28 @@ export default function Index() {
   }, []);
 
   const formSubmit = async () => {
-    const { parkId, houseId } = params;
+    if (showTime?.length === 0) {
+      Taro.showToast({
+        icon: "none",
+        title: "请填写预约时间",
+      });
+      return;
+    }
+    if (!formData?.contact) {
+      Taro.showToast({
+        icon: "none",
+        title: "请填写手机号",
+      });
+      return;
+    }
+    const { parkId, houseId, from, managerId } = params;
+    const houseIdValue =
+      from === "project"
+        ? selectBuildingIndex !== undefined
+          ? buildingOptions?.[selectBuildingIndex]?.id
+          : ""
+        : houseId;
+
     const formattedDate = getTimeByIndexes(formData?.reserveTime)
       .replace("年", "-")
       .replace("月", "-")
@@ -144,12 +201,13 @@ export default function Index() {
       .replace("分", "");
     // 提交逻辑，比如发送请求到后端
     const res = await appointBuilding({
-      parkId: parkId,
-      houseId: houseId,
+      parkId: Number(parkId),
+      houseId: houseIdValue,
       reservTime: formattedDate,
       contact: formData?.contact,
       company: formData?.company,
       comment: formData?.remark,
+      managerId: Number(managerId),
     });
     const { code } = res;
     if (code === 200) {
@@ -181,7 +239,6 @@ export default function Index() {
   // 监听年份、月份等滚动变化的列
   const handleColumnChange = (e) => {
     const { column, value } = e.detail;
-    console.log("ccc", column);
     if (column === 0) {
       // 年份滚动
       const newYear = parseInt(getYearsData()[value], 10);
@@ -272,16 +329,11 @@ export default function Index() {
 
   // 日期选择
   const handleTimeChange = (e) => {
-    console.log("ffff", e.detail.value);
-
     setFormData((prevData) => ({
       ...prevData,
       reserveTime: e.detail.value, // 存储选择的索引
     }));
     setShowTime(e.detail.value);
-
-    console.log("ppp", getTimeByIndexes(e.detail.value));
-    // const
   };
 
   return (
@@ -291,14 +343,40 @@ export default function Index() {
         请填写您的预约信息，我们会安排专人同您联系～
       </View>
       <Form onSubmit={formSubmit}>
-        <View className="input_warp">
+        {params?.from === "project" && (
+          <View className="input_warp">
+            <View className="label">
+              <Text className="label_value">选择房源</Text>
+            </View>
+            <Picker
+              value={selectBuildingIndex}
+              onChange={(event) => {
+                const index = Number(event.detail.value);
+                setSelectBuildingIndex(index);
+              }}
+              range={showBuildingOptions}
+            >
+              <View className="picker_input">
+                <Text style={{}}>
+                  {selectBuildingIndex == undefined
+                    ? "请选择房源"
+                    : showBuildingOptions?.[selectBuildingIndex]}
+                </Text>
+              </View>
+            </Picker>
+          </View>
+        )}
+        <View className="input_warp" style={{ marginTop: 16 }}>
           <View className="label">
-            <Text className="star">*</Text>
+            {/* <Text className="star">*</Text> */}
             <Text className="label_value">公司</Text>
           </View>
           <Input
             value={formData.company}
+            type="text"
+            placeholderClass="placeholder"
             onInput={(e) => handleInputChange("company", e)}
+            placeholder="请填写您的公司"
           />
         </View>
         <View className="input_warp" style={{ marginTop: 16 }}>
@@ -324,7 +402,6 @@ export default function Index() {
             onColumnChange={handleColumnChange} // 监听列滚动事件
           >
             <View className="picker_input">
-              {}
               <Text style={{}}>
                 {showTime?.length === 0
                   ? "请选择日期"
@@ -340,6 +417,8 @@ export default function Index() {
           </View>
           <Textarea
             value={formData.remark}
+            placeholderClass="placeholder"
+            placeholder="请填写您需要备注的信息"
             onInput={(e) => handleInputChange("remark", e)}
           />
         </View>

@@ -1,4 +1,4 @@
-import { View, Image } from "@tarojs/components";
+import { View, Image, WebView } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import { Swiper, SwiperItem } from "@tarojs/components";
@@ -7,37 +7,24 @@ import { AtTabs, AtTabsPane } from "taro-ui";
 import { useEffect, useState } from "react";
 import TopNav from "@/components/TopNav";
 import Taro from "@tarojs/taro";
-import { getRecommendNews } from "@/api/news";
+import { getRecommendNews, getNews } from "@/api/news";
+import { getBanners } from "@/api/news";
 
-const mockImages = [
-  {
-    key: 1,
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/f2b0e436-69e0-11ef-b2bd-0ad83e4969ec_00001_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085359729&Signature=0jUiIDYyudsjgMJtjk52NFcQh1g%3D",
-    desc: "第一张图片第一张图片第一张图片第一张图片第一张图片第一张图片第一张图片第一张图片",
-  },
-  {
-    key: 1,
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/f2b0e436-69e0-11ef-b2bd-0ad83e4969ec_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085359888&Signature=bM73%2BTaDTGB1VAZIYin4zqrQNP8%3D",
-    desc: "第二张图片第二张图片第二张图片第二张图片第二张图片",
-  },
-  {
-    key: 1,
-    url: "https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00001_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=SgNVmPpoQ%2FBLyDIsMAOGGeHOL1I%3D",
-    desc: "第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片第三张图片",
-  },
-];
-
-const Card = ({}) => (
-  <View className="card_wrap">
-    <Image
-      className="img_wrap"
-      src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
-    />
+const Card = ({ newsItem }) => (
+  <View
+    className="card_wrap"
+    onClick={() => {
+      Taro.navigateTo({
+        url: newsItem?.url,
+      });
+    }}
+  >
+    <Image className="img_wrap" src={newsItem?.image} mode="aspectFill" />
     <View className="info_wrap">
-      <View className="des">
-        这是一条咨讯不忘初心、牢记使命地点的主题教育知识学习做党的忠实拥护者和建设者顶顶顶
+      <View className="des">{newsItem?.title}</View>
+      <View className="date">
+        {new Date(newsItem?.updatedAt)?.toISOString()?.split("T")[0]}
       </View>
-      <View className="date">2024-4-23</View>
     </View>
   </View>
 );
@@ -45,17 +32,28 @@ const Card = ({}) => (
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [recommendNewsData, setRecommendNewsData] = useState([]);
+  const [newsData, setNewsData] = useState([]);
 
   const getRecommendNewsData = async () => {
-    const res = await getRecommendNews();
+    const res = await getBanners("news");
     const { code, data } = res;
     if (code === 200) {
       setRecommendNewsData(data);
     }
   };
 
+  const getNewsData = async (category) => {
+    const param = category == 1 ? 2 : category;
+    const res = await getNews(param);
+    const { code, data } = res;
+    if (code === 200) {
+      setNewsData(data);
+    }
+  };
+
   useEffect(() => {
     getRecommendNewsData();
+    getNewsData(currentIndex + 1);
   }, []);
 
   return (
@@ -70,10 +68,10 @@ export default function Index() {
           indicatorDots
           // autoplay
         >
-          {mockImages?.map((item) => (
+          {recommendNewsData?.map((item: any) => (
             <SwiperItem>
               <View className="swiper_content">
-                <Image src={item?.url} />
+                <Image src={item?.url} mode="aspectFill" />
               </View>
               {/* <View className="demo-text-1">1</View> */}
             </SwiperItem>
@@ -83,40 +81,34 @@ export default function Index() {
           animated={false}
           current={currentIndex}
           tabList={[
-            { title: "关于欣宁" },
-            { title: "城市更新" },
-            { title: "越界生活" },
+            { title: "城市热点" },
+            { title: "园区服务" },
+            { title: "园区荣誉" },
           ]}
-          onClick={(value) => setCurrentIndex(value)}
+          onClick={(value) => {
+            setCurrentIndex(value);
+            getNewsData(value + 1);
+          }}
         >
           <AtTabsPane current={currentIndex} index={0}>
             <View className="list_wrap">
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
+              {newsData?.map((item) => (
+                <Card newsItem={item} />
+              ))}
             </View>
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={1}>
             <View className="list_wrap">
-              <Card />
-              <Card />
-              <Card />
+              {newsData?.map((item) => (
+                <Card newsItem={item} />
+              ))}
             </View>
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={2}>
             <View className="list_wrap">
-              <Card />
-              <Card />
-              <Card />
+              {newsData?.map((item) => (
+                <Card newsItem={item} />
+              ))}
             </View>
           </AtTabsPane>
         </AtTabs>

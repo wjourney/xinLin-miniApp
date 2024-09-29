@@ -17,48 +17,17 @@ import {
   getBuildingDetail,
   getBuildingsOptions,
 } from "@/api/buildings";
+import Login from "@/components/Login";
 
-const mockPlace = [
-  "全部",
-  "上海市",
-  "杭州市",
-  "南京市",
-  "北京市",
-  "武汉市",
-  "南京市2",
-  "南京市23",
-  "南京市222",
-  "南京市12",
+const pricesOptions = ["1-3", "3-5", "5-6", "6-8", "8-10", "10"];
+const acreageOptions = [
+  "0-100",
+  "101-200",
+  "201-400",
+  "401-600",
+  "601-1000",
+  "1000",
 ];
-
-const mockAreas = [
-  "全部",
-  "青浦区",
-  "徐汇区",
-  "静安区",
-  "宝山区",
-  "闵行区",
-  "徐汇区2",
-  "徐汇区23",
-  "徐汇区21",
-  "徐汇区2221",
-  "徐汇区124",
-];
-
-const mockProjects = [
-  "项目1",
-  "项目2",
-  "项目3",
-  "项目4",
-  "项目5",
-  "项目6",
-  "项目7",
-  "项目8",
-  "项目9",
-];
-
-const mockPrices = ["1-3", "2-6", "7-13", "14-34", "35-39"];
-const mockAcreage = ["0-100", "100-300", "300-600", "600-1200", "1200-1700"];
 
 enum BusinessType {
   all = "全部",
@@ -66,25 +35,106 @@ enum BusinessType {
   business = "商业",
 }
 
+// 获取所有项目
+const getAllProjects = (data: any[]) => {
+  const result: { name?: string; id?: string }[] = [];
+  const traverse = (children) => {
+    children.forEach((child) => {
+      // 如果有 name 和 id，则添加到结果
+      if (child.name && child.id) {
+        result.push({ name: child.name, id: child.id });
+      }
+      // 递归处理子节点
+      if (child.children) {
+        traverse(child.children);
+      }
+    });
+  };
+  data.forEach((item) => {
+    traverse(item.children);
+  });
+  return result;
+};
+
+// 获取指定城市的所有项目
+const getCityAllProjects = (data: any[], selectCity) => {
+  const result: { name: string; id: string }[] = [];
+  const traverse = (children) => {
+    children.forEach((child) => {
+      if (child.name && child.id) {
+        result.push({ name: child.name, id: child.id });
+      }
+      if (child.children) {
+        traverse(child.children);
+      }
+    });
+  };
+  const cityItem = data.find((item) => item.city === selectCity);
+  if (cityItem) {
+    traverse(cityItem.children);
+  }
+  return result;
+};
+
+// 根据所选城市和所选的多个区域，找到对应项目
+const getCityAndAreasProjects = (
+  data,
+  selectCity: string,
+  selectAreas: string[]
+) => {
+  const result: { name: string; id: string }[] = [];
+
+  // 查找选定城市
+  const cityItem = data.find((item) => item.city === selectCity);
+
+  // 如果找到城市，遍历其子区域
+  if (cityItem) {
+    cityItem.children.forEach((child) => {
+      // 检查子区域是否在选择的区域中
+      if (selectAreas.includes(child.districtName || "")) {
+        child.children?.forEach((item) => {
+          // 确保 name 和 id 存在
+          if (item.name && item.id) {
+            result.push({ name: item.name, id: item.id });
+          }
+        });
+      }
+    });
+  } else {
+    console.warn(`City "${selectCity}" not found in the data.`);
+  }
+  return result;
+};
+
 export default function Index() {
   const dropdownRef = useRef();
   const [navHeight, setNavHeight] = useState(0);
-  const [selectCity, setSelectCity] = useState("全部");
-  const [selectArea, setSelectArea] = useState("全部");
-  const [selectProject, setSelectProject] = useState("项目1");
-  const [selectBusinessType, setSelectBusinessType] = useState("all");
-  const [selectPrice, setSelectPrice] = useState("1-3");
-  const [selectAcreage, setSelectAcreage] = useState("0-100");
+  const [selectCity, setSelectCity] = useState("all");
+
+  const [areaOptions, setAreaOptions] = useState<any[]>([]); // 选完城市后，区域选项
+  const [selectAreas, setSelectAreas] = useState<string | string[]>(); // 选择区域，可以有多个
+
+  const [projectOptions, setProjectOptions] = useState<any[]>([]); // 选完城市后，项目选项，由所有区域拼接而来
+  const [selectProjectId, setSelectProjectId] = useState(""); // 所选项目id
+
+  const [selectBusinessType, setSelectBusinessType] = useState(
+    BusinessType.all
+  );
+  const [selectPrice, setSelectPrice] = useState(""); //
+  const [selectAcreage, setSelectAcreage] = useState(""); // 面积
   const [loading, setLoading] = useState(false);
-  // const [listData, setListData] = useState<any>([]);
-  // const [hasNext, setHasNext] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [buildingList, setBuildingList] = useState({
     hasNext: false,
     total: 0,
     items: [],
   });
-  const [filterOptions, setFilterOptions] = useState();
+  const [filterOptions, setFilterOptions] = useState([]);
+  const [selectCityIndex, setSelectCityIndex] = useState(0);
+  const [selectDistrictIndex, setSelectDistrictIndex] = useState(0);
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
+
+  // const [ selectCityIndex, setSelectCityIndex] = useState(0)
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -101,7 +151,7 @@ export default function Index() {
     return navBarHeight;
   };
 
-  const getBuildingsList = async () => {
+  const getBuildingsList = async (isGetMore = false) => {
     try {
       if (page === 1) {
         setLoading(true);
@@ -112,6 +162,15 @@ export default function Index() {
       const res = await getBuildings({
         page,
         pageSize: 20,
+        parkId: selectProjectId,
+        businessType:
+          selectBusinessType === BusinessType.all
+            ? ""
+            : selectBusinessType === BusinessType.business
+            ? "SY"
+            : "BG",
+        area: selectAcreage,
+        price: selectPrice,
       });
       const { code, data = {} } = res || {};
       const { hasNext, data: list, total = 0 } = data;
@@ -119,7 +178,7 @@ export default function Index() {
         setBuildingList((pre) => ({
           hasNext: hasNext,
           total: total,
-          items: [...pre?.items, ...list],
+          items: isGetMore ? [...pre?.items, ...list] : list,
         }));
         if (hasNext) {
           setPage(page + 1);
@@ -137,17 +196,21 @@ export default function Index() {
 
   const getFilterOptionsData = async () => {
     const res = await getBuildingsOptions();
+    const { code, data } = res;
+    if (code === 200) {
+      setFilterOptions(data);
+    }
   };
 
   const handleLoadMore = () => {
     if (buildingList?.hasNext) {
-      getBuildingsList();
+      getBuildingsList(true);
     }
   };
 
   useEffect(() => {
     setNavHeight(getNavHeight());
-    getBuildingsList();
+    getBuildingsList(false);
     getFilterOptionsData();
   }, []);
 
@@ -168,8 +231,56 @@ export default function Index() {
     }));
   };
 
+  useEffect(() => {
+    if (selectCity === "all") {
+      setAreaOptions([]);
+      setProjectOptions(getAllProjects(filterOptions));
+    } else {
+      const updateAreaOptions = filterOptions?.find(
+        (item: any) => item?.city === selectCity
+      )?.children;
+      setAreaOptions(updateAreaOptions);
+
+      if (selectAreas === undefined) {
+        setProjectOptions([]);
+      } else if (selectAreas === "all") {
+        setProjectOptions(getCityAllProjects(filterOptions, selectCity));
+      } else {
+        const updateProjectOptions = getCityAndAreasProjects(
+          filterOptions,
+          selectCity,
+          selectAreas
+        );
+
+        console.log(
+          "updateProjectOptions",
+          filterOptions,
+          selectCity,
+          selectAreas,
+          updateProjectOptions
+        );
+        setProjectOptions(updateProjectOptions);
+      }
+
+      // setProjectOptions(getAllProjects(updateProjectOptions));
+    }
+  }, [selectCity, selectAreas, filterOptions]);
+
+  const handleConfirm = async () => {
+    console.log("ddwsad", selectProjectId);
+    getBuildingsList(false);
+    // if (selectCity === "all" && selectArea === "") {
+    //   getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
+    // } else if (selectCity === "all" && selectArea !== "") {
+    //   getProjectsList(page, 20, selectArea, "", searchValue, false);
+    // } else {
+    //   getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
+    // }
+  };
+
   return (
     <View className="page_view">
+      <BottomTabBar currentIndex={1} />
       <TopNav title={"房源"} />
       <View className="buildings_wrapper">
         <Dropdown ref={dropdownRef}>
@@ -177,45 +288,97 @@ export default function Index() {
             <View className="dropdown_wrap" style={{ height: 240 }}>
               <View className="project_wrap">
                 <View className="city_item_wrap">
-                  {mockPlace?.map((item) => (
+                  <View
+                    style={{
+                      background: "all" === selectCity ? "white" : "",
+                      color: "all" === selectCity ? "#4BA8E6" : "",
+                    }}
+                    className="item"
+                    onClick={() => {
+                      setSelectCity("all");
+                      setSelectProjectId("");
+                    }}
+                  >
+                    全部
+                  </View>
+                  {filterOptions?.map((item: any) => (
                     <View
                       style={{
-                        background: item === selectCity ? "white" : "",
-                        color: item === selectCity ? "#4BA8E6" : "",
+                        background: item.city === selectCity ? "white" : "",
+                        color: item.city === selectCity ? "#4BA8E6" : "",
                       }}
                       className="item"
-                      onClick={() => setSelectCity(item)}
+                      onClick={() => {
+                        setSelectCity(item?.city);
+                        setSelectProjectId("");
+                      }}
                     >
-                      {item}
+                      {item?.city}
                     </View>
                   ))}
                 </View>
-                <View className="area_item_wrap">
-                  {mockAreas?.map((item) => (
+                {selectCity !== "all" && (
+                  <View className="area_item_wrap">
                     <View
                       style={{
-                        background: item === selectArea ? "white" : "",
-                        color: item === selectArea ? "#4BA8E6" : "",
+                        background: "all" === selectAreas ? "white" : "",
+                        color: "all" === selectAreas ? "#4BA8E6" : "",
                       }}
-                      onClick={() => setSelectArea(item)}
+                      onClick={() => {
+                        setSelectAreas("all");
+                        setSelectProjectId("");
+                      }}
                       className="item"
                     >
-                      {item}
+                      全部
                     </View>
-                  ))}
-                </View>
+                    {areaOptions?.map((item) => (
+                      <View
+                        style={{
+                          background: !!selectAreas?.includes(item.districtName)
+                            ? "white"
+                            : "",
+                          color: !!selectAreas?.includes(item.districtName)
+                            ? "#4BA8E6"
+                            : "",
+                        }}
+                        onClick={() => {
+                          setSelectAreas((pre: string[] | string) => {
+                            console.log("pppdddd", pre);
+                            if (pre === "all" || pre === undefined) {
+                              return [item?.districtName];
+                            } else {
+                              return pre?.includes(item?.districtName)
+                                ? pre?.filter(
+                                    (item1) => item1 !== item?.districtName
+                                  )
+                                : [...pre, item?.districtName];
+                            }
+                          });
+                          setSelectProjectId("");
+                        }}
+                        className="item"
+                      >
+                        {item?.districtName}
+                      </View>
+                    ))}
+                  </View>
+                )}
                 <View className="project_item_wrap">
-                  {mockProjects?.map((item) => (
+                  {projectOptions?.map((item) => (
                     <View
                       style={{
-                        background: item === selectProject ? "white" : "",
-                        color: item === selectProject ? "#4BA8E6" : "",
+                        background:
+                          item?.name === selectProjectId ? "white" : "",
+                        color: item?.name === selectProjectId ? "#4BA8E6" : "",
                       }}
-                      onClick={() => setSelectProject(item)}
+                      onClick={() => setSelectProjectId(item?.id)}
                       className="item_warp"
                     >
-                      <Text> {item}</Text>
-                      {item === selectProject && <Image src={CheckMark} />}
+                      <View className="text"> {item?.name}</View>
+                      {item?.id === selectProjectId && (
+                        <Image src={CheckMark} />
+                      )}
                     </View>
                   ))}
                 </View>
@@ -225,7 +388,10 @@ export default function Index() {
                 <View className="rest">重置</View>
                 <View
                   className="confirm"
-                  onClick={() => dropdownRef?.current?.close()}
+                  onClick={() => {
+                    dropdownRef?.current?.close();
+                    handleConfirm();
+                  }}
                 >
                   确认
                 </View>
@@ -260,7 +426,10 @@ export default function Index() {
                 <View className="rest">重置</View>
                 <View
                   className="confirm"
-                  onClick={() => dropdownRef?.current?.close()}
+                  onClick={() => {
+                    dropdownRef?.current?.close();
+                    handleConfirm();
+                  }}
                 >
                   确认
                 </View>
@@ -270,7 +439,7 @@ export default function Index() {
           <Dropdown.Item title="价格" key={3}>
             <View className="dropdown_wrap" style={{ height: 162 }}>
               <View className="price_wrap">
-                {mockPrices?.map((item) => (
+                {pricesOptions?.map((item, index) => (
                   <View
                     className="tag"
                     style={{
@@ -279,14 +448,21 @@ export default function Index() {
                       color: item === selectPrice ? "#4BA8ED" : "",
                     }}
                     onClick={() => setSelectPrice(item)}
-                  >{`${item}元/㎡/天`}</View>
+                  >
+                    {index === pricesOptions?.length - 1
+                      ? `${item}元/㎡/天以上`
+                      : `${item}元/㎡/天`}
+                  </View>
                 ))}
               </View>
               <View className="btn_wrap">
                 <View className="rest">重置</View>
                 <View
                   className="confirm"
-                  onClick={() => dropdownRef?.current?.close()}
+                  onClick={() => {
+                    dropdownRef?.current?.close();
+                    handleConfirm();
+                  }}
                 >
                   确认
                 </View>
@@ -296,7 +472,7 @@ export default function Index() {
           <Dropdown.Item title="面积" key={4}>
             <View className="dropdown_wrap" style={{ height: 162 }}>
               <View className="area_wrap">
-                {mockAcreage?.map((item) => (
+                {acreageOptions?.map((item, index) => (
                   <View
                     style={{
                       background:
@@ -305,14 +481,21 @@ export default function Index() {
                     }}
                     onClick={() => setSelectAcreage(item)}
                     className="tag"
-                  >{`${item}㎡`}</View>
+                  >
+                    {index === pricesOptions?.length - 1
+                      ? `${item}㎡以上`
+                      : `${item}㎡`}
+                  </View>
                 ))}
               </View>
               <View className="btn_wrap">
                 <View className="rest">重置</View>
                 <View
                   className="confirm"
-                  onClick={() => dropdownRef?.current?.close()}
+                  onClick={() => {
+                    dropdownRef?.current?.close();
+                    handleConfirm();
+                  }}
                 >
                   确认
                 </View>
@@ -321,7 +504,7 @@ export default function Index() {
           </Dropdown.Item>
         </Dropdown>
         <ScrollView
-          className="list_wrap"
+          className="building_list_wrap"
           id={"scroll-views"}
           onScrollToLower={handleLoadMore}
           lowerThreshold={100}
@@ -331,12 +514,22 @@ export default function Index() {
               Taro.getSystemInfoSync()?.screenHeight - navHeight - 16 - 38,
           }}
         >
-          {buildingList?.items?.map((item) => (
-            <BuildingCard
-              buildingItem={item}
-              refreshFn={updateListAfterCollect}
-            />
-          ))}
+          {buildingList?.items?.length === 0 ? (
+            <View className="no_reserve_wrap">
+              <Image src={require("@/assets/images/no-reserve.png")} />
+              <View className="text">暂无数据</View>
+            </View>
+          ) : (
+            buildingList?.items?.map((item) => (
+              <BuildingCard
+                buildingItem={item}
+                refreshFn={updateListAfterCollect}
+                isLoginVisible={isLoginVisible}
+                setIsLoginVisible={setIsLoginVisible}
+              />
+            ))
+          )}
+
           {buildingList?.hasNext ? (
             <AtLoadMore
               style={{
@@ -351,7 +544,14 @@ export default function Index() {
           ) : null}
         </ScrollView>
       </View>
-      <BottomTabBar currentIndex={1} />
+      <Login
+        visible={isLoginVisible}
+        setVisible={setIsLoginVisible}
+        // handleFn={() => {
+        //   Taro.switchTab({ url: indexToUrl[4] });
+        //   setIsLoginVisible(false);
+        // }}
+      />
     </View>
   );
 }

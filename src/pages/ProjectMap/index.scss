@@ -1,4 +1,4 @@
-.page_view {
+.projectMap_page_view {
   height: 100vh;
   width: 100vw;
   overflow-y: hidden;
@@ -20,7 +20,7 @@
   background-size: 100% 400px; /* 仅让渐变背景覆盖前 40px 高度 */
   background-position: top; /* 渐变背景固定在顶部 */
 
-  .project_wrapper {
+  .project_map_wrapper {
     display: flex;
     flex: 1;
     height: 100%;
@@ -59,6 +59,32 @@
         }
       }
 
+      .mode_wrap {
+        width: 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+
+        .mode_wrap_img {
+          margin-left: 24px;
+          margin-right: 16px;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .mode_text {
+          font-size: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #484848;
+        }
+      }
+
       // .page-section {
       display: flex;
       align-items: center;
@@ -91,7 +117,7 @@
       background-color: aliceblue;
     }
 
-    .swiper {
+    .project_map_swiper {
       width: 100%;
       // height: 338px;
       position: fixed;
@@ -101,18 +127,20 @@
 
       .swiper_item {
         height: unset;
-        // margin-left: 6px;
-        // margin-right: 6px;
-      }
-      &__wrap {
-        width: auto;
-        height: inherit;
-        border-radius: 20px;
-        transform: scale(0.97);
-        transition: all 0.5s ease;
 
-        &.active {
+        // margin-left: 16px;
+        // margin-right: 16px;
+        .swiper_wrap {
+          width: auto;
+          height: inherit;
+          border-radius: 20px;
           transform: scale(1);
+          transition: all 0.5s ease;
+          transform: scale(1);
+
+          // .active {
+          //   transform: scale(1);
+          // }
         }
       }
 

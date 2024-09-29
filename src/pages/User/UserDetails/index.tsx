@@ -9,9 +9,26 @@ import AboutUs from "@/assets/svg/aboutUs.svg";
 import Logout from "@/assets/svg/logout.svg";
 import LeftArrow from "@/assets/svg/leftArrow.svg";
 import TopNav from "@/components/TopNav";
+import { login, getUserInfo } from "@/api/user";
+import { useEffect, useState } from "react";
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [userInfo, setUserInfo] = useState<any>();
+
+  const getUserInfoData = async () => {
+    const res = await getUserInfo();
+    const { code, data } = res;
+    if (code === 200) {
+      setUserInfo(data);
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    getUserInfoData();
+  }, []);
 
   return (
     <View className="page_view">
@@ -31,11 +48,11 @@ export default function Index() {
           </View>
           <View className="menu_item">
             <View className="label">昵称</View>
-            <View className="value">www</View>
+            <View className="value">{userInfo?.username}</View>
           </View>
           <View className="menu_item">
             <View className="label">手机</View>
-            <View className="value">19945323332</View>
+            <View className="value">{userInfo?.phone}</View>
           </View>
         </View>
         <View className="btn_wrap">保存</View>

@@ -39,18 +39,18 @@
 
     .searchWrap {
       display: flex;
-      height: 36px !important;
+      height: 42px !important;
       margin-top: 16px;
       justify-content: space-between;
       align-items: center;
-      padding-left: 16px;
-      padding-right: 16px;
+      // padding-left: 16px;
+      // padding-right: 16px;
 
       .choose_place {
         height: 100%;
         display: flex;
         gap: 4px;
-        margin-right: 12px;
+        // margin-right: 12px;
         align-items: center;
 
         .select_location_wrap {
@@ -77,27 +77,150 @@
         }
       }
 
+      .dropdown_wrap {
+        // height: 260px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow-y: hidden;
+      }
+
+      .btn_wrap {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        height: 46px;
+        display: flex;
+
+        .rest {
+          display: flex;
+          flex: 1;
+          height: 100%;
+          // background: rgba(170, 159, 175, 0.12);
+          font-size: 16px;
+          font-weight: 400;
+          justify-content: center;
+          align-items: center;
+        }
+        .confirm {
+          height: 100%;
+          display: flex;
+          flex: 1;
+          background: #4ba8e6;
+          color: rgba(255, 255, 255, 1);
+          font-size: 16px;
+          font-weight: 400;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .project_wrap {
+        display: flex;
+        height: calc(100% - 46px);
+        // padding-left: 16px;
+        // padding-right: 16px;
+
+        .city_item_wrap {
+          width: 90px;
+          // border-right: solid black 1px;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          overflow-y: auto;
+          // padding-left: 8px;
+          background-color: #f8f4f4;
+
+          .item {
+            display: flex;
+            height: 38px;
+            align-items: center;
+            // background-color: #f2eded;
+            padding-left: 8px;
+            flex-shrink: 0;
+            color: rgb(71, 70, 70);
+            font-size: 14px;
+          }
+        }
+
+        .area_item_wrap {
+          width: 90px;
+          // border-right: solid black 1px;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          overflow-y: auto;
+          background-color: #f8f4f4;
+
+          .item {
+            display: flex;
+            flex-shrink: 0;
+            padding-left: 8px;
+            height: 38px;
+            align-items: center;
+            // background-color: #f2eded;
+            padding-left: 8px;
+            color: rgb(71, 70, 70);
+            font-size: 14px;
+          }
+        }
+
+        .project_item_wrap {
+          flex: 1;
+          padding-left: 8px;
+          height: 100%;
+          overflow-y: auto;
+          padding-right: 14px;
+
+          .item_warp {
+            display: flex;
+            height: 38px;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
+            .text {
+              width: 100%;
+              // display: flex;
+              padding-left: 8px;
+              align-items: center;
+              color: rgb(71, 70, 70);
+              font-size: 14px;
+              white-space: nowrap; /* 不换行 */
+              overflow: hidden; /* 超出部分隐藏 */
+              text-overflow: ellipsis; /* 省略号 */
+            }
+            image {
+              margin-left: 4px;
+              width: 12px;
+              height: 12px;
+            }
+          }
+        }
+      }
+
       .search {
         flex: 1;
         height: 100%;
         width: 200px;
         position: relative;
-        border-radius: 99px;
+        border-radius: 4px;
         background: rgba(255, 255, 255, 0.75);
         backdrop-filter: blur(6px);
         display: flex;
         align-items: center;
+        margin-left: -8px;
 
         input {
           height: 100%;
           width: 100%;
           padding-left: 16px;
           padding-right: 16px;
-          border-radius: 99px;
+          border-radius: 4px;
           background: rgba(255, 255, 255, 0);
-          border: 1pt solid rgba(128, 128, 128, 0.15);
-          box-shadow: 0px 2px 4px rgba(223, 233, 245, 1);
-          font-size: 15px;
+          border: 1px solid rgba(128, 128, 128, 0.15);
+          // box-shadow: 0px 2px 4px rgba(223, 233, 245, 1);
+          font-size: 16px;
         }
 
         .searchSvg {
@@ -109,15 +232,30 @@
           right: 16px;
           bottom: 0;
           margin: auto;
+          z-index: 999;
         }
       }
-      .mode_Wrap {
+      .mode_wrap {
         width: 64px;
-      }
-      .mode_wrap_img {
-        margin-left: 12px;
-        width: 20px;
-        height: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+
+        .mode_wrap_img {
+          margin-left: 24px;
+          margin-right: 16px;
+          width: 24px;
+          height: 24px;
+        }
+
+        .mode_text {
+          font-size: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #484848;
+        }
       }
     }
 

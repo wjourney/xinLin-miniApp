@@ -56,8 +56,10 @@
 
     .swiper_wrap {
       flex-shrink: 0;
-      height: 170px;
+      height: 220px;
       margin-top: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
 
       .swiper_content {
         display: flex;
@@ -65,6 +67,7 @@
         height: 100%;
 
         image {
+          border-radius: 12px;
           width: 100% !important;
           max-height: 100%;
           width: 100%;
@@ -94,7 +97,7 @@
       align-items: center;
 
       text {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 400;
         line-height: 20px;
         color: rgba(77, 77, 77, 1);
@@ -304,13 +307,13 @@
       }
 
       .text_wrap {
-        padding: 4px 8px 4px 8px;
+        padding: 4px 8px 4px 0px;
         margin-top: 8px;
         border-radius: 8px;
         height: 84px;
         width: 100%;
         font-size: 14px;
-        border: solid 1px #e6e6e6;
+        // border: solid 1px #e6e6e6;
         box-sizing: border-box;
       }
     }

@@ -32,10 +32,10 @@ export default (
   const token = Taro.getStorageSync("token");
 
   if (loading) {
-    Taro.showLoading({
-      title: "加载中",
-      mask: true,
-    });
+    // Taro.showLoading({
+    //   title: "加载中",
+    //   mask: true,
+    // });
   }
   //根据token进行调用函数
   if (token != "") {

@@ -19,16 +19,21 @@ import MoreSvg from "@/assets/svg/more.svg";
 import TopNav from "@/components/TopNav";
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui";
 import { getProjectDetail } from "@/api/projects";
+import Login from "@/components/Login";
+import { login, getUserInfo } from "@/api/user";
 
 export default function Index() {
   const [isSelectConsultantModalVisible, setIsSelectConsultantModalVisible] =
     useState(false);
   const [selectConsultant, setSelectConsultant] = useState();
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
+  const [modalType, setModalType] = useState("phone");
 
   const [isAppointBuildingVisible, setIsAppointBuildingVisible] =
     useState(false);
   const router = Taro.getCurrentInstance()?.router;
   const params: any = router?.params;
+
   const [detailData, setDetailData] = useState<any>();
 
   const getBuildingDetailData = async (id) => {
@@ -54,7 +59,11 @@ export default function Index() {
         setSelectConsultant(managerItem);
       }}
     >
-      <Image className="avatar" src={managerItem?.avatarUrl} />
+      <Image
+        className="avatar"
+        src={managerItem?.avatarUrl}
+        mode="aspectFill"
+      />
       <Text className="name">{managerItem?.userName}(办公)</Text>
     </View>
   );
@@ -67,7 +76,7 @@ export default function Index() {
 
   return (
     <View className="page_view">
-      <TopNav title={"项目详情"} hasBack={true} />
+      <TopNav title={detailData?.name} hasBack={true} />
       <View className="build_detail_wrap">
         <View className="img_wrap">
           <Swiper
@@ -81,7 +90,7 @@ export default function Index() {
             {detailData?.sliderPics?.map((item: any) => (
               <SwiperItem>
                 <View className="swiper_content">
-                  <Image src={item} />
+                  <Image src={item} mode="aspectFill" />
                 </View>
               </SwiperItem>
             ))}
@@ -94,23 +103,58 @@ export default function Index() {
             {detailData?.districtName}
             {detailData?.address}
           </Text>
-          <Image src={LocationSvg} />
+          <Image
+            src={LocationSvg}
+            onClick={() => {
+              Taro.openLocation({
+                latitude: detailData?.latitude,
+                longitude: detailData?.longitude,
+                scale: 18,
+              });
+            }}
+          />
         </View>
         <View className="building_info">
-          <View className="info_item">
-            <View className="value">{detailData?.price || "2-4"}</View>
-            <View className="label">价格(元/m/天)</View>
+          {/* <View className="info_item">
+            <View className="value">
+              {!!!detailData?.minPrice || !!!detailData?.maxPrice
+                ? detailData?.price
+                : `${detailData?.minPrice}-${detailData?.maxPrice}`}
+            </View>
+            <View className="label">价格(元/m²/天)</View>
           </View>
           <View className="info_item">
-            <View className="value">3</View>
-            <View className="label">面积(m)</View>
+            <View className="value">{detailData?.totalArea}</View>
+            <View className="label">面积(m²)</View>
+          </View> */}
+          <View className="info_item">
+            {/* <View className="info_item" style={{ borderRight: "solid #E6E6E6" }}> */}
+            <View className="value">
+              {" "}
+              {!!!detailData?.minPrice || !!!detailData?.maxPrice
+                ? detailData?.price
+                : `${detailData?.minPrice}-${detailData?.maxPrice}`}
+            </View>
+            <View className="label">价格(元/m²/天)</View>
+          </View>
+          <View className="info_item">
+            <View className="value">{detailData?.totalArea}</View>
+            <View className="label">面积(m²)</View>
+          </View>
+          <View className="info_item">
+            <View className="value">{detailData?.totalFloor}</View>
+            <View className="label">楼层数</View>
+          </View>
+          <View className="info_item">
+            <View className="value">{detailData?.floorHeight}</View>
+            <View className="label">标准层层高</View>
           </View>
         </View>
         <View className="desc_wrap">
           <View className="business_price"></View>
           <View className="office_price"></View>
           <View className="desc">{detailData?.detail}</View>
-          <View className="label_value_wrap">
+          {/* <View className="label_value_wrap">
             <View className="label_value">
               <Text className="label">楼层数：</Text>
               <Text className="value">{detailData?.totalFloor}</Text>
@@ -119,7 +163,7 @@ export default function Index() {
               <Text className="label">标准层层高：</Text>
               <Text className="value">{detailData?.floorHeight}</Text>
             </View>
-          </View>
+          </View> */}
         </View>
         <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
         <View className="investment_consultant">
@@ -128,17 +172,13 @@ export default function Index() {
             {detailData?.managers?.map((item) => (
               <ConsultantCard managerItem={item} />
             ))}
-
-            {/* <View className="avatar_card">
-              <Image
-                className="avatar"
-                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
-              />
-              <Text className="name">刘亦菲(办公)</Text>
-            </View> */}
             <View className="call_img"></View>
           </View>
-          <View onClick={handlePhoneToBusinessCenter} className="phone_num">
+          <View
+            onClick={handlePhoneToBusinessCenter}
+            className="phone_num"
+            style={{ marginTop: 16 }}
+          >
             <Text> 招商中心：</Text>
             <Text className="number">400-232-2323</Text>
           </View>
@@ -162,19 +202,57 @@ export default function Index() {
         </View>
         {/* <View style={{ marginTop: 16 }} className="diver_wrap"></View> */}
         <View className="btn_wrap">
-          <View className="business">招商资讯</View>
+          <View
+            className="business"
+            onClick={() => {
+              if (detailData?.managers?.length === 1) {
+                Taro.makePhoneCall({
+                  phoneNumber: detailData?.managers?.[0]?.phone,
+                });
+              } else {
+                setModalType("phone");
+                setIsAppointBuildingVisible(true);
+              }
+              // Taro.makePhoneCall({
+              //   phoneNumber: detailData?.managers?.[0]?.phone,
+              // });
+            }}
+          >
+            招商咨询
+          </View>
           <View
             className="reserve"
-            onClick={() => setIsAppointBuildingVisible(true)}
+            onClick={async () => {
+              // if (detailData?.managers?.length === 1) {
+              //   Taro.navigateTo({
+              //     url: "/pages/Buildings/ReserveBuilding/index",
+              //   });
+              // } else {
+              //   setIsAppointBuildingVisible(true);
+              // }
+
+              const res = await getUserInfo();
+              if (res.code === 200 && !!res?.data?.isBindPhone) {
+                if (detailData?.managers?.length === 1) {
+                  Taro.navigateTo({
+                    url: `/pages/Buildings/ReserveBuilding/index?houseId=&parkId=${detailData?.id}&managerId=${detailData?.managers?.[0]?.userId}&from=project`,
+                  });
+                } else {
+                  setModalType("reserve");
+                  setIsAppointBuildingVisible(true);
+                }
+              } else {
+                setIsLoginVisible(true);
+              }
+            }}
           >
             预约看房
           </View>
         </View>
       </View>
-      <AtModal
+      {/* <AtModal
         onClose={() => setIsSelectConsultantModalVisible(false)}
         onCancel={() => setIsSelectConsultantModalVisible(false)}
-        // onConfirm={this.handleConfirm}
         isOpened={isSelectConsultantModalVisible}
       >
         <View className="modal_content">
@@ -198,7 +276,7 @@ export default function Index() {
             </View>
           </View>
         </View>
-      </AtModal>
+      </AtModal> */}
       <AtModal
         onClose={() => setIsAppointBuildingVisible(false)}
         onCancel={() => setIsAppointBuildingVisible(false)}
@@ -207,48 +285,47 @@ export default function Index() {
         isOpened={isAppointBuildingVisible}
       >
         <View className="select_consultant_modal_content">
-          <View className="title">预约看房</View>
+          <View className="title">
+            {modalType === "phone" ? "招商咨询" : "预约看房"}
+          </View>
           <View className="prompt">请选择您的招商顾问</View>
 
           <View className="select_your_consultant">
-            <View
-              className="item"
-              onClick={() =>
-                Taro.navigateTo({
-                  url: "/pages/Projects/ReserveProject/index",
-                })
-              }
-            >
-              <Image
-                className="avatar"
-                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
-              />
-              <View className="name">刘亦菲</View>
-            </View>
-            <View className="item">
-              <Image
-                className="avatar"
-                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
-              />
-              <View className="name">刘亦菲</View>
-            </View>
-            <View className="item">
-              <Image
-                className="avatar"
-                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
-              />
-              <View className="name">刘亦菲</View>
-            </View>
-            <View className="item">
-              <Image
-                className="avatar"
-                src="https://bkmksh.oss-accelerate.aliyuncs.com/db467fff-6838-11ef-9dc3-329037ae0fb9_00000_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085177816&Signature=B81tkjKhd9v30B1xD2udBFL3TNI%3D"
-              />
-              <View className="name">刘亦菲</View>
-            </View>
+            {detailData?.managers?.map((item) => (
+              <View
+                className="item"
+                onClick={() => {
+                  if (modalType === "phone") {
+                    Taro.makePhoneCall({
+                      phoneNumber: item?.phone,
+                    });
+                  } else {
+                    Taro.navigateTo({
+                      url: `/pages/Buildings/ReserveBuilding/index?houseId=&parkId=${detailData?.id}&managerId=${item?.userId}&from=project`,
+                    });
+                  }
+                  setIsAppointBuildingVisible(false);
+                }}
+              >
+                <Image
+                  className="avatar"
+                  src={item?.avatarUrl}
+                  mode="aspectFill"
+                />
+                <View className="name">{item?.userName}</View>
+              </View>
+            ))}
           </View>
         </View>
       </AtModal>
+      <Login
+        visible={isLoginVisible}
+        setVisible={setIsLoginVisible}
+        // handleFn={() => {
+        //   Taro.switchTab({ url: indexToUrl[4] });
+        //   setIsLoginVisible(false);
+        // }}
+      />
     </View>
   );
 }

@@ -37,7 +37,12 @@ export default function Index() {
       ) : (
         <View className="user_collection_wrapper">
           {listData?.map((item) => (
-            <BuildingCard buildingItem={item} refreshFn={getCollectionData} />
+            <BuildingCard
+              buildingItem={item}
+              refreshFn={getCollectionData}
+              isLoginVisible={false}
+              setIsLoginVisible={(data) => {}}
+            />
           ))}
         </View>
       )}

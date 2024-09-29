@@ -6,11 +6,12 @@ import MyMessage from "@/assets/svg/myMessage.svg";
 import MyReserve from "@/assets/svg/myReserve.svg";
 import myCollection from "@/assets/svg/myCollection.svg";
 import AboutUs from "@/assets/svg/aboutUs.svg";
-import Logout from "@/assets/svg/logout.svg";
 import LeftArrow from "@/assets/svg/leftArrow.svg";
 import Taro from "@tarojs/taro";
 import TopNav from "@/components/TopNav";
 import MoreSvg from "@/assets/svg/more.svg";
+import { useEffect, useState } from "react";
+import { login, getUserInfo } from "@/api/user";
 
 const items = [
   {
@@ -57,6 +58,20 @@ const items = [
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
+  const [userInfo, setUserInfo] = useState<any>();
+
+  const getUserInfoData = async () => {
+    const res = await getUserInfo();
+    const { code, data } = res;
+    if (code === 200) {
+      setUserInfo(data);
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    getUserInfoData();
+  }, []);
 
   return (
     <View className="page_view">
@@ -76,7 +91,7 @@ export default function Index() {
               "https://bkmksh.oss-accelerate.aliyuncs.com/f2b0e436-69e0-11ef-b2bd-0ad83e4969ec_00001_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085359729&Signature=0jUiIDYyudsjgMJtjk52NFcQh1g%3D"
             }
           />
-          <Text className="username">微信用户</Text>
+          <Text className="username">{userInfo?.username}</Text>
           <Image className="more" src={MoreSvg} />
         </View>
         <View className="menu_warp">

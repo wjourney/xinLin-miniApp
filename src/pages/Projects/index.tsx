@@ -19,12 +19,8 @@ import BlueLocationSvg from "@/assets/svg/location-blue.svg";
 import TopNav from "@/components/TopNav";
 import { getProjects, getProjectsOptions } from "@/api/projects";
 import { AtLoadMore } from "taro-ui";
-
-const mockPlaces = {
-  selector: ["杭州", "上海", "武汉", "北京"],
-  timeSel: "12:01",
-  dateSel: "2018-04-22",
-};
+import Dropdown from "@/components/Dropdown";
+import CheckMark from "@/assets/svg/checkmark.svg";
 
 export default function Index() {
   const [selectPlace, setSelectPlace] = useState("上海");
@@ -40,7 +36,13 @@ export default function Index() {
     total: 0,
     items: [],
   });
-  const [filterOptions, setFilterOptions] = useState();
+  const [filterOptions, setFilterOptions] = useState([]);
+  const dropdownRef = useRef();
+  const [selectCity, setSelectCity] = useState("all");
+  const [showCity, setShowCity] = useState("全部");
+
+  const [areaOptions, setAreaOptions] = useState<any[]>([]);
+  const [selectArea, setSelectArea] = useState("");
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -63,9 +65,22 @@ export default function Index() {
 
   const getFilterOptionsData = async () => {
     const res = await getProjectsOptions();
+    const { code, data } = res;
+    if (code === 200) {
+      setFilterOptions(data);
+      setAreaOptions(data);
+      setSelectArea(selectCity === "all" ? "" : "all");
+    }
   };
 
-  const getProjectsList = async () => {
+  const getProjectsList = async (
+    page,
+    pageSize,
+    cityValue = "",
+    districtNameValue = "",
+    searchValue = "",
+    isGetMore = false
+  ) => {
     try {
       if (page === 1) {
         setLoading(true);
@@ -75,17 +90,19 @@ export default function Index() {
       }
       const res = await getProjects({
         page,
-        pageSize: 20,
+        pageSize,
+        city: cityValue === "all" ? "" : cityValue,
+        districtName: districtNameValue === "all" ? "" : districtNameValue,
+        searchValue,
       });
       const { code, data = {} } = res || {};
       const { hasNext, list, total } = data;
 
       if (code === 200) {
-        console.log("ffff", list);
         setProjectList((pre) => ({
           hasNext: hasNext,
           total: total,
-          items: [...pre?.items, ...list],
+          items: isGetMore ? [...pre?.items, ...list] : list,
         }));
         if (hasNext) {
           setPage(page + 1);
@@ -103,7 +120,7 @@ export default function Index() {
 
   const handleLoadMore = () => {
     if (projectList?.hasNext) {
-      getProjectsList();
+      getProjectsList(page, 20, selectCity, selectArea, searchValue, true);
     }
   };
 
@@ -116,10 +133,37 @@ export default function Index() {
     }
   };
 
+  const handleConfirm = async () => {
+    setShowCity(selectCity);
+    console.log("ddwsad", selectCity, selectArea);
+    if (selectCity === "all" && selectArea === "") {
+      getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
+    } else if (selectCity === "all" && selectArea !== "") {
+      getProjectsList(page, 20, selectArea, "", searchValue, false);
+    } else {
+      getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
+    }
+  };
+
   useEffect(() => {
-    getProjectsList();
+    getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
     getFilterOptionsData();
   }, []);
+
+  useEffect(() => {
+    if (selectCity === "all") {
+      console.log(
+        "ddwq",
+        filterOptions?.map((item: any) => item?.name)
+      );
+      setAreaOptions(filterOptions);
+    } else {
+      setAreaOptions(
+        filterOptions?.find((item: any) => item?.name === selectCity)?.children
+      );
+      setSelectArea("all");
+    }
+  }, [selectCity]);
 
   useLoad(() => {
     setNavHeight(getNavHeight());
@@ -147,12 +191,12 @@ export default function Index() {
 
   return (
     <View className="page_view">
-      <TopNav title={"项目"} />
+      <TopNav title={"找项目"} />
       <View className="project_wrapper">
         <View className="searchWrap">
           <View className="choose_place">
             <View className="page_section">
-              <Picker
+              {/* <Picker
                 mode="selector"
                 range={mockPlaces.selector}
                 onChange={(target) =>
@@ -163,7 +207,112 @@ export default function Index() {
                   {selectPlace}
                   <Image src={DownSvg} />
                 </View>
-              </Picker>
+              </Picker> */}
+              <Dropdown ref={dropdownRef}>
+                <Dropdown.Item
+                  // title={selectCity === "all" ? "全部" : showCity}
+                  title={showCity}
+                  key={1}
+                >
+                  <View className="dropdown_wrap" style={{ height: 240 }}>
+                    <View className="project_wrap">
+                      <View className="city_item_wrap">
+                        <View
+                          style={{
+                            background: "all" === selectCity ? "white" : "",
+                            color: "all" === selectCity ? "#4BA8E6" : "",
+                          }}
+                          className="item"
+                          onClick={() => {
+                            setSelectCity("all");
+                            setSelectArea("");
+                          }}
+                        >
+                          全部
+                        </View>
+
+                        {filterOptions?.map((item: any) => (
+                          <View
+                            style={{
+                              background:
+                                item?.name === selectCity ? "white" : "",
+                              color: item?.name === selectCity ? "#4BA8E6" : "",
+                            }}
+                            className="item"
+                            onClick={() => {
+                              setSelectCity(item?.name);
+                              setSelectArea("");
+                            }}
+                          >
+                            {item?.name}
+                          </View>
+                        ))}
+                      </View>
+                      <View className="project_item_wrap">
+                        {selectCity !== "all" && (
+                          <View
+                            style={{
+                              background: "all" === selectArea ? "white" : "",
+                              color: "all" === selectArea ? "#4BA8E6" : "",
+                            }}
+                            onClick={() => setSelectArea("all")}
+                            className="item_warp"
+                          >
+                            <View className="text"> 全部</View>
+                            {"all" === selectArea && <Image src={CheckMark} />}
+                          </View>
+                        )}
+                        {areaOptions?.map((item: any) => (
+                          <View
+                            style={{
+                              background:
+                                item?.name === selectArea ? "white" : "",
+                              color: item?.name === selectArea ? "#4BA8E6" : "",
+                            }}
+                            onClick={() => setSelectArea(item?.name)}
+                            className="item_warp"
+                          >
+                            <View className="text"> {item?.name}</View>
+                            {item?.name === selectArea && (
+                              <Image src={CheckMark} />
+                            )}
+                          </View>
+                        ))}
+                      </View>
+                      {/* <View className="project_item_wrap">
+                        {mockProjects?.map((item) => (
+                          <View
+                            style={{
+                              background: item === selectProject ? "white" : "",
+                              color: item === selectProject ? "#4BA8E6" : "",
+                            }}
+                            onClick={() => setSelectProject(item)}
+                            className="item_warp"
+                          >
+                            <Text> {item}</Text>
+                            {item === selectProject && (
+                              <Image src={CheckMark} />
+                            )}
+                          </View>
+                        ))}
+                      </View> */}
+                      <View></View>
+                    </View>
+                    <View className="btn_wrap">
+                      <View className="rest">重置</View>
+                      <View
+                        className="confirm"
+                        onClick={() => {
+                          dropdownRef?.current?.close();
+                          handleConfirm();
+                        }}
+                      >
+                        确认
+                      </View>
+                    </View>
+                  </View>
+                </Dropdown.Item>
+              </Dropdown>
             </View>
           </View>
           <View className="search">
@@ -177,17 +326,34 @@ export default function Index() {
               onInput={(target) => setSearchValue(target?.detail?.value)}
               onBlur={() => setIsInputFocus(false)} // 当输入框失焦时将 focus 置为 false
             />
-            <Image className="searchSvg" src={SearchSvg} />
+            <Image
+              className="searchSvg"
+              src={SearchSvg}
+              onClick={() => {
+                console.log("ffff", searchValue);
+                getProjectsList(
+                  page,
+                  20,
+                  selectCity,
+                  selectArea,
+                  searchValue,
+                  false
+                );
+              }}
+            />
           </View>
-          <Image
-            className="mode_wrap_img"
-            src={MapMode}
-            onClick={() =>
-              Taro.navigateTo({
-                url: "/pages/ProjectMap/index",
-              })
-            }
-          />
+          <View className="mode_wrap">
+            <Image
+              className="mode_wrap_img"
+              src={MapMode}
+              onClick={() =>
+                Taro.navigateTo({
+                  url: "/pages/ProjectMap/index",
+                })
+              }
+            />
+            <View className="mode_text">地图模式</View>
+          </View>
         </View>
         <ScrollView
           className="list_wrap"

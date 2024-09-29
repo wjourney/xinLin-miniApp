@@ -20,7 +20,11 @@ export default function Index({ projectItem }) {
         });
       }}
     >
-      <Image className="img_wrap" src={projectItem?.thumbnail} />
+      <Image
+        className="img_wrap"
+        src={projectItem?.thumbnail}
+        mode="aspectFill"
+      />
       <View className="info_wrap">
         <View className="location">{projectItem?.parkName}</View>
         <View className="area">

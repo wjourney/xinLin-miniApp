@@ -28,6 +28,8 @@ const indexToUrl = {
 
 const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
+  const res = Taro.getSystemInfoSync();
+  const isIos = res.platform === "ios"; // res.platform === 'devtools'是本地开发
 
   const handleClick = async (value) => {
     if (value === 4) {

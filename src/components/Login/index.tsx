@@ -7,6 +7,7 @@ import {
   Button,
   BaseEventOrig,
   ButtonProps,
+  Icon,
 } from "@tarojs/components";
 import { handleLogin } from "@/utils";
 import { login, getPhoneNum } from "@/api/user";
@@ -56,6 +57,10 @@ const Login: React.FC<
             });
             const { code, data: resData } = result;
             if (code === 200) {
+              Taro.showToast({
+                title: "登陆成功",
+                icon: "none",
+              });
               handleFn();
               setVisible(false);
             }

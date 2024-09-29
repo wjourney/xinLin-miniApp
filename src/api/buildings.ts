@@ -7,8 +7,13 @@ export const getRecommendBuildings = (city): Promise<any> => {
 
 // 获取分页房源
 export const getBuildings = (params): Promise<any> => {
-  const { page, pageSize } = params;
-  return request(`/api/houses?page=${page}&size=${pageSize}`, "GET");
+  const { page, pageSize, parkId, businessType, area, price } = params;
+  return request(
+    `/api/houses?page=${page}&size=${pageSize}&parkId=${
+      parkId || ""
+    }&businessType=${businessType}&area=${area}&price=${price}`,
+    "GET"
+  );
 };
 
 // 获取房源详情
@@ -33,4 +38,9 @@ export const appointBuilding = (body: any): Promise<any> => {
 // 房源筛选项目
 export const getBuildingsOptions = (): Promise<any> => {
   return request(`/api/houses_options`, "GET");
+};
+
+// 根据项目获取房源
+export const getBuildingsByParkId = (parkId): Promise<any> => {
+  return request(`/api/getHousesByPark?parkId=${parkId}`, "GET");
 };

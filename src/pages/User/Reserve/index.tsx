@@ -33,7 +33,7 @@ export default function Index() {
       currentIndex === 0 ? await getMyReserve("") : await getMyReserve(param);
     const { code, data } = res;
     if (code === 200) {
-      setListData(data);
+      setListData(data?.list);
     }
   };
 
@@ -69,7 +69,7 @@ export default function Index() {
             ) : (
               <View className="list_wrap">
                 {listData?.map((item) => (
-                  <ReserveCard reserveType={1} />
+                  <ReserveCard reserveType={1} item={item} />
                 ))}
               </View>
             )}
@@ -83,7 +83,7 @@ export default function Index() {
             ) : (
               <View className="list_wrap">
                 {listData?.map((item) => (
-                  <ReserveCard reserveType={2} />
+                  <ReserveCard reserveType={2} item={item} />
                 ))}
               </View>
             )}
@@ -97,7 +97,7 @@ export default function Index() {
             ) : (
               <View className="list_wrap">
                 {listData?.map((item) => (
-                  <ReserveCard reserveType={1} />
+                  <ReserveCard reserveType={1} item={item} />
                 ))}
               </View>
             )}
@@ -111,7 +111,7 @@ export default function Index() {
             ) : (
               <View className="list_wrap">
                 {listData?.map((item) => (
-                  <ReserveCard reserveType={1} />
+                  <ReserveCard reserveType={1} item={item} />
                 ))}
               </View>
             )}
@@ -125,7 +125,7 @@ export default function Index() {
             ) : (
               <View className="list_wrap">
                 {listData?.map((item) => (
-                  <ReserveCard reserveType={1} />
+                  <ReserveCard reserveType={1} item={item} />
                 ))}
               </View>
             )}

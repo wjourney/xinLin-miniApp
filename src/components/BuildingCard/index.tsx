@@ -8,9 +8,14 @@ import { getUserInfo } from "@/api/user";
 import Login from "@/components/Login";
 import { getBuildingDetail, collectionBuilding } from "@/api/buildings";
 
-export default function Index({ buildingItem, refreshFn }) {
+export default function Index({
+  buildingItem,
+  refreshFn,
+  isLoginVisible,
+  setIsLoginVisible,
+}) {
   // const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoginVisible, setIsLoginVisible] = useState(false);
+  // const [isLoginVisible, setIsLoginVisible] = useState(false);
 
   const handleCollectHouse = async () => {
     const res = await getUserInfo();
@@ -45,10 +50,16 @@ export default function Index({ buildingItem, refreshFn }) {
         }
       }}
     >
-      <Image className="building_item_img_wrap" src={buildingItem?.thumbnail} />
+      <Image
+        className="building_item_img_wrap"
+        src={buildingItem?.thumbnail}
+        mode="aspectFill"
+      />
       <View className="info_wrap">
-        <View className="location">衡山路8号｜4楼</View>
-        <View className="area">1000m²</View>
+        <View className="location">
+          {`${buildingItem?.parkName}｜${buildingItem?.floor}楼`}
+        </View>
+        <View className="area">{buildingItem?.totalArea}m²</View>
         <View className="price">
           <Text style={{ color: "#AE1D23", fontWeight: 500 }}>
             {buildingItem?.price}
@@ -61,18 +72,11 @@ export default function Index({ buildingItem, refreshFn }) {
           handleCollectHouse();
           event?.stopPropagation();
         }}
+        mode="aspectFill"
         className="collection"
         src={require(buildingItem?.liked
           ? "@/assets/svg/heart_love.svg"
           : "@/assets/svg/heart_notLove.svg")}
-      />
-      <Login
-        visible={isLoginVisible}
-        setVisible={setIsLoginVisible}
-        // handleFn={() => {
-        //   Taro.switchTab({ url: indexToUrl[4] });
-        //   setIsLoginVisible(false);
-        // }}
       />
     </View>
   );
