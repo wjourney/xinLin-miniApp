@@ -7,12 +7,13 @@ import {
   Swiper,
   SwiperItem,
 } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import { useLoad, useShareAppMessage } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
 import "./index.scss";
-import LocationSvg from "@/assets/svg/location_gray.svg";
+// import LocationSvg from "@/assets/svg/location_gray.svg";
+import LocationSvg from "@/assets/svg/location.svg";
 import Collection from "@/assets/svg/heart_love.svg";
 import { AtTag, AtAvatar, AtDivider, AtTextarea } from "taro-ui";
 import MoreSvg from "@/assets/svg/more.svg";
@@ -24,6 +25,7 @@ import Login from "@/components/Login";
 export default function Index() {
   const router = Taro.getCurrentInstance()?.router;
   const params: any = router?.params;
+  const { id: buildingId } = params;
   const [detailData, setDetailData] = useState<any>();
   const [isLoginVisible, setIsLoginVisible] = useState(false);
 
@@ -38,6 +40,33 @@ export default function Index() {
 
   useEffect(() => {
     getBuildingDetailData();
+  }, []);
+
+  useShareAppMessage(() => {
+    const token = Taro.getStorageSync("token");
+
+    return {
+      title: ` ${detailData?.parkName}｜${detailData?.floor}楼`,
+      path: `/pages/Buildings/BuildingDetail/index?id=${buildingId}`,
+    };
+  });
+
+  useEffect(() => {
+    // console.log("taskStatus: ", taskStatus);
+    // if (taskStatus === statusState.SUCCESS) {
+    Taro.showShareMenu({
+      withShareTicket: true,
+      showShareItems: ["shareAppMessage", "shareTimeline"],
+      success: (res) => {
+        console.log("showShareMenu-success: ", res);
+      },
+      fail: (error) => {
+        console.log("showShareMenu-error: ", error);
+      },
+    });
+    // } else {
+    //   Taro.hideShareMenu();
+    // }
   }, []);
 
   const handlePhone = (phoneNum) => {
@@ -141,12 +170,14 @@ export default function Index() {
                   scale: 18,
                 });
               }}
+              style={{ height: 28, width: 28 }}
             />
             <Image
               onClick={handleCollectHouse}
               src={require(detailData?.liked
                 ? "@/assets/svg/heart_love.svg"
                 : "@/assets/svg/heart_notLove.svg")}
+              style={{ height: 26, width: 24 }}
             />
           </View>
         </View>

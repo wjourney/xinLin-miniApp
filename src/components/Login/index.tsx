@@ -38,8 +38,6 @@ const Login: React.FC<
 
     Taro.login({
       success: async (result) => {
-        console.log("result", result);
-
         if (result.code) {
           const res = await login(result.code);
           const { code, data } = res;
@@ -61,7 +59,9 @@ const Login: React.FC<
                 title: "登陆成功",
                 icon: "none",
               });
-              handleFn();
+              if (handleFn !== undefined) {
+                handleFn();
+              }
               setVisible(false);
             }
           }

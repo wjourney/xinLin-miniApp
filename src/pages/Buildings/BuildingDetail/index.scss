@@ -91,10 +91,11 @@
     .building_location {
       padding-left: 16px;
       padding-right: 16px;
-      margin-top: 4px;
+      margin-top: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      height: 28px;
 
       text {
         font-size: 14px;
@@ -121,7 +122,8 @@
         padding-right: 16px;
         display: flex;
         gap: 8px;
-        height: 30px;
+        // height: 30px;
+        flex-wrap: wrap;
 
         .at-tag {
           padding: 4px 8px;
@@ -129,24 +131,24 @@
           height: 20px;
           font-size: 12px;
           display: flex;
-          color: #4ba8e6;
+          color: #2772f3;
           justify-content: center;
           align-items: center;
           line-height: unset;
           background-color: rgb(223, 235, 241);
-          // border: solid 1px #4ba8e6;
+          // border: solid 1px #2772f3;
         }
       }
       .action_wrap {
         display: flex;
-        gap: 16px;
+        gap: 12px;
         height: 100%;
         align-items: center;
 
-        image {
-          width: 24px;
-          height: 24px;
-        }
+        // image {
+        //   width: 28px;
+        //   height: 28px;
+        // }
       }
     }
 
@@ -340,7 +342,7 @@
       padding-right: 16px;
 
       .btn {
-        background: #4ba8e6;
+        background: #2772f3;
         height: calc(100% - 20px);
         width: 100%;
         justify-content: center;

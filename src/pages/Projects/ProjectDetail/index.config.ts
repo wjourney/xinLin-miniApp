@@ -1,5 +1,5 @@
 export default definePageConfig({
-  navigationBarTitleText: "房源",
+  navigationBarTitleText: "",
   navigationBarTextStyle: "black",
   // navigationBarBackgroundColor: "#CBB8FF",
   enableShareTimeline: true,

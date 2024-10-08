@@ -8,7 +8,7 @@ import {
   Swiper,
   SwiperItem,
 } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import { useLoad, useShareAppMessage } from "@tarojs/taro";
 import BottomTabBar from "@/components/BottomTabBar";
 import { useEffect, useRef, useState } from "react";
 import Taro from "@tarojs/taro";
@@ -33,7 +33,7 @@ export default function Index() {
     useState(false);
   const router = Taro.getCurrentInstance()?.router;
   const params: any = router?.params;
-
+  const { id: parkId } = params;
   const [detailData, setDetailData] = useState<any>();
 
   const getBuildingDetailData = async (id) => {
@@ -47,6 +47,33 @@ export default function Index() {
   useEffect(() => {
     const { id } = params;
     getBuildingDetailData(id);
+  }, []);
+
+  useShareAppMessage(() => {
+    const token = Taro.getStorageSync("token");
+
+    return {
+      title: detailData?.name,
+      path: `/pages/Projects/ProjectDetail/index?id=${parkId}`,
+    };
+  });
+
+  useEffect(() => {
+    // console.log("taskStatus: ", taskStatus);
+    // if (taskStatus === statusState.SUCCESS) {
+    Taro.showShareMenu({
+      withShareTicket: true,
+      showShareItems: ["shareAppMessage", "shareTimeline"],
+      success: (res) => {
+        console.log("showShareMenu-success: ", res);
+      },
+      fail: (error) => {
+        console.log("showShareMenu-error: ", error);
+      },
+    });
+    // } else {
+    //   Taro.hideShareMenu();
+    // }
   }, []);
 
   const mapRef = useRef(null);
