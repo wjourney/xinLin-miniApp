@@ -39,7 +39,6 @@ const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
       } else {
         setIsLoginVisible(true);
       }
-
       // if (res.code !== 200) {
       //   // Taro.switchTab({ url: indexToUrl[value] });
       //   setIsLoginVisible(true);
@@ -62,8 +61,8 @@ const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
       <AtTabBar
         fixed
         color="#999999"
-        selectedColor="#4BA8E6"
-        iconSize={24}
+        selectedColor="#2772F3"
+        iconSize={26}
         fontSize={12}
         tabList={tabList}
         onClick={handleClick}

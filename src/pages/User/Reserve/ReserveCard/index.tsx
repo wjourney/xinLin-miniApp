@@ -11,6 +11,26 @@ import ReserveHome from "@/assets/svg/reserve-home.svg";
 import ReserveLocation from "@/assets/svg/reserve-location.svg";
 import ReservePhone from "@/assets/svg/reserve-phone.svg";
 import { get } from "http";
+// import { ReserveType } from "../index";
+
+export const ReserveType = {
+  0: {
+    text: "待确认",
+    color: "rgba(255, 101, 101, 1)",
+  },
+  1: {
+    text: "待看房",
+    color: "rgba(255, 101, 101, 1)",
+  },
+  2: {
+    text: "已看房",
+    color: "rgba(255, 101, 101, 1)",
+  },
+  3: {
+    text: "已作废",
+    color: "rgba(255, 101, 101, 1)",
+  },
+};
 
 function getWeekDay(dateStr) {
   const days = ["日", "一", "二", "三", "四", "五", "六"];
@@ -19,7 +39,7 @@ function getWeekDay(dateStr) {
 
 export default function Index({ reserveType, item }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  // console.log("fff666", reserveType, ReserveType);
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的预约" });
   }, []);
@@ -46,7 +66,16 @@ export default function Index({ reserveType, item }) {
           {getWeekDay(item?.reservTime)}）
           {new Date(item?.reservTime).toISOString().slice(11, 16)}
         </View>
-        {/* <View className={`tag ${reserveType}`}>待确认</View> */}
+        <View
+          className={`tag ${reserveType}`}
+          style={{
+            color: ReserveType?.[reserveType]?.color,
+            border: `solid 1px`,
+            borderColor: ReserveType?.[reserveType]?.color,
+          }}
+        >
+          {ReserveType?.[reserveType]?.text}
+        </View>
       </View>
       <View className="divider"></View>
       <View className="info_wrap">

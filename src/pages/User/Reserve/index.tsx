@@ -8,13 +8,6 @@ import TopNav from "@/components/TopNav";
 import ReserveCard from "@/pages/User/Reserve/ReserveCard";
 import { getMyReserve } from "@/api/my";
 
-export const reserveType = {
-  0: "待确认",
-  1: "待看房",
-  2: "已看房",
-  3: "已作废",
-};
-
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [listData, setListData] = useState([]);
@@ -68,8 +61,8 @@ export default function Index() {
               </View>
             ) : (
               <View className="list_wrap">
-                {listData?.map((item) => (
-                  <ReserveCard reserveType={1} item={item} />
+                {listData?.map((item: any) => (
+                  <ReserveCard reserveType={item?.confirm} item={item} />
                 ))}
               </View>
             )}
@@ -82,8 +75,8 @@ export default function Index() {
               </View>
             ) : (
               <View className="list_wrap">
-                {listData?.map((item) => (
-                  <ReserveCard reserveType={2} item={item} />
+                {listData?.map((item: any) => (
+                  <ReserveCard reserveType={item?.confirm} item={item} />
                 ))}
               </View>
             )}
@@ -96,8 +89,8 @@ export default function Index() {
               </View>
             ) : (
               <View className="list_wrap">
-                {listData?.map((item) => (
-                  <ReserveCard reserveType={1} item={item} />
+                {listData?.map((item: any) => (
+                  <ReserveCard reserveType={item?.confirm} item={item} />
                 ))}
               </View>
             )}
@@ -110,8 +103,8 @@ export default function Index() {
               </View>
             ) : (
               <View className="list_wrap">
-                {listData?.map((item) => (
-                  <ReserveCard reserveType={1} item={item} />
+                {listData?.map((item: any) => (
+                  <ReserveCard reserveType={item?.confirm} item={item} />
                 ))}
               </View>
             )}
@@ -124,8 +117,8 @@ export default function Index() {
               </View>
             ) : (
               <View className="list_wrap">
-                {listData?.map((item) => (
-                  <ReserveCard reserveType={1} item={item} />
+                {listData?.map((item: any) => (
+                  <ReserveCard reserveType={item?.confirm} item={item} />
                 ))}
               </View>
             )}

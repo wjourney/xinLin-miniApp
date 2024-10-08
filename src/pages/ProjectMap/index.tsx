@@ -1,44 +1,23 @@
-import {
-  View,
-  Image,
-  Map,
-  Text,
-  Input,
-  Swiper,
-  SwiperItem,
-} from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
-import BottomTabBar from "@/components/BottomTabBar";
+import { View, Image, Map, Swiper, SwiperItem } from "@tarojs/components";
 import { useEffect, useState } from "react";
 import "./index.scss";
 import Taro from "@tarojs/taro";
-import MapMode from "@/assets/svg/mapMode.svg";
 import { Picker } from "@tarojs/components";
 import DownSvg from "@/assets/svg/down.svg";
-import SearchSvg from "@/assets/svg/search.svg";
-import BlueLocationSvg from "@/assets/svg/location-blue.svg";
 import TopNav from "@/components/TopNav";
-import LocationSvg from "@/assets/svg/location.svg";
 import ProjectCard from "@/pages/ProjectMap/ProjectCard";
-import clsx from "clsx";
 import ListMode from "@/assets/svg/listMode.svg";
 import { getMapProjects } from "@/api/projects";
-
-const mockPlaces = {
-  selector: ["杭州", "上海", "武汉", "北京"],
-  timeSel: "12:01",
-  dateSel: "2018-04-22",
-};
+import { getProjectsOptions } from "@/api/projects";
 
 export default function Index() {
-  const [selectPlace, setSelectPlace] = useState("上海");
-  const [searchValue, setSearchValue] = useState("");
-  const [activeKey, setActiveKey] = useState("");
+  const [selectPlace, setSelectPlace] = useState("");
   const [navHeight, setNavHeight] = useState(0);
   const [screenHeight, setScreenHeight] = useState(0);
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [projectList, setProjectList] = useState([]);
   const [listData, setListData] = useState([]);
+  const [filterOptions, setFilterOptions] = useState([]);
+  const [selectCity, setSelectCity] = useState("");
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -67,23 +46,28 @@ export default function Index() {
 
     if (code === 200) {
       setListData(data);
-      // if (hasNext) {
-      //   setPage(page + 1);
-      // }
+    }
+  };
+
+  const getFilterOptionsData = async () => {
+    const res = await getProjectsOptions();
+    const { code, data } = res;
+    if (code === 200) {
+      setFilterOptions(data?.map((item: any) => item?.name));
+      setSelectPlace(data?.[0]?.name);
     }
   };
 
   const handleSwiperChange = (e) => {
     setCurrentIdx(e.detail.current);
-    console.log("fdfdsf", listData?.[e.detail.current]);
   };
 
   useEffect(() => {
     setNavHeight(getNavHeight());
     getProjectsList();
+    getFilterOptionsData();
   }, []);
 
-  console.log("dd", listData?.[currentIdx]?.longitude);
   return (
     <View className="projectMap_page_view">
       <TopNav title={"找项目"} hasBack={true} />
@@ -92,9 +76,9 @@ export default function Index() {
           <View className="choose_place">
             <Picker
               mode="selector"
-              range={mockPlaces.selector}
+              range={filterOptions}
               onChange={(target) =>
-                setSelectPlace(mockPlaces?.selector?.[target.detail.value])
+                setSelectPlace(filterOptions?.[target.detail.value])
               }
             >
               <View className="select_location_wrap">

@@ -23,7 +23,6 @@ import Dropdown from "@/components/Dropdown";
 import CheckMark from "@/assets/svg/checkmark.svg";
 
 export default function Index() {
-  const [selectPlace, setSelectPlace] = useState("上海");
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef<any>(null);
   const [isInputFocus, setIsInputFocus] = useState(false);
@@ -40,7 +39,7 @@ export default function Index() {
   const dropdownRef = useRef();
   const [selectCity, setSelectCity] = useState("all");
   const [showCity, setShowCity] = useState("全部");
-
+  const pageSize = 20;
   const [areaOptions, setAreaOptions] = useState<any[]>([]);
   const [selectArea, setSelectArea] = useState("");
 
@@ -120,7 +119,14 @@ export default function Index() {
 
   const handleLoadMore = () => {
     if (projectList?.hasNext) {
-      getProjectsList(page, 20, selectCity, selectArea, searchValue, true);
+      getProjectsList(
+        page,
+        pageSize,
+        selectCity,
+        selectArea,
+        searchValue,
+        true
+      );
     }
   };
 
@@ -134,19 +140,46 @@ export default function Index() {
   };
 
   const handleConfirm = async () => {
-    setShowCity(selectCity);
+    // setShowCity(selectCity === "all" ? "全部" : selectCity);
     console.log("ddwsad", selectCity, selectArea);
     if (selectCity === "all" && selectArea === "") {
-      getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
+      getProjectsList(
+        page,
+        pageSize,
+        selectCity,
+        selectArea,
+        searchValue,
+        false
+      );
+      setShowCity("全部");
     } else if (selectCity === "all" && selectArea !== "") {
-      getProjectsList(page, 20, selectArea, "", searchValue, false);
+      getProjectsList(page, pageSize, selectArea, "", searchValue, false);
+      setShowCity(selectArea);
+    } else if (selectCity !== "all" && selectArea === "all") {
+      setShowCity(selectCity);
+      getProjectsList(
+        page,
+        pageSize,
+        selectCity,
+        selectArea,
+        searchValue,
+        false
+      );
     } else {
-      getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
+      setShowCity(selectArea);
+      getProjectsList(
+        page,
+        pageSize,
+        selectCity,
+        selectArea,
+        searchValue,
+        false
+      );
     }
   };
 
   useEffect(() => {
-    getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
+    getProjectsList(page, pageSize, selectCity, selectArea, searchValue, false);
     getFilterOptionsData();
   }, []);
 
@@ -185,9 +218,9 @@ export default function Index() {
     setIsInputFocus(false);
   });
 
-  if (loading) {
-    return null;
-  }
+  // if (loading) {
+  //   return null;
+  // }
 
   return (
     <View className="page_view">
@@ -220,7 +253,7 @@ export default function Index() {
                         <View
                           style={{
                             background: "all" === selectCity ? "white" : "",
-                            color: "all" === selectCity ? "#4BA8E6" : "",
+                            color: "all" === selectCity ? "#2772F3" : "",
                           }}
                           className="item"
                           onClick={() => {
@@ -230,13 +263,12 @@ export default function Index() {
                         >
                           全部
                         </View>
-
                         {filterOptions?.map((item: any) => (
                           <View
                             style={{
                               background:
                                 item?.name === selectCity ? "white" : "",
-                              color: item?.name === selectCity ? "#4BA8E6" : "",
+                              color: item?.name === selectCity ? "#2772F3" : "",
                             }}
                             className="item"
                             onClick={() => {
@@ -253,12 +285,19 @@ export default function Index() {
                           <View
                             style={{
                               background: "all" === selectArea ? "white" : "",
-                              color: "all" === selectArea ? "#4BA8E6" : "",
+                              color: "all" === selectArea ? "#2772F3" : "",
                             }}
                             onClick={() => setSelectArea("all")}
                             className="item_warp"
                           >
-                            <View className="text"> 全部</View>
+                            <View
+                              className="text"
+                              style={{
+                                color: "all" === selectArea ? "#2772F3" : "",
+                              }}
+                            >
+                              全部
+                            </View>
                             {"all" === selectArea && <Image src={CheckMark} />}
                           </View>
                         )}
@@ -267,12 +306,20 @@ export default function Index() {
                             style={{
                               background:
                                 item?.name === selectArea ? "white" : "",
-                              color: item?.name === selectArea ? "#4BA8E6" : "",
+                              color: item?.name === selectArea ? "#2772F3" : "",
                             }}
                             onClick={() => setSelectArea(item?.name)}
                             className="item_warp"
                           >
-                            <View className="text"> {item?.name}</View>
+                            <View
+                              className="text"
+                              style={{
+                                color:
+                                  item?.name === selectArea ? "#2772F3" : "",
+                              }}
+                            >
+                              {item?.name}
+                            </View>
                             {item?.name === selectArea && (
                               <Image src={CheckMark} />
                             )}
@@ -284,7 +331,7 @@ export default function Index() {
                           <View
                             style={{
                               background: item === selectProject ? "white" : "",
-                              color: item === selectProject ? "#4BA8E6" : "",
+                              color: item === selectProject ? "#2772F3" : "",
                             }}
                             onClick={() => setSelectProject(item)}
                             className="item_warp"
@@ -333,7 +380,7 @@ export default function Index() {
                 console.log("ffff", searchValue);
                 getProjectsList(
                   page,
-                  20,
+                  pageSize,
                   selectCity,
                   selectArea,
                   searchValue,
@@ -380,7 +427,9 @@ export default function Index() {
               status={"loading"}
               loadingText="正在加载..."
             />
-          ) : null}
+          ) : (
+            <View style={{ height: 34 }}></View>
+          )}
         </ScrollView>
       </View>
       <BottomTabBar currentIndex={2} />

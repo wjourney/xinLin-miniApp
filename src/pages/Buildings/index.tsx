@@ -173,7 +173,7 @@ export default function Index() {
         price: selectPrice,
       });
       const { code, data = {} } = res || {};
-      const { hasNext, data: list, total = 0 } = data;
+      const { hasNext, list, total = 0 } = data;
       if (code === 200) {
         setBuildingList((pre) => ({
           hasNext: hasNext,
@@ -230,7 +230,6 @@ export default function Index() {
       items: newData,
     }));
   };
-
   useEffect(() => {
     if (selectCity === "all") {
       setAreaOptions([]);
@@ -267,15 +266,7 @@ export default function Index() {
   }, [selectCity, selectAreas, filterOptions]);
 
   const handleConfirm = async () => {
-    console.log("ddwsad", selectProjectId);
     getBuildingsList(false);
-    // if (selectCity === "all" && selectArea === "") {
-    //   getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
-    // } else if (selectCity === "all" && selectArea !== "") {
-    //   getProjectsList(page, 20, selectArea, "", searchValue, false);
-    // } else {
-    //   getProjectsList(page, 20, selectCity, selectArea, searchValue, false);
-    // }
   };
 
   return (
@@ -291,7 +282,7 @@ export default function Index() {
                   <View
                     style={{
                       background: "all" === selectCity ? "white" : "",
-                      color: "all" === selectCity ? "#4BA8E6" : "",
+                      color: "all" === selectCity ? "#2772F3" : "",
                     }}
                     className="item"
                     onClick={() => {
@@ -305,7 +296,7 @@ export default function Index() {
                     <View
                       style={{
                         background: item.city === selectCity ? "white" : "",
-                        color: item.city === selectCity ? "#4BA8E6" : "",
+                        color: item.city === selectCity ? "#2772F3" : "",
                       }}
                       className="item"
                       onClick={() => {
@@ -322,7 +313,7 @@ export default function Index() {
                     <View
                       style={{
                         background: "all" === selectAreas ? "white" : "",
-                        color: "all" === selectAreas ? "#4BA8E6" : "",
+                        color: "all" === selectAreas ? "#2772F3" : "",
                       }}
                       onClick={() => {
                         setSelectAreas("all");
@@ -339,12 +330,11 @@ export default function Index() {
                             ? "white"
                             : "",
                           color: !!selectAreas?.includes(item.districtName)
-                            ? "#4BA8E6"
+                            ? "#2772F3"
                             : "",
                         }}
                         onClick={() => {
                           setSelectAreas((pre: string[] | string) => {
-                            console.log("pppdddd", pre);
                             if (pre === "all" || pre === undefined) {
                               return [item?.districtName];
                             } else {
@@ -368,14 +358,20 @@ export default function Index() {
                   {projectOptions?.map((item) => (
                     <View
                       style={{
-                        background:
-                          item?.name === selectProjectId ? "white" : "",
-                        color: item?.name === selectProjectId ? "#4BA8E6" : "",
+                        background: item?.id === selectProjectId ? "white" : "",
+                        color: item?.id === selectProjectId ? "#2772F3" : "",
                       }}
                       onClick={() => setSelectProjectId(item?.id)}
                       className="item_warp"
                     >
-                      <View className="text"> {item?.name}</View>
+                      <View
+                        style={{
+                          color: item?.id === selectProjectId ? "#2772F3" : "",
+                        }}
+                        className="text"
+                      >
+                        {item?.name}
+                      </View>
                       {item?.id === selectProjectId && (
                         <Image src={CheckMark} />
                       )}
@@ -410,7 +406,7 @@ export default function Index() {
                         index === Object.entries(BusinessType)?.length - 1
                           ? "none"
                           : "",
-                      color: value === selectBusinessType ? "#4BA8E6" : "",
+                      color: value === selectBusinessType ? "#2772F3" : "",
                     }}
                   >
                     {label}
@@ -443,9 +439,8 @@ export default function Index() {
                   <View
                     className="tag"
                     style={{
-                      background:
-                        item === selectPrice ? "rgb(223, 235, 241)" : "",
-                      color: item === selectPrice ? "#4BA8ED" : "",
+                      border: item === selectPrice ? "solid #2772F3 1px" : "",
+                      color: item === selectPrice ? "#2772F3" : "",
                     }}
                     onClick={() => setSelectPrice(item)}
                   >
@@ -475,9 +470,8 @@ export default function Index() {
                 {acreageOptions?.map((item, index) => (
                   <View
                     style={{
-                      background:
-                        item === selectAcreage ? "rgb(223, 235, 241)" : "",
-                      color: item === selectAcreage ? "#4BA8ED" : "",
+                      border: item === selectAcreage ? "solid #2772F3 1px" : "",
+                      color: item === selectAcreage ? "#2772F3" : "",
                     }}
                     onClick={() => setSelectAcreage(item)}
                     className="tag"
@@ -541,7 +535,9 @@ export default function Index() {
               status={"loading"}
               loadingText="正在加载..."
             />
-          ) : null}
+          ) : (
+            <View style={{ height: 34 }}></View>
+          )}
         </ScrollView>
       </View>
       <Login

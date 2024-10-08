@@ -15,6 +15,7 @@ import { getRecommendProjects } from "@/api/projects";
 import { getRecommendBuildings } from "@/api/buildings";
 import { getBanners } from "@/api/news";
 import { getProjects, getProjectsOptions } from "@/api/projects";
+import MapMode from "@/assets/svg/mapMode.svg";
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
@@ -107,25 +108,28 @@ export default function Index() {
 
   return (
     <View className="page_view">
-      <TopNav title={"首页"} />
+      {/* <TopNav title={""} /> */}
       <View className="home_wrapper">
+        <View className="choose_place">
+          <Picker
+            mode="selector"
+            range={options}
+            onChange={(target) => {
+              setSelectPlace(options?.[target.detail.value]);
+              handleGetRecommendProjects(options?.[target.detail.value]);
+              handleGetRecommendBuildings(options?.[target.detail.value]);
+            }}
+          >
+            <View className="select_location_wrap">
+              {selectPlace}
+              <Image src={DownSvg} />
+            </View>
+          </Picker>
+        </View>
+        <View className="logo_wrap">
+          <Image src="https://xinning-1329449599.cos.ap-shanghai.myqcloud.com/xinning/upload/uploads/logo-removebg2.png" />
+        </View>
         <View className="searchWrap">
-          <View className="choose_place">
-            <Picker
-              mode="selector"
-              range={options}
-              onChange={(target) => {
-                setSelectPlace(options?.[target.detail.value]);
-                handleGetRecommendProjects(options?.[target.detail.value]);
-                handleGetRecommendBuildings(options?.[target.detail.value]);
-              }}
-            >
-              <View className="select_location_wrap">
-                {selectPlace}
-                <Image src={DownSvg} />
-              </View>
-            </Picker>
-          </View>
           <View className="search">
             <Input
               type="text"
@@ -141,6 +145,18 @@ export default function Index() {
               // onInput={(target) => setSearchValue(target?.detail?.value)}
             />
             <Image className="searchSvg" src={SearchSvg} />
+          </View>
+          <View className="index_mode_wrap">
+            <Image
+              className="mode_wrap_img"
+              src={MapMode}
+              onClick={() =>
+                Taro.navigateTo({
+                  url: "/pages/ProjectMap/index",
+                })
+              }
+            />
+            {/* <View className="mode_text">地图模式</View> */}
           </View>
         </View>
         <Swiper

@@ -68,7 +68,7 @@
         height: 100%;
         display: flex;
         flex: 1;
-        background: #4ba8e6;
+        background: #2772f3;
         color: rgba(255, 255, 255, 1);
         font-size: 16px;
         font-weight: 400;
@@ -177,7 +177,7 @@
         height: 24px;
         font-size: 16px;
         font-weight: 400;
-        color: rgba(87, 146, 240, 1);
+        color: #2772f3;
         text-align: center;
       }
     }
@@ -222,7 +222,7 @@
     }
 
     .building_list_wrap {
-      // padding-bottom: 24px;
+      padding-bottom: 24px;
       display: flex;
       margin-top: 16px;
       flex-direction: column;
@@ -236,6 +236,7 @@
 
     .tag {
       border-radius: 4px;
+      box-sizing: border-box;
       height: 32px;
       font-size: 12px;
       padding: 0;

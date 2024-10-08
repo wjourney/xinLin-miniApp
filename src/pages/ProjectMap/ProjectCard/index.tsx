@@ -29,7 +29,7 @@ export default function Index({ item }) {
         </View>
         <View className="price">
           <Image src={LocationSvg} />
-          <Text>徐汇区</Text>
+          <Text>{item?.districtName}</Text>
         </View>
       </View>
     </View>

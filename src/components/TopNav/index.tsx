@@ -8,9 +8,6 @@ import { Swiper, SwiperItem } from "@tarojs/components";
 import BackSvg from "@/assets/svg/back.svg";
 
 export default function Index({ title, hasBack = false }) {
-  // const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectPlace, setSelectPlace] = useState("上海");
-  const [searchValue, setSearchValue] = useState("");
   const [navHeight, setNavHeight] = useState<number>();
   const [statusBarHeight, setStatusBarHeight] = useState<number>();
 

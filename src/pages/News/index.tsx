@@ -91,24 +91,27 @@ export default function Index() {
           }}
         >
           <AtTabsPane current={currentIndex} index={0}>
-            <View className="list_wrap">
+            <View className="news_list_wrap">
               {newsData?.map((item) => (
                 <Card newsItem={item} />
               ))}
+              <View style={{ height: 34 }}></View>
             </View>
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={1}>
-            <View className="list_wrap">
+            <View className="news_list_wrap">
               {newsData?.map((item) => (
                 <Card newsItem={item} />
               ))}
+              <View style={{ height: 34 }}></View>
             </View>
           </AtTabsPane>
           <AtTabsPane current={currentIndex} index={2}>
-            <View className="list_wrap">
+            <View className="news_list_wrap">
               {newsData?.map((item) => (
                 <Card newsItem={item} />
               ))}
+              <View style={{ height: 34 }}></View>
             </View>
           </AtTabsPane>
         </AtTabs>
