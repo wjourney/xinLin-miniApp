@@ -58,19 +58,34 @@ const items = [
 
 export default function Index() {
   // const [currentIndex, setCurrentIndex] = useState(0);
-  const [userInfo, setUserInfo] = useState<any>();
+  // const [userInfo, setUserInfo] = useState<any>();
+  const [userAvatar, setUserAvatar] = useState("");
+  const [username, setUsername] = useState("");
 
-  const getUserInfoData = async () => {
-    const res = await getUserInfo();
-    const { code, data } = res;
-    if (code === 200) {
-      setUserInfo(data);
-    } else {
-    }
+  // 获取用户手机号
+  // const getUserInfoData = async () => {
+  //   const res = await getUserInfo();
+  //   const { code, data } = res;
+  //   if (code === 200) {
+  //     setUserInfo(data);
+  //   } else {
+  //   }
+  // };
+
+  // 获取用户头像
+  const handleGetUserMoreInfo = () => {
+    Taro.getUserInfo({
+      success: function (res) {
+        const userInfo = res.userInfo;
+        setUserAvatar(userInfo.avatarUrl);
+        setUsername(userInfo.nickName);
+      },
+    });
   };
 
   useEffect(() => {
-    getUserInfoData();
+    // getUserInfoData();
+    handleGetUserMoreInfo();
   }, []);
 
   return (
@@ -85,13 +100,8 @@ export default function Index() {
             })
           }
         >
-          <Image
-            className="avatar"
-            src={
-              "https://bkmksh.oss-accelerate.aliyuncs.com/f2b0e436-69e0-11ef-b2bd-0ad83e4969ec_00001_small.jpeg?OSSAccessKeyId=LTAI5t8GmQec8vxNsiGKcYBT&Expires=317085359729&Signature=0jUiIDYyudsjgMJtjk52NFcQh1g%3D"
-            }
-          />
-          <Text className="username">{userInfo?.username}</Text>
+          <Image className="avatar" src={userAvatar} />
+          <Text className="username">{username}</Text>
           <Image className="more" src={MoreSvg} />
         </View>
         <View className="menu_warp">

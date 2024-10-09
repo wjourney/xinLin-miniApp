@@ -62,7 +62,7 @@ const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
         fixed
         color="#999999"
         selectedColor="#2772F3"
-        iconSize={26}
+        iconSize={28}
         fontSize={12}
         tabList={tabList}
         onClick={handleClick}

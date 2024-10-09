@@ -8,8 +8,6 @@ import TopNav from "@/components/TopNav";
 import BuildingCard from "@/components/BuildingCard";
 import { getMyCollection } from "@/api/my";
 
-const mockData = [];
-
 export default function Index() {
   const [listData, setListData] = useState([]);
 

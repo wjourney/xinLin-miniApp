@@ -223,24 +223,12 @@ export default function Index() {
   // }
 
   return (
-    <View className="page_view">
+    <View className="page_view" catchMove>
       <TopNav title={"找项目"} />
       <View className="project_wrapper">
         <View className="searchWrap">
           <View className="choose_place">
             <View className="page_section">
-              {/* <Picker
-                mode="selector"
-                range={mockPlaces.selector}
-                onChange={(target) =>
-                  setSelectPlace(mockPlaces?.selector?.[target.detail.value])
-                }
-              >
-                <View className="select_location_wrap">
-                  {selectPlace}
-                  <Image src={DownSvg} />
-                </View>
-              </Picker> */}
               <Dropdown ref={dropdownRef}>
                 <Dropdown.Item
                   // title={selectCity === "all" ? "全部" : showCity}
@@ -326,23 +314,7 @@ export default function Index() {
                           </View>
                         ))}
                       </View>
-                      {/* <View className="project_item_wrap">
-                        {mockProjects?.map((item) => (
-                          <View
-                            style={{
-                              background: item === selectProject ? "white" : "",
-                              color: item === selectProject ? "#2772F3" : "",
-                            }}
-                            onClick={() => setSelectProject(item)}
-                            className="item_warp"
-                          >
-                            <Text> {item}</Text>
-                            {item === selectProject && (
-                              <Image src={CheckMark} />
-                            )}
-                          </View>
-                        ))}
-                      </View> */}
+
                       <View></View>
                     </View>
                     <View className="btn_wrap">

@@ -270,7 +270,7 @@ export default function Index() {
   };
 
   return (
-    <View className="page_view">
+    <View className="page_view" catchMove>
       <BottomTabBar currentIndex={1} />
       <TopNav title={"房源"} />
       <View className="buildings_wrapper">

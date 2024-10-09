@@ -114,6 +114,7 @@ export default function Index() {
   const params: any = router?.params;
   const [formData, setFormData] = useState({
     company: "",
+    username: "",
     contact: "",
     reserveTime: getCurrentDateIndexes(),
     remark: "",
@@ -131,7 +132,7 @@ export default function Index() {
   const [selectBuildingIndex, setSelectBuildingIndex] = useState<number>();
   const [showBuildingOptions, setShowBuildingOptions] = useState([]);
   const [buildingOptions, setBuildingOptions] = useState([]);
-  const [userInfo, setUserInfo] = useState();
+  // const [userInfo, setUserInfo] = useState();
 
   const getBuildingsByParkIdData = async () => {
     const res = await getBuildingsByParkId(params?.parkId);
@@ -151,7 +152,7 @@ export default function Index() {
     const res = await getUserInfo();
     const { code, data } = res;
     if (code === 200) {
-      setUserInfo(data);
+      // setUserInfo(data);
       setFormData((pre) => ({
         ...pre,
         contact: data?.phone,
@@ -377,6 +378,16 @@ export default function Index() {
             placeholderClass="placeholder"
             onInput={(e) => handleInputChange("company", e)}
             placeholder="请填写您的公司"
+          />
+        </View>
+        <View className="input_warp" style={{ marginTop: 16 }}>
+          <View className="label">
+            {/* <Text className="star">*</Text> */}
+            <Text className="label_value">姓名</Text>
+          </View>
+          <Input
+            value={formData.username}
+            onInput={(e) => handleInputChange("username", e)}
           />
         </View>
         <View className="input_warp" style={{ marginTop: 16 }}>
