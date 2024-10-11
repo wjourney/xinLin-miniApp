@@ -21,6 +21,7 @@ import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui";
 import { getProjectDetail } from "@/api/projects";
 import Login from "@/components/Login";
 import { login, getUserInfo } from "@/api/user";
+import Ellipsis from "@/components/Ellipsis";
 
 export default function Index() {
   const [isSelectConsultantModalVisible, setIsSelectConsultantModalVisible] =
@@ -180,7 +181,8 @@ export default function Index() {
         <View className="desc_wrap">
           <View className="business_price"></View>
           <View className="office_price"></View>
-          <View className="desc">{detailData?.detail}</View>
+          {/* <View className="desc">{detailData?.detail}</View> */}
+          <Ellipsis text={detailData?.detail} />
           {/* <View className="label_value_wrap">
             <View className="label_value">
               <Text className="label">楼层数：</Text>
@@ -207,7 +209,7 @@ export default function Index() {
             style={{ marginTop: 16 }}
           >
             <Text> 招商中心：</Text>
-            <Text className="number">400-232-2323</Text>
+            <Text className="number">021-62156813</Text>
           </View>
         </View>
         <View style={{ paddingTop: 16 }} className="diver_wrap"></View>

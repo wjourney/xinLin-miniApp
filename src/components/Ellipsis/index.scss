@@ -1,0 +1,25 @@
+@import "~taro-ui/dist/style/components/icon.scss";
+@import "~taro-ui/dist/style/components/tab-bar.scss";
+@import "~taro-ui/dist/style/components/badge.scss";
+
+.at-tab-bar {
+  // padding-bottom: 24px;
+  padding-top: 8px;
+  box-shadow: 0px -1px 12px rgba(0, 0, 0, 0.1);
+  padding-bottom: 18px;
+  // z-index: 800;
+
+  .at-tab-bar__item {
+    padding: 0px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .at-tab-bar__icon {
+      font-size: 28px;
+    }
+  }
+  .at-tab-bar__title {
+    padding: 0px;
+  }
+}

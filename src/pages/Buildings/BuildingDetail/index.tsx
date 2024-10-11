@@ -234,7 +234,7 @@ export default function Index() {
           </View>
           <View className="phone_num">
             <View>招商中心：</View>
-            <View className="phone">400-232-2323</View>
+            <View className="phone">021-62156813</View>
           </View>
         </View>
         <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
