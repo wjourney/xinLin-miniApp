@@ -16,19 +16,27 @@ import { get } from "http";
 export const ReserveType = {
   0: {
     text: "待确认",
-    color: "rgba(255, 101, 101, 1)",
+    color: "#cf1322",
+    background: "#fff1f0",
+    border: "#ffa39e",
   },
   1: {
     text: "待看房",
-    color: "rgba(255, 101, 101, 1)",
+    color: "#389e0d",
+    background: "#f6ffed",
+    border: "#b7eb8f",
   },
   2: {
     text: "已看房",
-    color: "rgba(255, 101, 101, 1)",
+    color: "#0958d9",
+    background: "#e6f4ff",
+    border: "#91caff",
   },
   3: {
     text: "已作废",
-    color: "rgba(255, 101, 101, 1)",
+    color: "#faad14",
+    background: "#fffbe6",
+    border: "#ffe58f",
   },
 };
 
@@ -71,7 +79,8 @@ export default function Index({ reserveType, item }) {
           style={{
             color: ReserveType?.[reserveType]?.color,
             border: `solid 1px`,
-            borderColor: ReserveType?.[reserveType]?.color,
+            borderColor: ReserveType?.[reserveType]?.border,
+            background: ReserveType?.[reserveType]?.background,
           }}
         >
           {ReserveType?.[reserveType]?.text}

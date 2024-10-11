@@ -30,7 +30,7 @@ const getYearsData = () => {
 const getMonthData = () => {
   return Array.from(
     { length: 12 },
-    (_, i) => `${String(i + 1).padStart(2, "0")}月`
+    (_, i) => `${String(i + 1).padStart(2, "0")}月`,
   );
 };
 
@@ -44,7 +44,7 @@ const getMonthDateData = (year: number, month: number) => {
   const daysInMonth = getDaysInMonth(year, month); // 获取该月的天数
   return Array.from(
     { length: daysInMonth },
-    (_, i) => `${String(i + 1).padStart(2, "0")}日`
+    (_, i) => `${String(i + 1).padStart(2, "0")}日`,
   );
 };
 
@@ -52,7 +52,7 @@ const getMonthDateData = (year: number, month: number) => {
 const getHoursData = () => {
   return Array.from(
     { length: 24 },
-    (_, i) => `${String(i).padStart(2, "0")}时`
+    (_, i) => `${String(i).padStart(2, "0")}时`,
   );
 };
 
@@ -60,7 +60,7 @@ const getHoursData = () => {
 const getMinutesData = () => {
   return Array.from(
     { length: 60 },
-    (_, i) => `${String(i).padStart(2, "0")}分`
+    (_, i) => `${String(i).padStart(2, "0")}分`,
   );
 };
 
@@ -141,8 +141,8 @@ export default function Index() {
       setShowBuildingOptions(
         data?.map(
           (item: any) =>
-            `${item?.parkName}｜${item?.floor}楼｜${item?.totalArea}㎡`
-        )
+            `${item?.parkName}｜${item?.floor}楼｜${item?.totalArea}㎡`,
+        ),
       );
       setBuildingOptions(data);
     }
@@ -186,6 +186,13 @@ export default function Index() {
       });
       return;
     }
+    if (!formData?.username) {
+      Taro.showToast({
+        icon: "none",
+        title: "请填写姓名",
+      });
+      return;
+    }
     const { parkId, houseId, from, managerId } = params;
     const houseIdValue =
       from === "project"
@@ -209,6 +216,7 @@ export default function Index() {
       company: formData?.company,
       comment: formData?.remark,
       managerId: Number(managerId),
+      username: formData?.username,
     });
     const { code } = res;
     if (code === 200) {
@@ -258,7 +266,6 @@ export default function Index() {
     } else if (column === 1) {
       // 月份滚动
       const newMonth = value; // +1 以获得实际月份
-      console.log("cccfff", value, newMonth);
       setSelectedMonth(newMonth);
       updateDaysInMonth(selectedYear, newMonth);
 
@@ -382,7 +389,7 @@ export default function Index() {
         </View>
         <View className="input_warp" style={{ marginTop: 16 }}>
           <View className="label">
-            {/* <Text className="star">*</Text> */}
+            <Text className="star">*</Text>
             <Text className="label_value">姓名</Text>
           </View>
           <Input

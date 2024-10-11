@@ -106,6 +106,7 @@ export default function Index() {
           title: detailData?.liked ? "取消收藏成功" : "收藏成功",
           icon: "none",
         });
+        Taro.eventCenter.trigger("updateList");
         getBuildingDetailData();
         // refreshFn(detailData?.id, !detailData?.liked);
       }

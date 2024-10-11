@@ -16,12 +16,24 @@ export default function Index() {
     const { code, data } = res;
     if (code === 200) {
       setListData(data);
+      console.log("collect", data);
     }
   };
-  console.log("listData", listData);
+
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: "我的收藏" });
     getCollectionData();
+  }, []);
+
+  useEffect(() => {
+    Taro.eventCenter.on("updateList", () => {
+      getCollectionData();
+    });
+    return () => {
+      Taro.eventCenter.off("updateList", () => {
+        getCollectionData();
+      });
+    };
   }, []);
 
   return (
@@ -40,6 +52,7 @@ export default function Index() {
               refreshFn={getCollectionData}
               isLoginVisible={false}
               setIsLoginVisible={(data) => {}}
+              from={"collection"}
             />
           ))}
         </View>

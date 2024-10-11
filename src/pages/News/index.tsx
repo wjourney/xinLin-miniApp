@@ -57,7 +57,7 @@ export default function Index() {
   }, []);
 
   return (
-    <View className="page_view" catchMove>
+    <View className="page_view">
       <TopNav title={"资讯"} />
       <View className="news_wrapper">
         <Swiper

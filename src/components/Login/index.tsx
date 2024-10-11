@@ -23,13 +23,11 @@ const Login: React.FC<
   }>
 > = ({ visible, setVisible, confirms, handleFn }) => {
   const handleGetPhoneNumber = async (
-    e: BaseEventOrig<ButtonProps.onGetPhoneNumberEventDetail>
+    e: BaseEventOrig<ButtonProps.onGetPhoneNumberEventDetail>,
   ) => {
     e.stopPropagation();
     const iv = e.detail.iv;
     const encryptedData = e.detail.encryptedData;
-
-    console.log("fff", e.detail);
     if (!iv || !encryptedData) {
       Taro.showToast({ title: "获取手机号失败", icon: "none" });
       setVisible(false);

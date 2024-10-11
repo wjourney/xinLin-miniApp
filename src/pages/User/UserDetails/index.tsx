@@ -37,6 +37,29 @@ export default function Index() {
     });
   };
 
+  // 选择上传图片
+  const handleUploadImg = () => {
+    Taro.chooseImage({
+      count: 1,
+      sizeType: ["compressed", "original"],
+      sourceType: ["album", "camera"],
+      success: async (res) => {
+        const imgListInfo: any = res?.tempFiles || [];
+        const imgList = res?.tempFilePaths || [];
+        Taro.showLoading({ title: "上传中" });
+      },
+      fail: (error) => {
+        console.log("error: ", error);
+        if (error.errMsg === "chooseImage:fail") {
+          Taro.showToast({
+            icon: "none",
+            title: "获取图片失败",
+          });
+        }
+      },
+    });
+  };
+
   useEffect(() => {
     getUserInfoData();
     handleGetUserMoreInfo();
@@ -59,7 +82,11 @@ export default function Index() {
           <View className="menu_item">
             <View className="label">个人头像</View>
             <View className="value">
-              <Image className="avatar" src={userAvatar} />
+              <Image
+                className="avatar"
+                src={userAvatar}
+                // onClick={handleUploadImg}
+              />
             </View>
           </View>
           <View className="menu_item">

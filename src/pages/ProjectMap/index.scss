@@ -60,24 +60,24 @@
       }
 
       .mode_wrap {
-        width: 64px;
+        // width: 64px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         gap: 2px;
+        align-items: center;
 
         .mode_wrap_img {
-          margin-left: 24px;
-          margin-right: 16px;
+          // margin-left: 24px;
+          // margin-right: 16px;
           width: 24px;
           height: 24px;
           display: flex;
           justify-content: center;
-          align-items: center;
         }
 
         .mode_text {
-          font-size: 12px;
+          font-size: 11px;
           display: flex;
           justify-content: center;
           align-items: center;

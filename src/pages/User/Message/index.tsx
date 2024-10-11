@@ -15,7 +15,7 @@ export default function Index() {
     items: [],
   });
   const [navHeight, setNavHeight] = useState(0);
-  const pageSize = 2;
+  const pageSize = 20;
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState(false);
 
@@ -86,13 +86,7 @@ export default function Index() {
         <View className="info">
           <View className="title_and_time">
             <View className="title">系统公告</View>
-            <View className="time">
-              {" "}
-              {new Date(item?.created_at)
-                .toLocaleString("zh-CN", { hour12: false })
-                .replace(/\//g, "-")
-                .slice(0, -3)}
-            </View>
+            <View className="time">{item?.createdAt} </View>
           </View>
           <View className="message_detail">{item?.message}</View>
         </View>

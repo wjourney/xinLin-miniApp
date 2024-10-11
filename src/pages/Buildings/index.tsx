@@ -80,7 +80,7 @@ const getCityAllProjects = (data: any[], selectCity) => {
 const getCityAndAreasProjects = (
   data,
   selectCity: string,
-  selectAreas: string[]
+  selectAreas: string[],
 ) => {
   const result: { name: string; id: string }[] = [];
 
@@ -118,7 +118,7 @@ export default function Index() {
   const [selectProjectId, setSelectProjectId] = useState(""); // 所选项目id
 
   const [selectBusinessType, setSelectBusinessType] = useState(
-    BusinessType.all
+    BusinessType.all,
   );
   const [selectPrice, setSelectPrice] = useState(""); //
   const [selectAcreage, setSelectAcreage] = useState(""); // 面积
@@ -130,11 +130,7 @@ export default function Index() {
     items: [],
   });
   const [filterOptions, setFilterOptions] = useState([]);
-  const [selectCityIndex, setSelectCityIndex] = useState(0);
-  const [selectDistrictIndex, setSelectDistrictIndex] = useState(0);
   const [isLoginVisible, setIsLoginVisible] = useState(false);
-
-  // const [ selectCityIndex, setSelectCityIndex] = useState(0)
 
   const getNavHeight = () => {
     // 获取系统信息
@@ -169,8 +165,14 @@ export default function Index() {
             : selectBusinessType === BusinessType.business
             ? "SY"
             : "BG",
-        area: selectAcreage,
-        price: selectPrice,
+        area:
+          /^(\d{1,3})-(\d{1,3})$/.test(selectAcreage) || !selectAcreage
+            ? selectAcreage
+            : `${selectAcreage}-`,
+        price:
+          /^(\d{1,3})-(\d{1,3})$/.test(selectPrice) || !selectPrice
+            ? selectPrice
+            : `${selectPrice}-`,
       });
       const { code, data = {} } = res || {};
       const { hasNext, list, total = 0 } = data;
@@ -236,7 +238,7 @@ export default function Index() {
       setProjectOptions(getAllProjects(filterOptions));
     } else {
       const updateAreaOptions = filterOptions?.find(
-        (item: any) => item?.city === selectCity
+        (item: any) => item?.city === selectCity,
       )?.children;
       setAreaOptions(updateAreaOptions);
 
@@ -248,7 +250,7 @@ export default function Index() {
         const updateProjectOptions = getCityAndAreasProjects(
           filterOptions,
           selectCity,
-          selectAreas
+          selectAreas,
         );
 
         console.log(
@@ -256,7 +258,7 @@ export default function Index() {
           filterOptions,
           selectCity,
           selectAreas,
-          updateProjectOptions
+          updateProjectOptions,
         );
         setProjectOptions(updateProjectOptions);
       }
@@ -269,8 +271,26 @@ export default function Index() {
     getBuildingsList(false);
   };
 
+  const handleReset = () => {
+    setSelectAcreage("");
+    setSelectProjectId("");
+    setSelectBusinessType(BusinessType.all);
+    setSelectPrice("");
+  };
+
+  useEffect(() => {
+    Taro.eventCenter.on("updateList", () => {
+      getBuildingsList();
+    });
+    return () => {
+      Taro.eventCenter.off("updateList", () => {
+        getBuildingsList();
+      });
+    };
+  }, []);
+
   return (
-    <View className="page_view" catchMove>
+    <View className="page_view">
       <BottomTabBar currentIndex={1} />
       <TopNav title={"房源"} />
       <View className="buildings_wrapper">
@@ -340,7 +360,7 @@ export default function Index() {
                             } else {
                               return pre?.includes(item?.districtName)
                                 ? pre?.filter(
-                                    (item1) => item1 !== item?.districtName
+                                    (item1) => item1 !== item?.districtName,
                                   )
                                 : [...pre, item?.districtName];
                             }
@@ -361,7 +381,10 @@ export default function Index() {
                         background: item?.id === selectProjectId ? "white" : "",
                         color: item?.id === selectProjectId ? "#2772F3" : "",
                       }}
-                      onClick={() => setSelectProjectId(item?.id)}
+                      onClick={() => {
+                        setPage(1);
+                        setSelectProjectId(item?.id);
+                      }}
                       className="item_warp"
                     >
                       <View
@@ -381,7 +404,9 @@ export default function Index() {
                 <View></View>
               </View>
               <View className="btn_wrap">
-                <View className="rest">重置</View>
+                <View className="rest" onClick={handleReset}>
+                  重置
+                </View>
                 <View
                   className="confirm"
                   onClick={() => {
@@ -400,13 +425,16 @@ export default function Index() {
                 {Object.entries(BusinessType)?.map(([value, label], index) => (
                   <View
                     className="item"
-                    onClick={() => setSelectBusinessType(value)}
+                    onClick={() => {
+                      setPage(1);
+                      setSelectBusinessType(label);
+                    }}
                     style={{
                       borderBottom:
                         index === Object.entries(BusinessType)?.length - 1
                           ? "none"
                           : "",
-                      color: value === selectBusinessType ? "#2772F3" : "",
+                      color: label === selectBusinessType ? "#2772F3" : "",
                     }}
                   >
                     {label}
@@ -419,7 +447,9 @@ export default function Index() {
                 </View> */}
               </View>
               <View className="btn_wrap">
-                <View className="rest">重置</View>
+                <View className="rest" onClick={handleReset}>
+                  重置
+                </View>
                 <View
                   className="confirm"
                   onClick={() => {
@@ -442,7 +472,10 @@ export default function Index() {
                       border: item === selectPrice ? "solid #2772F3 1px" : "",
                       color: item === selectPrice ? "#2772F3" : "",
                     }}
-                    onClick={() => setSelectPrice(item)}
+                    onClick={() => {
+                      setPage(1);
+                      setSelectPrice(item);
+                    }}
                   >
                     {index === pricesOptions?.length - 1
                       ? `${item}元/㎡/天以上`
@@ -451,7 +484,9 @@ export default function Index() {
                 ))}
               </View>
               <View className="btn_wrap">
-                <View className="rest">重置</View>
+                <View className="rest" onClick={handleReset}>
+                  重置
+                </View>
                 <View
                   className="confirm"
                   onClick={() => {
@@ -473,7 +508,10 @@ export default function Index() {
                       border: item === selectAcreage ? "solid #2772F3 1px" : "",
                       color: item === selectAcreage ? "#2772F3" : "",
                     }}
-                    onClick={() => setSelectAcreage(item)}
+                    onClick={() => {
+                      setPage(1);
+                      setSelectAcreage(item);
+                    }}
                     className="tag"
                   >
                     {index === pricesOptions?.length - 1
@@ -483,7 +521,9 @@ export default function Index() {
                 ))}
               </View>
               <View className="btn_wrap">
-                <View className="rest">重置</View>
+                <View className="rest" onClick={handleReset}>
+                  重置
+                </View>
                 <View
                   className="confirm"
                   onClick={() => {
@@ -520,6 +560,7 @@ export default function Index() {
                 refreshFn={updateListAfterCollect}
                 isLoginVisible={isLoginVisible}
                 setIsLoginVisible={setIsLoginVisible}
+                from="buildingList"
               />
             ))
           )}

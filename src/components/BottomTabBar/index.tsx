@@ -34,6 +34,8 @@ const BottomTabBar: React.FC<IBottomTabBarProps> = ({ currentIndex }) => {
   const handleClick = async (value) => {
     if (value === 4) {
       const res = await getUserInfo();
+      console.log("dddd", res);
+
       if (res.code === 200 && !!res?.data?.isBindPhone) {
         Taro.switchTab({ url: indexToUrl[value] });
       } else {

@@ -13,6 +13,7 @@ export default function Index({
   refreshFn,
   isLoginVisible,
   setIsLoginVisible,
+  from,
 }) {
   // const [currentIndex, setCurrentIndex] = useState(0);
   // const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -30,8 +31,13 @@ export default function Index({
         Taro.showToast({
           title: buildingItem?.liked ? "取消收藏成功" : "收藏成功",
           icon: "none",
+          duration: 3000,
         });
-        refreshFn(buildingItem?.id, !buildingItem?.liked);
+        if (from === "collection") {
+          refreshFn();
+        } else {
+          refreshFn(buildingItem?.id, !buildingItem?.liked);
+        }
       }
     } else {
       setIsLoginVisible(true);
