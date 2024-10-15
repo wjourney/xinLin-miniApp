@@ -158,8 +158,7 @@ export default function Index() {
           <View className="info_item">
             {/* <View className="info_item" style={{ borderRight: "solid #E6E6E6" }}> */}
             <View className="value">
-              {" "}
-              {!!!detailData?.minPrice || !!!detailData?.maxPrice
+              {!!detailData?.price
                 ? detailData?.price
                 : `${detailData?.minPrice}-${detailData?.maxPrice}`}
             </View>
@@ -182,7 +181,7 @@ export default function Index() {
           <View className="business_price"></View>
           <View className="office_price"></View>
           {/* <View className="desc">{detailData?.detail}</View> */}
-          <Ellipsis text={detailData?.detail} />
+          <Ellipsis text={detailData?.introduce || detailData?.detail} />
           {/* <View className="label_value_wrap">
             <View className="label_value">
               <Text className="label">楼层数：</Text>

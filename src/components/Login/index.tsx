@@ -84,8 +84,14 @@ const Login: React.FC<
       }}
     >
       <View className="modal-content">
-        <View className="logo">
-          {/* <Image className="img" src={Logo} /> */}欣宁招商
+        <View className="logo_wrap">
+          {/* <View className="logo_wrap"> */}
+          <Image
+            mode="widthFix"
+            src="https://xinning-1329449599.cos.ap-shanghai.myqcloud.com/xinning/upload/uploads/logo-removebg2.png"
+          />
+          {/* </View> */}
+          {/* <Image className="img" src={Logo} /> */}
         </View>
         <Button
           className="btn"

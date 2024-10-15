@@ -234,7 +234,12 @@ export default function Index() {
           </View>
           <View className="phone_num">
             <View>招商中心：</View>
-            <View className="phone">021-62156813</View>
+            <View
+              className="phone"
+              onClick={() => handlePhone("021 - 62156813")}
+            >
+              021 - 62156813
+            </View>
           </View>
         </View>
         <View style={{ paddingTop: 16 }} className="diver_wrap"></View>

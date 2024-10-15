@@ -10,11 +10,10 @@ interface ILineEllipsis {
 const Ellipsis: React.FC<ILineEllipsis> = ({ text }) => {
   const [isExpanded, setIsExpanded] = useState(false); // 控制是否展开
   const [shouldCollapse, setShouldCollapse] = useState(false); // 判断是否需要折叠
-  const [displayedText, setDisplayedText] = useState(""); // 展示的文本内容
-  const lineHeight = 20; // 假设行高为16px
+  const lineHeight = 20; // 行高为20px
   const maxLines = 3; // 限制显示的最大行数
-  const maxChars = 100; // 假设最大字符数
 
+  // 判断文本是否溢出
   const checkTextOverflow = useCallback(() => {
     Taro.nextTick(() => {
       const query = Taro.createSelectorQuery().in(
@@ -22,27 +21,28 @@ const Ellipsis: React.FC<ILineEllipsis> = ({ text }) => {
       );
       query.select("#text").boundingClientRect();
       query.exec((rect) => {
-        const height = rect[0]?.height || 0;
-        const shouldCollapseText = height > lineHeight * maxLines; // 判断是否需要折叠
-        setShouldCollapse(shouldCollapseText);
-        if (shouldCollapseText) {
-          const truncatedText = getTruncatedText(text);
-          setDisplayedText(truncatedText);
+        if (rect[0]) {
+          const height = rect[0].height || 0;
+          const shouldCollapseText = height > lineHeight * maxLines; // 判断是否需要折叠
+          setShouldCollapse(shouldCollapseText);
+        } else {
+          console.error("未找到 #text 元素");
         }
       });
     });
-  }, [text]);
-
-  const getTruncatedText = (fullText: string) => {
-    const lines = fullText.split(""); // 你可以根据实际的分割规则调整
-    if (lines.length <= maxChars) return fullText; // 如果字符数量少于最大限制，直接显示
-    return fullText.slice(0, maxChars) + "..."; // 否则截取前部分并加省略号
-  };
+  }, []);
 
   useEffect(() => {
     checkTextOverflow();
+
+    return () => {
+      // 页面离开时清理状态
+      setIsExpanded(false);
+      setShouldCollapse(false);
+    };
   }, [checkTextOverflow]);
 
+  // 展开/收起切换
   const handleToggle = () => {
     setIsExpanded((prev) => !prev);
   };
@@ -66,7 +66,7 @@ const Ellipsis: React.FC<ILineEllipsis> = ({ text }) => {
               : "auto",
         }}
       >
-        {shouldCollapse && !isExpanded ? displayedText : text}
+        {text}
       </View>
       {shouldCollapse && (
         <Text

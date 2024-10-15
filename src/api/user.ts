@@ -19,9 +19,6 @@ export const getUserInfo = (): Promise<any> => {
 };
 
 // 修改用户信息
-export const updateUserInfo = (body: {
-  avatar: string;
-  username: string;
-}): Promise<any> => {
+export const updateUser = (body): Promise<any> => {
   return request(`/api/update_me`, "PUT", body);
 };
