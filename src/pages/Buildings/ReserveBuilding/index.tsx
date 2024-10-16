@@ -156,6 +156,7 @@ export default function Index() {
       setFormData((pre) => ({
         ...pre,
         contact: data?.phone,
+        username: data?.username,
       }));
     } else {
     }

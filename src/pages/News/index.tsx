@@ -10,25 +10,6 @@ import Taro from "@tarojs/taro";
 import { getRecommendNews, getNews } from "@/api/news";
 import { getBanners } from "@/api/news";
 
-const Card = ({ newsItem }) => (
-  <View
-    className="card_wrap"
-    onClick={() => {
-      Taro.navigateTo({
-        url: newsItem?.url,
-      });
-    }}
-  >
-    <Image className="img_wrap" src={newsItem?.image} mode="aspectFill" />
-    <View className="info_wrap">
-      <View className="des">{newsItem?.title}</View>
-      <View className="date">
-        {new Date(newsItem?.updatedAt)?.toISOString()?.split("T")[0]}
-      </View>
-    </View>
-  </View>
-);
-
 export default function Index() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [recommendNewsData, setRecommendNewsData] = useState([]);
@@ -55,6 +36,24 @@ export default function Index() {
     getRecommendNewsData();
     getNewsData(currentIndex + 1);
   }, []);
+
+  const handleNavigate = (url) => {
+    Taro.navigateTo({
+      url: `/pages/webview/index?url=${encodeURIComponent(url)}`,
+    });
+  };
+
+  const Card = ({ newsItem }) => (
+    <View className="card_wrap" onClick={() => handleNavigate(newsItem?.url)}>
+      <Image className="img_wrap" src={newsItem?.image} mode="aspectFill" />
+      <View className="info_wrap">
+        <View className="des">{newsItem?.title}</View>
+        <View className="date">
+          {new Date(newsItem?.updatedAt)?.toISOString()?.split("T")[0]}
+        </View>
+      </View>
+    </View>
+  );
 
   return (
     <View className="page_view">

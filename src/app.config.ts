@@ -14,6 +14,7 @@ export default defineAppConfig({
     "pages/User/UserDetails/index",
     "pages/User/Message/index",
     "pages/ProjectMap/index",
+    "pages/webview/index",
   ], //第一项默认为首页
   window: {
     backgroundTextStyle: "light",

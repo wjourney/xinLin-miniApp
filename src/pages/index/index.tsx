@@ -1,5 +1,5 @@
 import { View, Text, Input, Image } from "@tarojs/components";
-import Taro, { useLoad } from "@tarojs/taro";
+import Taro, { useLoad, useShareAppMessage } from "@tarojs/taro";
 import "./index.scss";
 import BottomTabBar from "@/components/BottomTabBar";
 import LocationSvg from "@/assets/svg/location.svg";
@@ -25,6 +25,13 @@ export default function Index() {
   const [recommendBuildings, setRecommendBuildings] = useState([]);
   const [bannersData, setBannersData] = useState([]);
   const [options, setOptions] = useState([]);
+
+  useShareAppMessage(() => {
+    return {
+      title: `东方MOD+`,
+      path: `/pages/index/index`,
+    };
+  });
 
   // 首页筛选项
   const getFilterOptionsData = async () => {

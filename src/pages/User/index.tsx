@@ -73,14 +73,13 @@ export default function Index() {
   // };
 
   // 获取用户头像
-  const handleGetUserMoreInfo = () => {
-    Taro.getUserInfo({
-      success: function (res) {
-        const userInfo = res.userInfo;
-        setUserAvatar(userInfo.avatarUrl);
-        setUsername(userInfo.nickName);
-      },
-    });
+  const handleGetUserMoreInfo = async () => {
+    const res = await getUserInfo();
+    const { code, data } = res;
+    if (code === 200) {
+      setUserAvatar(data?.avatar);
+      setUsername(data?.username);
+    }
   };
 
   useEffect(() => {

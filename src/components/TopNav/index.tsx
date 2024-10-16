@@ -28,7 +28,6 @@ export default function Index({ title, hasBack = false }) {
     setNavHeight(height);
   }, []);
 
-  console.log("fff", navHeight);
   return (
     <View
       className="top_nav_wrap"
