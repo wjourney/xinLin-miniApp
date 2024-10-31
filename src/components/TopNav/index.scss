@@ -1,0 +1,32 @@
+.top_nav_wrap {
+  position: sticky;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  text {
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .back_wrap {
+    width: 48px;
+    // height: 100%;
+    position: absolute;
+    left: 0;
+    padding-left: 16px;
+    display: flex;
+    align-items: center;
+
+    image {
+      width: 12px;
+      height: 24px;
+    }
+  }
+}

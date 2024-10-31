@@ -1,0 +1,78 @@
+.project_map_card_wrap {
+  height: 110px;
+  display: flex;
+  // align-items: center;
+  border-radius: 8px;
+  // padding-left: 8px;
+  margin-right: 8px;
+  // background: rgba(255, 255, 255, 1);
+  // box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.05);
+  // width: 90%;
+  // align-items: center;
+  background-color: white;
+
+  .img_wrap {
+    border-radius: 8px;
+    // height: 80px;
+    height: 110px;
+    width: 110px;
+    // height: 68px;
+    flex-shrink: 0;
+
+    image {
+      object-fit: cover;
+      width: 100%;
+      height: 80px;
+    }
+  }
+
+  .info_wrap {
+    flex: 1;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    // justify-content: center;
+    font-size: 14px;
+    font-weight: 400;
+
+    .location {
+      font-size: 17px;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+      white-space: nowrap;
+      width: 180px;
+    }
+
+    .area {
+      // display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      white-space: nowrap; /* 不换行 */
+      overflow: hidden; /* 超出部分隐藏 */
+      text-overflow: ellipsis; /* 省略号 */
+    }
+
+    .price {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-top: auto;
+
+      image {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .collection {
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+  }
+}
