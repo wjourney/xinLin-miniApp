@@ -25,7 +25,7 @@ import Login from "@/components/Login";
 export default function Index() {
   const router = Taro.getCurrentInstance()?.router;
   const params: any = router?.params;
-  const { id: buildingId } = params;
+  const { id: buildingId, from } = params;
   const [detailData, setDetailData] = useState<any>();
   const [isLoginVisible, setIsLoginVisible] = useState(false);
 
@@ -45,9 +45,13 @@ export default function Index() {
   useShareAppMessage(() => {
     const token = Taro.getStorageSync("token");
 
+    const toPath =
+      from === "index"
+        ? `/pages/Buildings/BuildingDetail/index?id=${buildingId}&from=index`
+        : `/pages/Buildings/BuildingDetail/index?id=${buildingId}`;
     return {
-      title: ` ${detailData?.parkName}｜${detailData?.floor}楼`,
-      path: `/pages/Buildings/BuildingDetail/index?id=${buildingId}`,
+      title: detailData?.name,
+      path: toPath,
     };
   });
 
@@ -127,7 +131,21 @@ export default function Index() {
   };
   return (
     <View className="page_view">
-      <TopNav title={"房源详情"} hasBack={true} />
+      <TopNav
+        title={"房源详情"}
+        hasBack={true}
+        backFn={() => {
+          if (from === "index") {
+            Taro.switchTab({
+              url: `/pages/index/index`,
+            });
+          } else {
+            Taro.switchTab({
+              url: `/pages/Buildings/index`,
+            });
+          }
+        }}
+      />
       <View className="build_detail_wrap">
         <Swiper
           className="swiper_wrap"
@@ -236,9 +254,9 @@ export default function Index() {
             <View>招商中心：</View>
             <View
               className="phone"
-              onClick={() => handlePhone("021 - 62156813")}
+              onClick={() => handlePhone(detailData?.phone)}
             >
-              021 - 62156813
+              {detailData?.phone}
             </View>
           </View>
         </View>
@@ -253,7 +271,7 @@ export default function Index() {
         >
           <View className="title">所属项目</View>
           <View className="project_wrap">
-            <Text className="">{detailData?.parkName}</Text>
+            <View className="park_name">{detailData?.parkName}</View>
             <Image src={MoreSvg} />
           </View>
         </View>

@@ -1,5 +1,5 @@
 .building_card_wrap {
-  height: 90px;
+  height: 100px;
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -39,9 +39,15 @@
     .location {
       font-size: 16px;
       color: rgba(0, 0, 0, 0.8);
-      white-space: nowrap; /* 不换行 */
+      // white-space: nowrap; /* 不换行 */
       overflow: hidden; /* 超出部分隐藏 */
       text-overflow: ellipsis; /* 省略号 */
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* 限制显示的行数 */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-all;
     }
 
     .area {

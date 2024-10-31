@@ -78,7 +78,7 @@ export default function Index() {
     cityValue = "",
     districtNameValue = "",
     searchValue = "",
-    isGetMore = false
+    isGetMore = false,
   ) => {
     try {
       if (page === 1) {
@@ -125,7 +125,7 @@ export default function Index() {
         selectCity,
         selectArea,
         searchValue,
-        true
+        true,
       );
     }
   };
@@ -149,7 +149,7 @@ export default function Index() {
         selectCity,
         selectArea,
         searchValue,
-        false
+        false,
       );
       setShowCity("全部");
     } else if (selectCity === "all" && selectArea !== "") {
@@ -163,7 +163,7 @@ export default function Index() {
         selectCity,
         selectArea,
         searchValue,
-        false
+        false,
       );
     } else {
       setShowCity(selectArea);
@@ -173,7 +173,7 @@ export default function Index() {
         selectCity,
         selectArea,
         searchValue,
-        false
+        false,
       );
     }
   };
@@ -187,12 +187,12 @@ export default function Index() {
     if (selectCity === "all") {
       console.log(
         "ddwq",
-        filterOptions?.map((item: any) => item?.name)
+        filterOptions?.map((item: any) => item?.name),
       );
       setAreaOptions(filterOptions);
     } else {
       setAreaOptions(
-        filterOptions?.find((item: any) => item?.name === selectCity)?.children
+        filterOptions?.find((item: any) => item?.name === selectCity)?.children,
       );
       setSelectArea("all");
     }
@@ -356,7 +356,7 @@ export default function Index() {
                   selectCity,
                   selectArea,
                   searchValue,
-                  false
+                  false,
                 );
               }}
             />

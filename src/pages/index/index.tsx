@@ -88,7 +88,7 @@ export default function Index() {
       className="index_building_card_wrap"
       onClick={() => {
         Taro.navigateTo({
-          url: `/pages/Buildings/BuildingDetail/index?id=${buildingItem?.id}`,
+          url: `/pages/Buildings/BuildingDetail/index?id=${buildingItem?.id}&from=index`,
         });
       }}
     >
@@ -103,7 +103,7 @@ export default function Index() {
       className="project_card_wrap"
       onClick={() => {
         Taro.navigateTo({
-          url: `/pages/Projects/ProjectDetail/index?id=${projectItem?.id}`,
+          url: `/pages/Projects/ProjectDetail/index?id=${projectItem?.id}&from=index`,
         });
       }}
     >
@@ -134,7 +134,11 @@ export default function Index() {
           </Picker>
         </View>
         <View className="logo_wrap">
-          <Image src="https://xinning-1329449599.cos.ap-shanghai.myqcloud.com/xinning/upload/uploads/logo-removebg2.png" />
+          <Image
+            mode="widthFix"
+            src="https://xinning-1329449599.cos.ap-shanghai.myqcloud.com/xinning/upload/uploads/logo-removebg2.png"
+            // src="https://xinning-1329449599.cos.ap-shanghai.myqcloud.com/xinning/upload/uploads/logo-new.png"
+          />
         </View>
         <View className="searchWrap">
           <View className="search">
@@ -159,7 +163,7 @@ export default function Index() {
               src={MapMode}
               onClick={() =>
                 Taro.navigateTo({
-                  url: "/pages/ProjectMap/index",
+                  url: "/pages/ProjectMap/index?from=index",
                 })
               }
             />

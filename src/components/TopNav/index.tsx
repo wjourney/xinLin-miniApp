@@ -7,7 +7,13 @@ import { useEffect, useState } from "react";
 import { Swiper, SwiperItem } from "@tarojs/components";
 import BackSvg from "@/assets/svg/back.svg";
 
-export default function Index({ title, hasBack = false }) {
+export default function Index({
+  title,
+  hasBack = false,
+  backFn = () => {
+    Taro.navigateBack();
+  },
+}) {
   const [navHeight, setNavHeight] = useState<number>();
   const [statusBarHeight, setStatusBarHeight] = useState<number>();
 
@@ -38,7 +44,7 @@ export default function Index({ title, hasBack = false }) {
       }}
     >
       {hasBack && (
-        <View className="back_wrap" onClick={() => Taro.navigateBack()}>
+        <View className="back_wrap" onClick={() => backFn()}>
           <Image src={BackSvg} />
         </View>
       )}

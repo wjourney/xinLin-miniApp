@@ -34,7 +34,7 @@ export default function Index() {
     useState(false);
   const router = Taro.getCurrentInstance()?.router;
   const params: any = router?.params;
-  const { id: parkId } = params;
+  const { id: parkId, from } = params;
   const [detailData, setDetailData] = useState<any>();
 
   const getBuildingDetailData = async (id) => {
@@ -52,10 +52,13 @@ export default function Index() {
 
   useShareAppMessage(() => {
     const token = Taro.getStorageSync("token");
-
+    const toPath =
+      from === "index"
+        ? `/pages/Projects/ProjectDetail/index?id=${parkId}&from=index`
+        : `/pages/Projects/ProjectDetail/index?id=${parkId}`;
     return {
       title: detailData?.name,
-      path: `/pages/Projects/ProjectDetail/index?id=${parkId}`,
+      path: toPath,
     };
   });
 
@@ -104,7 +107,21 @@ export default function Index() {
 
   return (
     <View className="page_view">
-      <TopNav title={detailData?.name} hasBack={true} />
+      <TopNav
+        title={detailData?.name}
+        hasBack={true}
+        backFn={() => {
+          if (from === "index") {
+            Taro.switchTab({
+              url: `/pages/index/index`,
+            });
+          } else {
+            Taro.switchTab({
+              url: `/pages/Projects/index`,
+            });
+          }
+        }}
+      />
       <View className="build_detail_wrap">
         <View className="img_wrap">
           <Swiper
@@ -208,7 +225,7 @@ export default function Index() {
             style={{ marginTop: 16 }}
           >
             <Text> 招商中心：</Text>
-            <Text className="number">021-62156813</Text>
+            <Text className="number">{detailData?.phone}</Text>
           </View>
         </View>
         <View style={{ paddingTop: 16 }} className="diver_wrap"></View>
